@@ -2,7 +2,7 @@ const initialState = {};
 
 export type InitialStateType = typeof initialState
 
-export const PasswordRecoveryReducer = (
+export const passwordRecoveryReducer = (
   state: InitialStateType = initialState, action: PasswordRecoveryActionType): InitialStateType => {
   switch (action.type) {
     case 'SET-NEW-PASSWORD':

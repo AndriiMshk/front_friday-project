@@ -1,11 +1,6 @@
-.App {
-  height: 100vh;
-}
-
-.routes {
+.container {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  gap: 10px;
+  height: 80vh;
 }

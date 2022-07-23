@@ -6,9 +6,10 @@ import { PasswordRecovery } from '../../features/password-recovery/PasswordRecov
 import { Profile } from '../../features/profile/Profile';
 import { ErrorPage } from '../../features/error-page/ErrorPage';
 import { NewPassword } from '../../features/new-password/NewPassword';
+import style from './style.module.css'
 
 export const MyRoutes = () => {
-  return <div>
+  return <div className={style.container}>
     <Routes>
       <Route path={'/login'} element={<Login />} />
       <Route path={'/new-password'} element={<NewPassword />} />
