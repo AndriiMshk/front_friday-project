@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import { Login } from '../../features/login/Login';
 import { Registration } from '../../features/registration/Registration';
 import { PasswordRecovery } from '../../features/password-recovery/PasswordRecovery';
@@ -19,7 +19,8 @@ export const MyRoutes = () => {
       <Route path={'/'} element={<Profile />} />
 
       <Route path={'registration'} element={<Registration />} />
-      <Route path={'/error'} element={<ErrorPage />} />
+      <Route path={'/404'} element={<ErrorPage />} />
+      <Route path={'/*'} element={<Navigate to={'/404'}/>} />
     </Routes>
   </div>;
 };

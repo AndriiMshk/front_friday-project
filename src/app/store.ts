@@ -30,4 +30,4 @@ export type RootActionType =
 
 export type DispatchType = ThunkDispatch<RootStateType, unknown, RootActionType>
 export const useAppDispatch = () => useDispatch<DispatchType>();
-export type ThunkTypes<ReturnType = void> = ThunkAction<ReturnType, RootStateType, unknown, RootActionType>
+export type ThunkType<ReturnType = void> = ThunkAction<ReturnType, RootStateType, unknown, RootActionType>
