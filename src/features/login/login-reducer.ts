@@ -3,6 +3,7 @@ import {ThunkType} from "../../app/store";
 import {setAppStatusAC} from "../../app/app-reducer";
 import {AxiosError} from "axios";
 import {commonError} from "../../utils/common-error";
+import {setProfileAC} from "../profile/profile-reducer";
 
 const initialState = {
     isLoggedIn: false
@@ -28,6 +29,7 @@ export const loginTC = (data: LoginDataType): ThunkType => (dispatch) => {
     authApi.login(data)
         .then((res) => {
             dispatch(setIsLoggedInAC(true))
+            dispatch(setProfileAC(res.data))
         })
         .catch((error: AxiosError<{ error: string }>) => {
             commonError(error, dispatch)
