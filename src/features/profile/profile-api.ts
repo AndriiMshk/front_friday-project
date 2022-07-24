@@ -13,8 +13,3 @@ export const profileApi = {
       AxiosResponse<{ updatedUser: UserType, error?: string }>>('/auth/me', { name });
   },
 };
-
-/*
-"email": "test031@gmail.com",
-"password": "123123123123"
-*/

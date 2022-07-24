@@ -1,5 +1,5 @@
 import { profileApi } from './profile-api';
-import { ThunkTypes } from '../../app/store';
+import { ThunkType } from '../../app/store';
 import axios from 'axios';
 
 export type UserType = {
@@ -50,7 +50,7 @@ export type SetNewUserNameACType = ReturnType<typeof setNewUserNameAC>
 export const setProfileAC = (user: UserType) => ({ type: 'PROFILE/SET-NEW-PROFILE', user } as const);
 export const setNewUserNameAC = (newName: string) => ({ type: 'PROFILE/SET-NEW-USER-NAME', newName } as const);
 
-export const setNewUserNameTC = (newName: string): ThunkTypes => async(dispatch) => {
+export const setNewUserNameTC = (newName: string): ThunkType => async(dispatch) => {
   try {
     await profileApi.setNewUserName(newName);
     dispatch(setNewUserNameAC(newName));
