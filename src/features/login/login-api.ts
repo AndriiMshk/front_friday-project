@@ -17,7 +17,6 @@ export const authApi = {
     },
     logout() {
         return instance.delete<LoginResponseType>('auth/me')
-
     }
 }
 
@@ -35,10 +34,10 @@ export type LoginResponseType = {
     name: string;
     avatar?: string;
     publicCardPacksCount: number;
-    created: Date;
-    updated: Date;
-    isAdmin: boolean;
-    verified: boolean;
-    rememberMe: boolean;
+    created?: Date;
+    updated?: Date;
+    isAdmin?: boolean;
+    verified?: boolean;
+    rememberMe?: boolean;
     error?: string;
 }

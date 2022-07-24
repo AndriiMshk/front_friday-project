@@ -1,6 +1,7 @@
 import { profileApi } from './profile-api';
 import { ThunkType } from '../../app/store';
 import axios from 'axios';
+import { setAppStatusAC } from '../../app/app-reducer';
 
 export type UserType = {
   _id: string
@@ -8,11 +9,11 @@ export type UserType = {
   name: string
   avatar?: string
   publicCardPacksCount: number
-  created: string
-  updated: string
-  isAdmin: boolean
-  verified: boolean
-  rememberMe: boolean
+  created?: Date
+  updated?: Date
+  isAdmin?: boolean
+  verified?: boolean
+  rememberMe?: boolean
 }
 
 const initialState = {
@@ -21,15 +22,11 @@ const initialState = {
   name: '',
   avatar: '',
   publicCardPacksCount: 0,
-  created: '',
-  updated: '',
-  isAdmin: false,
-  verified: false,
   rememberMe: false,
-};
+} as UserType;
 
 export const profileReducer = (
-  state: UserType = initialState, action: ProfileActionType): UserType => {
+  state = initialState, action: ProfileActionType): UserType => {
   switch (action.type) {
     case 'PROFILE/SET-NEW-PROFILE':
       return { ...state, ...action.user };
@@ -51,6 +48,7 @@ export const setProfileAC = (user: UserType) => ({ type: 'PROFILE/SET-NEW-PROFIL
 export const setNewUserNameAC = (newName: string) => ({ type: 'PROFILE/SET-NEW-USER-NAME', newName } as const);
 
 export const setNewUserNameTC = (newName: string): ThunkType => async(dispatch) => {
+  dispatch(setAppStatusAC('loading'));
   try {
     await profileApi.setNewUserName(newName);
     dispatch(setNewUserNameAC(newName));
@@ -59,6 +57,7 @@ export const setNewUserNameTC = (newName: string): ThunkType => async(dispatch) 
       console.warn(error.message);
     }
   }
+  dispatch(setAppStatusAC('succeeded'));
 };
 
 
