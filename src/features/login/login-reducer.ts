@@ -37,6 +37,20 @@ export const loginTC = (data: LoginDataType): ThunkType => (dispatch) => {
         })
 }
 
+export const logoutTC = (): ThunkType => (dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+    authApi.logout()
+        .then((res) => {
+            dispatch(setIsLoggedInAC(false))
+        })
+        .catch((error: AxiosError<{ error: string }>) => {
+            commonError(error, dispatch)
+        })
+        .finally(() => {
+            dispatch(setAppStatusAC('succeeded'))
+        })
+}
+
 
 //types
 
