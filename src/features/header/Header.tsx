@@ -5,6 +5,7 @@ import { Avatar } from '@mui/material';
 import { useAppSelector } from '../../app/store';
 
 export const Header = () => {
+
   const name = useAppSelector(state => state.profile.name);
 
   return (

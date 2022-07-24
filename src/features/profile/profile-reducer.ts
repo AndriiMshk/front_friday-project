@@ -15,11 +15,10 @@ export type UserType = {
   rememberMe: boolean
 }
 
-// заглушки на имя и почту
 const initialState = {
   _id: '',
-  email: 'TEST EMAIL',
-  name: 'TEST NAME',
+  email: '',
+  name: '',
   avatar: '',
   publicCardPacksCount: 0,
   created: '',
@@ -33,9 +32,8 @@ export const profileReducer = (
   state: UserType = initialState, action: ProfileActionType): UserType => {
   switch (action.type) {
     case 'PROFILE/SET-NEW-PROFILE':
-      return { ...state };
+      return { ...state, ...action.user };
     case 'PROFILE/SET-NEW-USER-NAME':
-      debugger
       return { ...state, name: action.newName };
     default:
       return state;
@@ -49,14 +47,12 @@ export type ProfileActionType =
 export type SetProfileACType = ReturnType<typeof setProfileAC>
 export type SetNewUserNameACType = ReturnType<typeof setNewUserNameAC>
 
-export const setProfileAC = () => ({ type: 'PROFILE/SET-NEW-PROFILE' } as const);
+export const setProfileAC = (user: UserType) => ({ type: 'PROFILE/SET-NEW-PROFILE', user } as const);
 export const setNewUserNameAC = (newName: string) => ({ type: 'PROFILE/SET-NEW-USER-NAME', newName } as const);
 
-// проверить на работоспособность
-export const setNewUserNameTC = (user: UserType, newName: string): ThunkTypes => async(dispatch) => {
-  const newNameUser = { ...user, name: newName };
+export const setNewUserNameTC = (newName: string): ThunkTypes => async(dispatch) => {
   try {
-    await profileApi.setNewUserName(newNameUser);
+    await profileApi.setNewUserName(newName);
     dispatch(setNewUserNameAC(newName));
   } catch (error) {
     if (axios.isAxiosError(error)) {
