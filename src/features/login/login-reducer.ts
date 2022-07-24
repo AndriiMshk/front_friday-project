@@ -1,11 +1,12 @@
-import {loginApi, LoginDataType} from "./login-api";
+import {authApi, LoginDataType} from "./login-api";
 import {ThunkType} from "../../app/store";
+import {setAppStatusAC} from "../../app/app-reducer";
+import {AxiosError} from "axios";
+import {commonError} from "../../utils/common-error";
 
 const initialState = {
     isLoggedIn: false
 };
-
-export type InitialStateType = typeof initialState
 
 export const loginReducer = (
     state: InitialStateType = initialState, action: LoginActionType): InitialStateType => {
@@ -18,22 +19,30 @@ export const loginReducer = (
 };
 
 //actions
-export const setIsLoggedInAC = (value:boolean) => ({type: 'LOGIN/SET-IS-LOGGED-IN', value} as const);
+export const setIsLoggedInAC = (value: boolean) => ({type: 'LOGIN/SET-IS-LOGGED-IN', value} as const);
 
 
 //thunks
-export const loginTC=(data: LoginDataType):ThunkType=>(dispatch)=>{
-loginApi.login(data)
-    .then(res=>{
-        dispatch(setIsLoggedInAC(true))
-    })
-    //complete error handling, add preloader
+export const loginTC = (data: LoginDataType): ThunkType => (dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+    authApi.login(data)
+        .then((res) => {
+            dispatch(setIsLoggedInAC(true))
+        })
+        .catch((error: AxiosError<{ error: string }>) => {
+            commonError(error, dispatch)
+        })
+        .finally(() => {
+            dispatch(setAppStatusAC('succeeded'))
+        })
 }
 
 
 //types
+
 export type LoginActionType =
     | SetIsLoggedInActionType
 
 export type SetIsLoggedInActionType = ReturnType<typeof setIsLoggedInAC>
 
+export type InitialStateType = typeof initialState

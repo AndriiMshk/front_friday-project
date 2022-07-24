@@ -6,9 +6,14 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from 'formik';
 import styles from './Login.module.css'
-import Grid from '@mui/material/Grid';
+import {loginTC} from "./login-reducer";
+import {useAppDispatch, useAppSelector} from "../../app/store";
+import {Navigate} from 'react-router-dom';
+import itIncubator from "../../assets/it-inkubator.png";
 
 export const Login = () => {
+    const dispatch = useAppDispatch()
+    const isLoggedIn = useAppSelector(state => state.login.isLoggedIn)
     type FormikErrorType = {
         email?: string
         password?: string
@@ -31,50 +36,53 @@ export const Login = () => {
 
             if (!values.password) {
                 errors.password = 'Required'
-            } else if (values.password.length < 3) {
+            } else if (values.password.length < 8) {
                 errors.password = 'Password must contain more than 8 symbols'
             }
             return errors;
         },
         onSubmit: values => {
-            //change to dispatch loginTC(values)
-            alert(JSON.stringify(values));
-            formik.resetForm()
+            dispatch(loginTC(values))
+
         },
     })
 
-    return (<Grid container justifyContent={'center'}>
-            <Grid item justifyContent={'center'}>
-                <form onSubmit={formik.handleSubmit}>
-                    <div className={styles.title}>Sign In</div>
-                    <FormGroup>
-                        <TextField label="Email"
-                                   margin="normal"
-                                   {...formik.getFieldProps('email')}
-                        />
-                        {formik.touched.email && formik.errors.email &&
-                            <div style={{color: 'red'}}>{formik.errors.email}</div>}
+    if (isLoggedIn) {
+        return <Navigate to={'/profile'}/>
+    }
 
-                        <TextField type="password"
-                                   label="Password"
-                                   margin="normal"
-                                   {...formik.getFieldProps('password')}
-                        />
-                        {formik.touched.password && formik.errors.password &&
-                            <div style={{color: 'red'}}>{formik.errors.password}</div>}
+    return (
+        <div className={styles.wrapper}>
+            <form className={styles.form} onSubmit={formik.handleSubmit}>
+                <div className={styles.title}>Sign In</div>
+                <FormGroup>
+                    <TextField label="Email"
+                               margin="normal"
+                               {...formik.getFieldProps('email')}
+                    />
+                    {formik.touched.email && formik.errors.email &&
+                        <div style={{color: 'red'}}>{formik.errors.email}</div>}
 
-                        <FormControlLabel label={'Remember me'}
-                                          control={<Checkbox
-                                              checked={formik.values.rememberMe}
-                                              {...formik.getFieldProps('rememberMe')}
-                                          />}/>
-                        <Button type={'submit'} variant={'contained'} color={'primary'}>
-                            Login
-                        </Button>
-                    </FormGroup>
-                </form>
-            </Grid>
-        </Grid>
+                    <TextField type="password"
+                               label="Password"
+                               margin="normal"
+                               {...formik.getFieldProps('password')}
+                    />
+                    {formik.touched.password && formik.errors.password &&
+                        <div style={{color: 'red'}}>{formik.errors.password}</div>}
+
+                    <FormControlLabel label={'Remember me'}
+                                      control={<Checkbox
+                                          checked={formik.values.rememberMe}
+                                          {...formik.getFieldProps('rememberMe')}
+                                      />}/>
+                    <Button type={'submit'} variant={'contained'} color={'primary'}>
+                        Login
+                    </Button>
+                </FormGroup>
+            </form>
+        </div>
+
     )
 }
 

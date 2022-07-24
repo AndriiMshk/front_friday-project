@@ -1,14 +1,22 @@
-import axios, { AxiosResponse } from 'axios'
+import axios, {AxiosResponse} from 'axios'
+
 
 export const instance = axios.create({
     baseURL: 'http://localhost:7542/2.0/',
-    // 'http://localhost:7542/2.0/'
+    // 'https://neko-back.herokuapp.com/2.0'
     withCredentials: true,
 })
 
-export const loginApi = {
+//api
+export const authApi = {
+    me() {
+        return instance.post<{}, AxiosResponse<ResponseType>>('auth/me')
+    },
     login(data: LoginDataType) {
         return instance.post<LoginDataType, AxiosResponse<LoginResponseType>>('auth/login', data)
+    },
+    logout() {
+
     }
 }
 
@@ -20,7 +28,7 @@ export type LoginDataType = {
     rememberMe: boolean
 }
 
-export type LoginResponseType={
+export type LoginResponseType = {
     _id: string;
     email: string;
     name: string;
