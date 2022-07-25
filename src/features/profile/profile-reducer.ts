@@ -33,7 +33,6 @@ export const profileReducer = (
     state: UserType = initialState, action: ProfileActionType): UserType => {
     switch (action.type) {
         case 'PROFILE/SET-NEW-PROFILE':
-          debugger
             return {...state, ...action.user};
         case 'PROFILE/SET-NEW-USER-NAME':
             return {...state, name: action.newName};

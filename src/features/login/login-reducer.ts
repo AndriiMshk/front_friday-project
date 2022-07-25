@@ -27,7 +27,6 @@ export const loginTC = (data: LoginDataType): ThunkType => (dispatch) => {
   dispatch(setAppStatusAC('loading'));
   authApi.login(data)
     .then((res) => {
-      console.log(res);
       dispatch(setIsLoggedInAC(true));
       dispatch(setProfileAC(res.data));
     })
