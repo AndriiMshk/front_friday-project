@@ -8,8 +8,8 @@ import {useFormik} from 'formik';
 import styles from './Login.module.css'
 import {loginTC} from "./login-reducer";
 import {useAppDispatch, useAppSelector} from "../../app/store";
-import {Navigate} from 'react-router-dom';
-import itIncubator from "../../assets/it-inkubator.png";
+import {Navigate, Link} from 'react-router-dom';
+
 
 export const Login = () => {
     const dispatch = useAppDispatch()
@@ -76,9 +76,12 @@ export const Login = () => {
                                           checked={formik.values.rememberMe}
                                           {...formik.getFieldProps('rememberMe')}
                                       />}/>
-                    <Button type={'submit'} variant={'contained'} color={'primary'}>
-                        Login
-                    </Button>
+
+                    <Link className={styles.textLink} to={'password-recovery'}>Forgot Password</Link>
+                    <Button color='primary' variant={'contained'} type='submit'>Login</Button>
+                    Don’t have an account?
+                    <Link className={styles.textLink} to={'registration'}>Sign Up</Link>
+
                 </FormGroup>
             </form>
         </div>
