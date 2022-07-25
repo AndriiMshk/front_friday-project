@@ -6,15 +6,17 @@ import { useAppSelector } from '../../app/store';
 
 export const Header = () => {
 
-  const name = useAppSelector(state => state.profile.name);
+  const profile = useAppSelector(state => state.profile);
+  const isLoggedIn = useAppSelector(state => state.login.isLoggedIn);
 
   return (
     <div className={style.container}>
       <div>IT-INCUBATOR</div>
-      <div className={style.info}>
-        {name}
-        <Avatar style={{ height: '36px', width: '36px' }} alt="Remy Sharp" src={testAva} />
-      </div>
+      {isLoggedIn && <div className={style.info}>
+        {profile.name}
+        <Avatar style={{ height: '36px', width: '36px' }} alt="Remy Sharp"
+                src={profile.avatar ? profile.avatar : testAva} />
+      </div>}
     </div>
   );
 };
