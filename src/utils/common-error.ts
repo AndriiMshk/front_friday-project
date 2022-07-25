@@ -1,6 +1,6 @@
 import axios, {AxiosError} from 'axios';
 import {Dispatch} from "redux";
-import {setAppErrorAC} from "../app/app-reducer";
+import {setAppErrorAC, setAppStatusAC} from '../app/app-reducer';
 
 
 export const commonError = (e: Error | AxiosError<{error: string}>, dispatch:Dispatch) => {
@@ -11,4 +11,5 @@ export const commonError = (e: Error | AxiosError<{error: string}>, dispatch:Dis
     } else {
         dispatch(setAppErrorAC(`Native error ${err.message}`))
     }
+    dispatch(setAppStatusAC('failed'))
 }
