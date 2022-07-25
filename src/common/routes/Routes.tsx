@@ -11,12 +11,12 @@ export const MyRoutes = () => {
     return <div>
         <Routes>
             <Route path={'/'} element={<Navigate to={'/profile'}/>}/>
-            <Route path={'login'} element={<Login/>}/>
-            <Route path={'set-new-password'} element={<NewPassword/>}/>
-            <Route path={'password-recovery'} element={<PasswordRecovery/>}/>
-            <Route path={'profile'} element={<Profile/>}/>
-            <Route path={'registration'} element={<Registration/>}/>
-            <Route path={'404'} element={<ErrorPage/>}/>
+            <Route path={'/login'} element={<Login/>}/>
+            <Route path={'/set-new-password'} element={<NewPassword/>}/>
+            <Route path={'/password-recovery'} element={<PasswordRecovery/>}/>
+            <Route path={'/profile'} element={<Profile/>}/>
+            <Route path={'/registration'} element={<Registration/>}/>
+            <Route path={'/404'} element={<ErrorPage/>}/>
             <Route path={'*'} element={<Navigate to={'/404'}/>}/>
         </Routes>
     </div>;

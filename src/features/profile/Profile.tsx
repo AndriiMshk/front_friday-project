@@ -41,7 +41,7 @@ export const Profile: React.FC = () => {
   useEffect(() => {formik.initialValues.name = profile.name;}, [profile]);
 
   // ====================================== заглушка   значания доставать селектором
-  const isLogin = true;
+  const isLogin = false;
 
   const testLogin = () => {
     axios.post('http://localhost:7542/2.0/auth/login',
