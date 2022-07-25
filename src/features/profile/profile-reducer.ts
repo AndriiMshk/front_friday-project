@@ -1,18 +1,19 @@
-import {profileApi} from './profile-api';
-import {ThunkType} from '../../app/store';
+import { profileApi } from './profile-api';
+import { ThunkType } from '../../app/store';
 import axios from 'axios';
+import { setAppStatusAC } from '../../app/app-reducer';
 
 export type UserType = {
-    _id: string
-    email: string
-    name: string
-    avatar?: string
-    publicCardPacksCount: number
-    created?: Date
-    updated?: Date
-    isAdmin?: boolean
-    verified?: boolean
-    rememberMe: boolean
+  _id: string
+  email: string
+  name: string
+  avatar?: string
+  publicCardPacksCount: number
+  created: string
+  updated: string
+  isAdmin: boolean
+  verified: boolean
+  rememberMe: boolean
 }
 
 const initialState = {
@@ -50,15 +51,17 @@ export type SetNewUserNameACType = ReturnType<typeof setNewUserNameAC>
 export const setProfileAC = (user: UserType) => ({type: 'PROFILE/SET-NEW-PROFILE', user} as const);
 export const setNewUserNameAC = (newName: string) => ({type: 'PROFILE/SET-NEW-USER-NAME', newName} as const);
 
-export const setNewUserNameTC = (newName: string): ThunkType => async (dispatch) => {
-    try {
-        await profileApi.setNewUserName(newName);
-        dispatch(setNewUserNameAC(newName));
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-            console.warn(error.message);
-        }
+export const setNewUserNameTC = (newName: string): ThunkType => async(dispatch) => {
+  dispatch(setAppStatusAC('loading'));
+  try {
+    await profileApi.setNewUserName(newName);
+    dispatch(setNewUserNameAC(newName));
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.warn(error.message);
     }
+  }
+  dispatch(setAppStatusAC('succeeded'));
 };
 
 

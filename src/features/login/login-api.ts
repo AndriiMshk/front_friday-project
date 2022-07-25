@@ -17,7 +17,6 @@ export const authApi = {
     },
     logout() {
         return instance.delete<LoginResponseType>('auth/me')
-
     }
 }
 
