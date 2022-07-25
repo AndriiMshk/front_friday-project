@@ -7,6 +7,7 @@ import {Profile} from '../../features/profile/Profile';
 import {ErrorPage} from '../../features/404-page/ErrorPage';
 import {NewPassword} from '../../features/new-password/NewPassword';
 
+
 export const MyRoutes = () => {
     return <div>
         <Routes>

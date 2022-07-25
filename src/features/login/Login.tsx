@@ -9,6 +9,8 @@ import styles from './Login.module.css'
 import {loginTC} from "./login-reducer";
 import {useAppDispatch, useAppSelector} from "../../app/store";
 import {Navigate, Link} from 'react-router-dom';
+import {Visibility, VisibilityOff} from "@mui/icons-material";
+import {Box, FormControl, IconButton, Input, InputAdornment, InputLabel, OutlinedInput} from "@mui/material";
 
 
 export const Login = () => {
@@ -18,6 +20,11 @@ export const Login = () => {
         email?: string
         password?: string
         rememberMe?: boolean
+    }
+
+    type StatePassword = {
+        password: string;
+        showPassword: boolean;
     }
 
     const formik = useFormik({
@@ -47,6 +54,23 @@ export const Login = () => {
         },
     })
 
+    const [valuesPassword, setValuesPassword] = React.useState<StatePassword>({
+        password: '',
+        showPassword: false,
+    });
+
+    const handleClickShowPassword = () => {
+        setValuesPassword({
+            ...valuesPassword,
+            showPassword: !valuesPassword.showPassword,
+        });
+    };
+
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
+
+
     if (isLoggedIn) {
         return <Navigate to={'/profile'}/>
     }
@@ -55,37 +79,56 @@ export const Login = () => {
         <div className={styles.wrapper}>
             <form className={styles.form} onSubmit={formik.handleSubmit}>
                 <div className={styles.title}>Sign In</div>
-                <FormGroup>
-                    <TextField label="Email"
-                               margin="normal"
-                               {...formik.getFieldProps('email')}
+                <FormControl variant="standard">
+                    <InputLabel color="secondary">Email</InputLabel>
+                    <Input
+                        id='email'
+                        type='email'
+                        placeholder={'Email'}
+                        className={styles.input}
+                        color='secondary'
+                        {...formik.getFieldProps('email')}
                     />
-                    {formik.touched.email && formik.errors.email &&
-                        <div style={{color: 'red'}}>{formik.errors.email}</div>}
+                </FormControl>
+                {formik.errors.email && formik.touched.email &&
+                    <div style={{color: 'red'}}>{formik.errors.email}</div>}
 
-                    <TextField type="password"
-                               label="Password"
-                               margin="normal"
-                               {...formik.getFieldProps('password')}
+                <FormControl variant="standard">
+                    <InputLabel color="secondary">Password</InputLabel>
+                    <Input
+                        id="password"
+                        type={valuesPassword.showPassword ? 'text' : 'password'}
+                        placeholder={'Password'}
+                        className={styles.input}
+                        color='primary'
+                        {...formik.getFieldProps('password')}
+                        autoComplete="on"
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                >
+                                    {valuesPassword.showPassword ? <VisibilityOff/> : <Visibility/>}
+                                </IconButton>
+                            </InputAdornment>
+                        }
                     />
-                    {formik.touched.password && formik.errors.password &&
-                        <div style={{color: 'red'}}>{formik.errors.password}</div>}
+                </FormControl>
+                {formik.errors.password && formik.touched.password &&
+                    <div style={{color: 'red'}}>{formik.errors.password}</div>}
 
-                    <FormControlLabel label={'Remember me'}
-                                      control={<Checkbox
-                                          checked={formik.values.rememberMe}
-                                          {...formik.getFieldProps('rememberMe')}
-                                      />}/>
-
-                    <Link className={styles.textLink} to={'password-recovery'}>Forgot Password</Link>
-                    <Button color='primary' variant={'contained'} type='submit'>Login</Button>
-                    Don’t have an account?
-                    <Link className={styles.textLink} to={'registration'}>Sign Up</Link>
-
-                </FormGroup>
+                <FormControlLabel label={'Remember me'}
+                                  control={<Checkbox color="secondary"
+                                                     checked={formik.values.rememberMe}
+                                                     {...formik.getFieldProps('rememberMe')}
+                                  />
+                                  }/>
+                <Link className={styles.textLink} to={'password-recovery'}>Forgot Password</Link>
+                <Button color='primary' variant={'contained'} type='submit'>Login</Button>
+                Don’t have an account?
+                <Link className={styles.textLink} to={'registration'}>Sign Up</Link>
             </form>
         </div>
-
-    )
-}
-
+    );
+};
