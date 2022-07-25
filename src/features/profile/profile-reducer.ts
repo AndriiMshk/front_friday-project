@@ -9,8 +9,8 @@ export type UserType = {
   name: string
   avatar?: string
   publicCardPacksCount: number
-  created?: string
-  updated?: string
+  created?: Date
+  updated?: Date
   isAdmin?: boolean
   verified?: boolean
   rememberMe?: boolean
@@ -33,6 +33,7 @@ export const profileReducer = (
     state: UserType = initialState, action: ProfileActionType): UserType => {
     switch (action.type) {
         case 'PROFILE/SET-NEW-PROFILE':
+          debugger
             return {...state, ...action.user};
         case 'PROFILE/SET-NEW-USER-NAME':
             return {...state, name: action.newName};
@@ -48,7 +49,7 @@ export type ProfileActionType =
 export type SetProfileACType = ReturnType<typeof setProfileAC>
 export type SetNewUserNameACType = ReturnType<typeof setNewUserNameAC>
 
-export const setProfileAC = (user: UserType) => ({type: 'PROFILE/SET-NEW-PROFILE', user} as const);
+export const setProfileAC = (user: UserType | null) => ({type: 'PROFILE/SET-NEW-PROFILE', user} as const);
 export const setNewUserNameAC = (newName: string) => ({type: 'PROFILE/SET-NEW-USER-NAME', newName} as const);
 
 export const setNewUserNameTC = (newName: string): ThunkType => async(dispatch) => {

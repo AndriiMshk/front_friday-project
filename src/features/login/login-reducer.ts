@@ -24,24 +24,27 @@ export const setIsLoggedInAC = (value: boolean) => ({ type: 'LOGIN/SET-IS-LOGGED
 
 //thunks
 export const loginTC = (data: LoginDataType): ThunkType => (dispatch) => {
-    dispatch(setAppStatusAC('loading'))
-    authApi.login(data)
-        .then((res) => {
-            dispatch(setIsLoggedInAC(true))
-        })
-        .catch((error: AxiosError<{ error: string }>) => {
-            commonError(error, dispatch)
-        })
-        .finally(() => {
-            dispatch(setAppStatusAC('succeeded'))
-        })
-}
+  dispatch(setAppStatusAC('loading'));
+  authApi.login(data)
+    .then((res) => {
+      console.log(res);
+      dispatch(setIsLoggedInAC(true));
+      dispatch(setProfileAC(res.data));
+    })
+    .catch((error: AxiosError<{ error: string }>) => {
+      commonError(error, dispatch);
+    })
+    .finally(() => {
+      dispatch(setAppStatusAC('succeeded'));
+    });
+};
 
 export const logoutTC = (): ThunkType => (dispatch) => {
   dispatch(setAppStatusAC('loading'));
   authApi.logout()
     .then((res) => {
       dispatch(setIsLoggedInAC(false));
+      dispatch(setProfileAC(null));
     })
     .catch((error: AxiosError<{ error: string }>) => {
       commonError(error, dispatch);
