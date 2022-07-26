@@ -10,6 +10,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
+import classes from './Registration.module.css';
 
 export const Registration = () => {
     const dispatch = useAppDispatch()
@@ -36,9 +37,9 @@ export const Registration = () => {
 
     if (isRegistered) return <Navigate to={'/login'}/>
 
-    return <Paper elevation={2} sx={{marginTop: '60px', width: '413px', paddingTop: '35px', paddingBottom: '42px'}}>
+    return <Paper className={classes.paper} elevation={4} >
 
-        <h2>Sign Up</h2>
+        <div className={classes.title}>Sign Up</div>
 
         <form onSubmit={handleSubmit(onSubmit)}>
             <FormGroup>
@@ -53,10 +54,10 @@ export const Registration = () => {
                         }
                     }}
                     render={({field}) => (
-                        <TextField sx={{width: '347px', height: '71px', mt: '41px'}}
+                        <TextField sx={{height: '71px', mt: '41px'}}
                                    label="Email"
                                    variant="standard"
-                                   helperText={errors?.login && errors?.login?.message || ''}
+                                   helperText={errors?.login && errors?.login?.message}
                                    error={!!errors?.login}
                                    {...field}
                         />
@@ -73,19 +74,19 @@ export const Registration = () => {
                             message: 'Password less than 8 symbols'
                         }
                     }}
-                    render={({field}) => (<>
-                        <TextField sx={{width: '347px', height: '71px', mt: '6px'}}
+                    render={({field}) => (<div className={classes.wrapper}>
+                        <TextField sx={{width: '347px', height: '71px'}}
                                    label="Password"
                                    variant="standard"
                                    type={showPassword ? 'text' : 'password'}
-                                   helperText={errors?.password && errors?.password?.message || ''}
+                                   helperText={errors?.password && errors?.password?.message}
                                    error={!!errors?.password}
                                    {...field}
                         />
-                        <IconButton sx={{color: 'black'}} onClick={onClickShowPassword} >
+                        <IconButton className={classes.eye} onClick={onClickShowPassword} >
                             {showPassword ? <VisibilityOff/> : <Visibility/>}
                         </IconButton>
-                    </>)}
+                    </div>)}
                 />
 
                 <Controller
@@ -97,39 +98,30 @@ export const Registration = () => {
                             equal: v => v === getValues().password ? true : "Passwords don't match"
                         }
                     }}
-                    render={({field}) => (<>
-                        <TextField sx={{width: '347px', height: '71px', mt: '6px'}}
+                    render={({field}) => (<div className={classes.wrapper}>
+                        <TextField sx={{width: '347px', height: '71px'}}
                                    label="Confirm password"
                                    variant="standard"
                                    type={showConfirmPassword ? 'text' : 'password'}
-                                   helperText={errors?.confirmPassword && errors?.confirmPassword?.message || ''}
+                                   helperText={errors?.confirmPassword && errors?.confirmPassword?.message}
                                    error={!!errors?.confirmPassword}
                                    {...field}
                         />
-                        <IconButton sx={{color: 'black'}} onClick={onClickShowConfirmPassword} >
+                        <IconButton className={classes.eye} onClick={onClickShowConfirmPassword} >
                             {showConfirmPassword ? <VisibilityOff/> : <Visibility/>}
                         </IconButton>
-                    </>)}
+                    </div>)}
                 />
 
-                <Button type={'submit'}
-                        variant={'contained'}
-                        sx={{
-                            borderRadius: '30px',
-                            width: '347px',
-                            height: '36px',
-                            bgcolor: '#366EFF',
-                            mt: '60px',
-                            mb: '31px'
-                        }}
-                >
+                <Button type={'submit'} variant={'contained'} className={classes.submit} >
                     Sign Up
                 </Button>
             </FormGroup>
         </form>
 
-        <div>Already have an account?</div>
-        <Link to="/login"> Sign In </Link>
+        <div className={classes.question}>Already have an account?</div>
+
+        <Link to="/login" className={classes.signIn}> Sign In </Link>
     </Paper>
 };
 
