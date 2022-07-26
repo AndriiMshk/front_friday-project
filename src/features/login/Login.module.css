@@ -22,6 +22,12 @@
     color: black;
 }
 
-.message {
-
+.textLink {
+    display: flex;
+    justify-content: right;
+    margin-bottom: 20px;
+}
+.input{
+    margin-bottom: 15px;
+    background-color: rgb(232, 240, 254)
 }
