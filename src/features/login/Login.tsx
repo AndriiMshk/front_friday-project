@@ -1,17 +1,14 @@
-import React from 'react'
+import React from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
-import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import {useFormik} from 'formik';
-import styles from './Login.module.css'
-import {loginTC} from "./login-reducer";
-import {useAppDispatch, useAppSelector} from "../../app/store";
-import {Navigate, Link} from 'react-router-dom';
-import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {Box, FormControl, IconButton, Input, InputAdornment, InputLabel, OutlinedInput} from "@mui/material";
-
+import { useFormik } from 'formik';
+import styles from './Login.module.css';
+import { loginTC } from './login-reducer';
+import { useAppDispatch, useAppSelector } from '../../app/store';
+import { Link, Navigate } from 'react-router-dom';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { FormControl, IconButton, Input, InputAdornment, InputLabel } from '@mui/material';
 
 export const Login = () => {
     const dispatch = useAppDispatch()
@@ -127,7 +124,7 @@ export const Login = () => {
                 <Link className={styles.textLink} to={'password-recovery'}>Forgot Password</Link>
                 <Button color='primary' variant={'contained'} type='submit'>Login</Button>
                 Don’t have an account?
-                <Link className={styles.textLink} to={'registration'}>Sign Up</Link>
+                <Link className={styles.textLink} to={'/registration'}>Sign Up</Link>
             </form>
         </div>
     );

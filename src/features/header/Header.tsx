@@ -3,7 +3,7 @@ import style from './style.module.css';
 import testAva from '../../assets/avatar.png';
 import { Avatar } from '@mui/material';
 import { useAppSelector } from '../../app/store';
-import { Link } from 'react-router-dom';
+import incubatorLogo from '../../assets/incubator.png'
 
 export const Header = () => {
 
@@ -12,27 +12,12 @@ export const Header = () => {
 
   return (
     <div className={style.container}>
-      <div className={style.dropdown}>
-        <div>IT-INCUBATOR</div>
-
-        {isLoggedIn && <div className={style.info}>
-          {profile.name}
-          <Avatar style={{ height: '36px', width: '36px' }} alt="Remy Sharp"
-                  src={profile.avatar ? profile.avatar : testAva} />
-        </div>}
-
-        <div className={style.dropdownContent}>
-          <Link to='/' > Главная </Link>
-          <Link to='/login' > Вход </Link>
-          <Link to='/registration' > Регистрация </Link>
-          <Link to='/profile' > Профиль </Link>
-          <Link to='/404' > 404 </Link>
-          <Link to='/password-recovery' > Восстановление пароля </Link>
-          <Link to='/set-new-password' > Смена пароля </Link>
-        </div>
-      </div>
+      <div style={{width: '209px', height: '48px'}}><img src={incubatorLogo} alt="it-incubator" /></div>
+      {isLoggedIn && <div className={style.info}>
+        {profile.name}
+        <Avatar style={{ height: '36px', width: '36px' }} alt="Remy Sharp"
+                src={profile.avatar ? profile.avatar : testAva} />
+      </div>}
     </div>
   );
 };
-
-// TODO придумать что то с логотипом инкубатора

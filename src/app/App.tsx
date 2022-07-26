@@ -4,9 +4,9 @@ import { MyRoutes } from '../common/routes/Routes';
 import { useAppDispatch, useAppSelector } from './store';
 import { authMeTC } from './app-reducer';
 import { Preloader } from '../features/preloader/Preloader';
-import styles from './App.module.css';
 import { ErrorSnackbar } from '../features/ErrorSnackbar/ErrorSnackbar';
 import { Header } from '../features/header/Header';
+import { Navbar } from '../features/navbar/Navbar';
 
 export const App = () => {
   const status = useAppSelector((state) => state.app.status);
@@ -17,15 +17,14 @@ export const App = () => {
   }, [dispatch]);
 
   if (!isInitialized) {
-    return <div style={{ position: 'fixed', top: '30%', textAlign: 'center', width: '100%' }}>
-      <Preloader />
-    </div>;
+    return <Preloader />;
   }
 
   return (
     <>
       <Header />
-      {status === 'loading' && <div className={styles.isInitialized}><Preloader /></div>}
+      <Navbar/>
+      {status === 'loading' && <Preloader />}
       <MyRoutes />
       <ErrorSnackbar />
     </>
