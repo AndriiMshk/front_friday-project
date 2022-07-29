@@ -2,6 +2,7 @@ import {ThunkType} from "./store";
 
 import {setIsLoggedInAC} from "../features/login/login-reducer";
 import {authApi} from "../features/login/login-api";
+import { setProfileAC } from '../features/profile/profile-reducer';
 
 
 const initialState = {
@@ -41,6 +42,7 @@ export const authMeTC = (): ThunkType => (dispatch) => {
         .then((res) => {
             dispatch(setIsLoggedInAC(true))
             dispatch(setAppStatusAC('succeeded'))
+          dispatch(setProfileAC(res.data));
         })
         .catch(error => {
             //complete handling errors
