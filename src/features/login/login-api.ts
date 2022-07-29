@@ -1,4 +1,5 @@
 import axios, {AxiosResponse} from 'axios'
+import { UserType } from '../profile/profile-reducer'
 
 
 export const instance = axios.create({
@@ -10,7 +11,7 @@ export const instance = axios.create({
 //api
 export const authApi = {
     me() {
-        return instance.post<{}, AxiosResponse<ResponseType>>('auth/me')
+        return instance.post<{}, AxiosResponse<UserType>>('auth/me')
     },
     login(data: LoginDataType) {
         return instance.post<LoginDataType, AxiosResponse<LoginResponseType>>('auth/login', data)

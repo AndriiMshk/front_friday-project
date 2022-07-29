@@ -22,6 +22,7 @@ export const Profile = () => {
   const [editMode, setEditMode] = useState(false);
   const isLoggedIn = useAppSelector(state => state.login.isLoggedIn);
   const status = useAppSelector(state => state.app.status);
+  console.log(profile);
 
   const formik = useFormik({
     initialValues: {
