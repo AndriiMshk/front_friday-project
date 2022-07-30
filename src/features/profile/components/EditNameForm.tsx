@@ -3,7 +3,7 @@ import { InputAdornment } from '@material-ui/core';
 import * as React from 'react';
 
 export const EditNameForm: React.FC<EditNameFormPropsType> = (
-  { handleSubmit, handleChange, name, setEditMode, newName },
+  { handleSubmit, handleChange, name, setEditMode, newName, error },
 ) => {
 
   const onKeyDownHandler = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -24,12 +24,14 @@ export const EditNameForm: React.FC<EditNameFormPropsType> = (
           onChange={handleChange}
           value={newName}
           onBlur={() => handleSubmit()}
+          error={!!error}
           endAdornment={
             <InputAdornment position="end">
               <Button
                 variant="contained"
                 style={{ height: '24px', width: '54px' }}
                 type={'submit'}
+                disabled={!!error}
               >SAVE
               </Button>
             </InputAdornment>
@@ -46,4 +48,5 @@ type EditNameFormPropsType = {
   name: string
   newName: string
   setEditMode: (mode: boolean) => void
+  error: string | undefined
 }

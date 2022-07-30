@@ -10,47 +10,53 @@ import { setNewUserNameTC } from './profile-reducer';
 import { useAppDispatch, useAppSelector } from '../../app/store';
 import { useFormik } from 'formik';
 import { logoutTC } from '../login/login-reducer';
-import { Preloader } from '../preloader/Preloader';
-import { authMeTC } from '../../app/app-reducer';
 import { EditNameForm } from './components/EditNameForm';
 import { AvatarComponent } from './components/AvatarComponent';
 
 export const Profile = () => {
 
-  const profile = useAppSelector(state => state.profile);
+  const email = useAppSelector(state => state.profile.email);
+  const name = useAppSelector(state => state.profile.name);
+  const avatar = useAppSelector(state => state.profile.avatar);
+  const isLoggedIn = useAppSelector(state => state.login.isLoggedIn);
+
   const dispatch = useAppDispatch();
   const [editMode, setEditMode] = useState(false);
-  const isLoggedIn = useAppSelector(state => state.login.isLoggedIn);
-  const status = useAppSelector(state => state.app.status);
-  console.log(profile);
 
   const formik = useFormik({
     initialValues: {
-      name: profile.name,
+      name: name,
+    },
+    validate: (values) => {
+      const errors: { name?: string } = {};
+      if (!values.name) {
+        errors.name = 'Required';
+      }
+      if (values.name.length > 20) {
+        errors.name = 'To long name';
+      }
+      return errors;
     },
     onSubmit: values => {
-      if (values.name.trim() !== profile.name) {
+      if (values.name.trim() !== name) {
         dispatch(setNewUserNameTC(values.name));
       } else {
-        values.name = profile.name;
+        values.name = name;
       }
       setEditMode(false);
     },
   });
 
-  useEffect(() => {formik.initialValues.name = profile.name;}, [profile]);
-  useEffect(() => {dispatch(authMeTC());}, []);
+  useEffect(() => {
+      formik.initialValues.name = name;
+    },
+    [name]);
 
   if (!isLoggedIn) {
     return <Navigate to={'/login'} />;
   }
 
-  if (status === 'loading') {
-    return <Preloader />;
-  }
-
   return (
-
     <div className={style.container}>
       <Paper className={style.content}>
         <Typography
@@ -58,17 +64,18 @@ export const Profile = () => {
           variant="h5" component="div">
           Personal Information
         </Typography>
-        <AvatarComponent avatar={profile.avatar}/>
+        <AvatarComponent avatar={avatar} />
         {editMode
           ? <EditNameForm
-            name={profile.name}
+            name={name}
             handleChange={formik.handleChange}
             handleSubmit={formik.handleSubmit}
             newName={formik.values.name}
             setEditMode={setEditMode}
+            error={formik.errors.name}
           />
           : <Typography variant="h6" component="div">
-            {profile.name}
+            {name}
             <BorderColorOutlinedIcon
               style={{ cursor: 'pointer', height: '15px', width: '15px', paddingLeft: '5px' }}
               onClick={() => setEditMode(true)}
@@ -77,7 +84,7 @@ export const Profile = () => {
         <Typography
           style={{ fontSize: '14px', marginBottom: '29px' }}
           color="text.secondary">
-          {profile.email}
+          {email}
         </Typography>
         <Button
           onClick={() => {dispatch(logoutTC());}}
