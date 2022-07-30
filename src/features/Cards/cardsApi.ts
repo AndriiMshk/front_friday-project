@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { instance } from '../../../../../app/appApi';
+import { instance } from '../../app/appApi';
 
 export const cardsApi = {
   setCards(params: ParamsGetRequestType) {

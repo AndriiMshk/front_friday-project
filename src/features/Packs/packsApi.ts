@@ -1,4 +1,4 @@
-import { instance } from '../../../../app/appApi';
+import { instance } from '../../app/appApi';
 import { AxiosResponse } from 'axios';
 import { PackType } from './packs-reducer';
 

@@ -1,8 +1,9 @@
 import React, {useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from "../../app/store";
 import {useNavigate, useParams} from "react-router-dom";
-import {getCardsTC} from "./cards-reducer";
+
 import {CardsTable} from "./CardsTable";
+import { setCardsTC } from './cards-reducer';
 
 export const Cards = () => {
     const navigate = useNavigate()
@@ -13,11 +14,13 @@ export const Cards = () => {
 
     const {packId} = useParams<'packId'>();
 
-    useEffect(() => {
-        if (packId) {
-            dispatch(getCardsTC(packId))
-        }
-    }, []);
+
+  useEffect(() => {
+    if (packId) {
+      dispatch(setCardsTC({cardsPack_id: packId}))
+    }
+  }, []);
+
     return (
         <div>
             <CardsTable/>

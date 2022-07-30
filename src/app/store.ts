@@ -7,7 +7,8 @@ import { passwordRecoveryReducer } from '../features/password-recovery/passwordR
 import { profileReducer } from '../features/profile/profile-reducer';
 import { registrationReducer } from '../features/registration/registration-reducer';
 import { appReducer } from './app-reducer';
-import { packsReducer } from '../features/profile/components/packs/packs-reducer';
+import { cardsReducer } from '../features/Cards/cards-reducer';
+import { packsReducer } from '../features/Packs/packs-reducer';
 
 let rootReducer = combineReducers({
   login: loginReducer,
@@ -16,6 +17,7 @@ let rootReducer = combineReducers({
   profile: profileReducer,
   registration: registrationReducer,
   app: appReducer,
+  cards: cardsReducer,
   packs: packsReducer,
 });
 
@@ -25,4 +27,4 @@ export type RootStateType = ReturnType<typeof rootReducer>
 export type DispatchType = ThunkDispatch<RootStateType, unknown, AnyAction>
 export const useAppDispatch = () => useDispatch<DispatchType>();
 export type ThunkType<ReturnType = void> = ThunkAction<ReturnType, RootStateType, unknown, AnyAction>
-export const useAppSelector: TypedUseSelectorHook<RootStateType> = useSelector
+export const useAppSelector: TypedUseSelectorHook<RootStateType> = useSelector;
