@@ -14,6 +14,8 @@ export const Navbar = () => {
         <Link to="/404"> 404 </Link>
         <Link to="/password-recovery"> Восстановление пароля </Link>
         <Link to="/set-new-password"> Смена пароля </Link>
+        <Link to="/packs"> Колоды </Link>
+        <Link to="/cards/:packId"> Карточки </Link>
       </div>
     </>
   );
