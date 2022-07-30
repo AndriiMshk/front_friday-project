@@ -34,9 +34,9 @@ const createCardAC = (card: CardType) => ({ type: 'CARDS/CREATE-CARD', card } as
 const deleteCardAC = (cardId: string) => ({ type: 'CARDS/DELETE-CARD', cardId } as const);
 const updateCardAC = (cardId: string, question?: string, comments?: string) =>
   ({ type: 'CARDS/UPDATE-CARD', cardId, comments, question } as const);
-const setCurrentPageAC = (page: number | undefined) =>
+export const setCurrentPageAC = (page: number | undefined) =>
   ({ type: 'CARDS/SET-CURRENT-PAGE', page } as const);
-const setCurrentPageCountAC = (pageCount: number | undefined) =>
+export const setCurrentPageCountAC = (pageCount: number | undefined) =>
   ({ type: 'CARDS/SET-CURRENT-PAGE-COUNT', pageCount } as const);
 
 export const setCardsTC = ({ ...params }: ParamsGetRequestType): ThunkType => async(dispatch) => {
@@ -54,16 +54,12 @@ export const setCardsTC = ({ ...params }: ParamsGetRequestType): ThunkType => as
   dispatch(setAppStatusAC('succeeded'));
 };
 
-const createCardTC = ({ ...newCard }: CardsType, { ...params }: ParamsGetRequestType): ThunkType =>
+const createCardTC = ({ ...newCard }: CardsType): ThunkType =>
   async(dispatch) => {
     dispatch(setAppStatusAC('loading'));
     try {
-      const data = await cardsApi.createCard({ ...newCard });
-      dispatch(createCardAC(data.data));
-      const res = await cardsApi.setCards({ ...params });
-      dispatch(setCurrentPageAC(params.page));
-      dispatch(setCurrentPageCountAC(params.pageCount));
-      dispatch(setCardsAC(res.data));
+      const res = await cardsApi.createCard({ ...newCard });
+      dispatch(createCardAC(res.data));
     } catch (error) {
       if (axios.isAxiosError(error)) {
         commonError(error, dispatch);
@@ -71,16 +67,12 @@ const createCardTC = ({ ...newCard }: CardsType, { ...params }: ParamsGetRequest
     }
     dispatch(setAppStatusAC('succeeded'));
   };
-const deleteCardTC = (cardId: string, { ...params }: ParamsGetRequestType): ThunkType =>
+const deleteCardTC = (cardId: string): ThunkType =>
   async(dispatch) => {
     dispatch(setAppStatusAC('loading'));
     try {
       await cardsApi.deleteCard(cardId);
       dispatch(deleteCardAC(cardId));
-      const res = await cardsApi.setCards({ ...params });
-      dispatch(setCurrentPageAC(params.page));
-      dispatch(setCurrentPageCountAC(params.pageCount));
-      dispatch(setCardsAC(res.data));
     } catch (error) {
       if (axios.isAxiosError(error)) {
         commonError(error, dispatch);
@@ -88,17 +80,12 @@ const deleteCardTC = (cardId: string, { ...params }: ParamsGetRequestType): Thun
     }
     dispatch(setAppStatusAC('succeeded'));
   };
-const updateCardTC = (
-  cardId: string, question: string, comments: string, { ...params }: ParamsGetRequestType): ThunkType =>
+const updateCardTC = (cardId: string, question?: string, comments?: string): ThunkType =>
   async(dispatch) => {
     dispatch(setAppStatusAC('loading'));
     try {
-      const data = await cardsApi.updateCard(cardId, question, comments);
+      await cardsApi.updateCard(cardId, question, comments);
       dispatch(updateCardAC(cardId, question, comments));
-      const res = await cardsApi.setCards({ ...params });
-      dispatch(setCurrentPageAC(params.page));
-      dispatch(setCurrentPageCountAC(params.pageCount));
-      dispatch(setCardsAC(res.data));
     } catch (error) {
       if (axios.isAxiosError(error)) {
         commonError(error, dispatch);

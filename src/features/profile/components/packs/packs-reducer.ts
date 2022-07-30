@@ -37,8 +37,8 @@ const updatePackAC = (packId: string, newPackName: string) => ({
   packId,
   newPackName,
 } as const);
-const setCurrentPageAC = (page: number | undefined) => ({ type: 'PACKS/SET-CURRENT-PAGE', page } as const);
-const setCurrentPageCountAC = (pageCount: number | undefined) => ({
+export const setCurrentPageAC = (page: number | undefined) => ({ type: 'PACKS/SET-CURRENT-PAGE', page } as const);
+export const setCurrentPageCountAC = (pageCount: number | undefined) => ({
   type: 'PACKS/SET-CURRENT-PAGE-COUNT',
   pageCount,
 } as const);
@@ -57,15 +57,11 @@ const setPacksTC = ({ ...params }: ParamsGetRequestType): ThunkType => async(dis
   }
   dispatch(setAppStatusAC('succeeded'));
 };
-const createPackTC = (newPackName: string, { ...params }: ParamsGetRequestType): ThunkType => async(dispatch) => {
+const createPackTC = (newPackName: string): ThunkType => async(dispatch) => {
   dispatch(setAppStatusAC('loading'));
   try {
-    const data = await packsApi.createPack(newPackName);
-    dispatch(createPackAC(data.data));
-    const res = await packsApi.setPacks({ ...params });
-    dispatch(setCurrentPageAC(params.page));
-    dispatch(setCurrentPageCountAC(params.pageCount));
-    dispatch(setPacksAC(res.data.cardPacks));
+    const res = await packsApi.createPack(newPackName);
+    dispatch(createPackAC(res.data));
   } catch (error) {
     if (axios.isAxiosError(error)) {
       commonError(error, dispatch);
@@ -73,15 +69,11 @@ const createPackTC = (newPackName: string, { ...params }: ParamsGetRequestType):
   }
   dispatch(setAppStatusAC('succeeded'));
 };
-const deletePackTC = (packId: string, { ...params }: ParamsGetRequestType): ThunkType => async(dispatch) => {
+const deletePackTC = (packId: string): ThunkType => async(dispatch) => {
   dispatch(setAppStatusAC('loading'));
   try {
     await packsApi.deletePack(packId);
     dispatch(deletePackAC(packId));
-    const res = await packsApi.setPacks({ ...params });
-    dispatch(setCurrentPageAC(params.page));
-    dispatch(setCurrentPageCountAC(params.pageCount));
-    dispatch(setPacksAC(res.data.cardPacks));
   } catch (error) {
     if (axios.isAxiosError(error)) {
       commonError(error, dispatch);
@@ -89,16 +81,12 @@ const deletePackTC = (packId: string, { ...params }: ParamsGetRequestType): Thun
   }
   dispatch(setAppStatusAC('succeeded'));
 };
-const updatePackTC = (packId: string, newPackName: string, { ...params }: ParamsGetRequestType): ThunkType =>
+const updatePackTC = (packId: string, newPackName: string): ThunkType =>
   async(dispatch) => {
     dispatch(setAppStatusAC('loading'));
     try {
       await packsApi.updatePack(packId, newPackName);
       dispatch(updatePackAC(packId, newPackName));
-      const res = await packsApi.setPacks({ ...params });
-      dispatch(setCurrentPageAC(params.page));
-      dispatch(setCurrentPageCountAC(params.pageCount));
-      dispatch(setPacksAC(res.data.cardPacks));
     } catch (error) {
       if (axios.isAxiosError(error)) {
         commonError(error, dispatch);
