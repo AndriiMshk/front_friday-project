@@ -32,9 +32,8 @@ export const PacksTable = () => {
                 <Table sx={{minWidth: 400}} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell align="right">Cover</TableCell>
-                            <TableCell>Name</TableCell>
-                            <TableCell align="right">Cards</TableCell>
+                            <TableCell align="right">Name</TableCell>
+                            <TableCell align="right">Cards Count</TableCell>
                             <TableCell align="right">Created By</TableCell>
                             <TableCell align="right">Last Updated</TableCell>
                             <TableCell align="right">Actions</TableCell>
@@ -79,7 +78,7 @@ export const PacksTable = () => {
                             </TableRow>
                         ))}
                     </TableBody>
-              </Table>
+                </Table>
             </TableContainer>
         </div>
     );
