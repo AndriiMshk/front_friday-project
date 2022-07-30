@@ -4,16 +4,7 @@ import axios from 'axios';
 import { commonError } from '../../../../utils/common-error';
 import { packsApi, ParamsGetRequestType } from './packsApi';
 
-const initialState = {
-  cardPacks: [] as PackType[],
-  page: 1,
-  pageCount: 4,
-  cardPacksTotalCount: 0,
-  minCardsCount: 0,
-  maxCardsCount: 1,
-  token: '',
-  tokenDeathTime: 0,
-};
+const initialState = {} as InitialStateType;
 
 export const packsReducer = (state: InitialStateType = initialState, action: PacksActionType): InitialStateType => {
   switch (action.type) {
@@ -56,8 +47,8 @@ const setPacksTC = ({ ...params }: ParamsGetRequestType): ThunkType => async(dis
   dispatch(setAppStatusAC('loading'));
   try {
     const res = await packsApi.setPacks({ ...params });
-    dispatch(setCurrentPageAC(params.page));
-    dispatch(setCurrentPageCountAC(params.pageCount));
+    dispatch(setCurrentPageAC(params?.page));
+    dispatch(setCurrentPageCountAC(params?.pageCount));
     dispatch(setPacksAC(res.data.cardPacks));
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -69,7 +60,8 @@ const setPacksTC = ({ ...params }: ParamsGetRequestType): ThunkType => async(dis
 const createPackTC = (newPackName: string, { ...params }: ParamsGetRequestType): ThunkType => async(dispatch) => {
   dispatch(setAppStatusAC('loading'));
   try {
-    await packsApi.createPack(newPackName);
+    const data = await packsApi.createPack(newPackName);
+    dispatch(createPackAC(data.data));
     const res = await packsApi.setPacks({ ...params });
     dispatch(setCurrentPageAC(params.page));
     dispatch(setCurrentPageCountAC(params.pageCount));
@@ -85,6 +77,7 @@ const deletePackTC = (packId: string, { ...params }: ParamsGetRequestType): Thun
   dispatch(setAppStatusAC('loading'));
   try {
     await packsApi.deletePack(packId);
+    dispatch(deletePackAC(packId));
     const res = await packsApi.setPacks({ ...params });
     dispatch(setCurrentPageAC(params.page));
     dispatch(setCurrentPageCountAC(params.pageCount));
@@ -101,9 +94,10 @@ const updatePackTC = (packId: string, newPackName: string, { ...params }: Params
     dispatch(setAppStatusAC('loading'));
     try {
       await packsApi.updatePack(packId, newPackName);
+      dispatch(updatePackAC(packId, newPackName));
+      const res = await packsApi.setPacks({ ...params });
       dispatch(setCurrentPageAC(params.page));
       dispatch(setCurrentPageCountAC(params.pageCount));
-      const res = await packsApi.setPacks({ ...params });
       dispatch(setPacksAC(res.data.cardPacks));
     } catch (error) {
       if (axios.isAxiosError(error)) {
