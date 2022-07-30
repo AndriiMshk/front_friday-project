@@ -1,12 +1,14 @@
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { AnyAction, applyMiddleware, combineReducers, legacy_createStore as createStore } from 'redux';
-import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { loginReducer } from '../features/login/login-reducer';
-import { newPasswordReducer } from '../features/new-password/newPassword-reducer';
-import { passwordRecoveryReducer } from '../features/password-recovery/passwordRecovery-reducer';
-import { profileReducer } from '../features/profile/profile-reducer';
-import { registrationReducer } from '../features/registration/registration-reducer';
-import { appReducer } from './app-reducer';
+import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
+import {AnyAction, applyMiddleware, combineReducers, legacy_createStore as createStore} from 'redux';
+import thunk, {ThunkAction, ThunkDispatch} from 'redux-thunk';
+import {loginReducer} from '../features/login/login-reducer';
+import {newPasswordReducer} from '../features/new-password/newPassword-reducer';
+import {passwordRecoveryReducer} from '../features/password-recovery/passwordRecovery-reducer';
+import {profileReducer} from '../features/profile/profile-reducer';
+import {registrationReducer} from '../features/registration/registration-reducer';
+import {appReducer} from './app-reducer';
+import {packsReducer} from "../features/Packs/packs-reducer";
+import {cardsReducer} from "../features/Cards/cards-reducer";
 
 let rootReducer = combineReducers({
     login: loginReducer,
@@ -15,6 +17,8 @@ let rootReducer = combineReducers({
     profile: profileReducer,
     registration: registrationReducer,
     app: appReducer,
+    packs: packsReducer,
+    cards: cardsReducer
 
 
 });

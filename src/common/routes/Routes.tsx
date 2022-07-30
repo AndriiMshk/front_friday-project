@@ -6,6 +6,8 @@ import {PasswordRecovery} from '../../features/password-recovery/PasswordRecover
 import {Profile} from '../../features/profile/Profile';
 import {ErrorPage} from '../404-page/ErrorPage';
 import {NewPassword} from '../../features/new-password/NewPassword';
+import {Packs} from "../../features/Packs/Packs";
+import {Cards} from "../../features/Cards/Cards";
 
 
 export const ProjectRoutes = () => {
@@ -17,6 +19,8 @@ export const ProjectRoutes = () => {
             <Route path={'/password-recovery'} element={<PasswordRecovery/>}/>
             <Route path={'/profile'} element={<Profile/>}/>
             <Route path={'/registration'} element={<Registration/>}/>
+            <Route path={'/packs'} element={<Packs/>}/>
+            <Route path={'/cards/:packId'} element={<Cards/>}/>
             <Route path={'/404'} element={<ErrorPage/>}/>
             <Route path={'*'} element={<Navigate to={'/404'}/>}/>
         </Routes>
