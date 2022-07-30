@@ -17,8 +17,6 @@ let rootReducer = combineReducers({
     profile: profileReducer,
     registration: registrationReducer,
     app: appReducer,
-    packs: packsReducer,
-    cards: cardsReducer
 
 
 });
@@ -26,8 +24,7 @@ let rootReducer = combineReducers({
 export const store = createStore(rootReducer, applyMiddleware(thunk));
 export type RootStateType = ReturnType<typeof rootReducer>
 
-
 export type DispatchType = ThunkDispatch<RootStateType, unknown, AnyAction>
 export const useAppDispatch = () => useDispatch<DispatchType>();
 export type ThunkType<ReturnType = void> = ThunkAction<ReturnType, RootStateType, unknown, AnyAction>
-export const useAppSelector: TypedUseSelectorHook<RootStateType> = useSelector
+export const useAppSelector: TypedUseSelectorHook<RootStateType> = useSelector;
