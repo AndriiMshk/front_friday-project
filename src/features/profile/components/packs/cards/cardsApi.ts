@@ -8,16 +8,16 @@ export const cardsApi = {
   createCard(newCard: CardsType) {
     return instance.post<CardsType, AxiosResponse<any>>(`cards/card`, { card: { ...newCard } });
   },
-  deleteCard(cardId: number) {
+  deleteCard(cardId: string) {
     return instance.delete<{ cardId: number }, AxiosResponse<any>>(`cards/card/?id=${cardId}`);
   },
-  updateCard(cardId: number, question?: string, comments?: string) {
+  updateCard(cardId: string, question?: string, comments?: string) {
     return instance.put<{ cardId: number, question?: string, comments?: string }, AxiosResponse<any>>
     (`cards/card`, { card: { cardId, question, comments } });
   },
 };
 
-type ParamsGetRequestType = {
+export type ParamsGetRequestType = {
   cardAnswer?: string
   cardQuestion?: string
   cardsPack_id?: string
@@ -28,7 +28,7 @@ type ParamsGetRequestType = {
   pageCount?: number
 }
 
-type CardsType = {
+export type CardsType = {
   cardsPack_id: string
   answer?: string
   question?: string

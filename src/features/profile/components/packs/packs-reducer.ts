@@ -4,16 +4,7 @@ import axios from 'axios';
 import { commonError } from '../../../../utils/common-error';
 import { packsApi, ParamsGetRequestType } from './packsApi';
 
-const initialState = {
-  cardPacks: [] as PackType[],
-  page: 1,
-  pageCount: 4,
-  cardPacksTotalCount: 0,
-  minCardsCount: 0,
-  maxCardsCount: 1,
-  token: '',
-  tokenDeathTime: 0,
-};
+const initialState = {} as InitialStateType;
 
 export const packsReducer = (state: InitialStateType = initialState, action: PacksActionType): InitialStateType => {
   switch (action.type) {
@@ -46,8 +37,8 @@ const updatePackAC = (packId: string, newPackName: string) => ({
   packId,
   newPackName,
 } as const);
-const setCurrentPageAC = (page: number | undefined) => ({ type: 'PACKS/SET-CURRENT-PAGE', page } as const);
-const setCurrentPageCountAC = (pageCount: number | undefined) => ({
+export const setCurrentPageAC = (page: number | undefined) => ({ type: 'PACKS/SET-CURRENT-PAGE', page } as const);
+export const setCurrentPageCountAC = (pageCount: number | undefined) => ({
   type: 'PACKS/SET-CURRENT-PAGE-COUNT',
   pageCount,
 } as const);
@@ -56,8 +47,8 @@ const setPacksTC = ({ ...params }: ParamsGetRequestType): ThunkType => async(dis
   dispatch(setAppStatusAC('loading'));
   try {
     const res = await packsApi.setPacks({ ...params });
-    dispatch(setCurrentPageAC(params.page));
-    dispatch(setCurrentPageCountAC(params.pageCount));
+    dispatch(setCurrentPageAC(params?.page));
+    dispatch(setCurrentPageCountAC(params?.pageCount));
     dispatch(setPacksAC(res.data.cardPacks));
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -66,14 +57,11 @@ const setPacksTC = ({ ...params }: ParamsGetRequestType): ThunkType => async(dis
   }
   dispatch(setAppStatusAC('succeeded'));
 };
-const createPackTC = (newPackName: string, { ...params }: ParamsGetRequestType): ThunkType => async(dispatch) => {
+const createPackTC = (newPackName: string): ThunkType => async(dispatch) => {
   dispatch(setAppStatusAC('loading'));
   try {
-    await packsApi.createPack(newPackName);
-    const res = await packsApi.setPacks({ ...params });
-    dispatch(setCurrentPageAC(params.page));
-    dispatch(setCurrentPageCountAC(params.pageCount));
-    dispatch(setPacksAC(res.data.cardPacks));
+    const res = await packsApi.createPack(newPackName);
+    dispatch(createPackAC(res.data));
   } catch (error) {
     if (axios.isAxiosError(error)) {
       commonError(error, dispatch);
@@ -81,14 +69,11 @@ const createPackTC = (newPackName: string, { ...params }: ParamsGetRequestType):
   }
   dispatch(setAppStatusAC('succeeded'));
 };
-const deletePackTC = (packId: string, { ...params }: ParamsGetRequestType): ThunkType => async(dispatch) => {
+const deletePackTC = (packId: string): ThunkType => async(dispatch) => {
   dispatch(setAppStatusAC('loading'));
   try {
     await packsApi.deletePack(packId);
-    const res = await packsApi.setPacks({ ...params });
-    dispatch(setCurrentPageAC(params.page));
-    dispatch(setCurrentPageCountAC(params.pageCount));
-    dispatch(setPacksAC(res.data.cardPacks));
+    dispatch(deletePackAC(packId));
   } catch (error) {
     if (axios.isAxiosError(error)) {
       commonError(error, dispatch);
@@ -96,15 +81,12 @@ const deletePackTC = (packId: string, { ...params }: ParamsGetRequestType): Thun
   }
   dispatch(setAppStatusAC('succeeded'));
 };
-const updatePackTC = (packId: string, newPackName: string, { ...params }: ParamsGetRequestType): ThunkType =>
+const updatePackTC = (packId: string, newPackName: string): ThunkType =>
   async(dispatch) => {
     dispatch(setAppStatusAC('loading'));
     try {
       await packsApi.updatePack(packId, newPackName);
-      dispatch(setCurrentPageAC(params.page));
-      dispatch(setCurrentPageCountAC(params.pageCount));
-      const res = await packsApi.setPacks({ ...params });
-      dispatch(setPacksAC(res.data.cardPacks));
+      dispatch(updatePackAC(packId, newPackName));
     } catch (error) {
       if (axios.isAxiosError(error)) {
         commonError(error, dispatch);
