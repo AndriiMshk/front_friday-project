@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { PacksTable } from './PacksTable';
 import { useAppDispatch, useAppSelector } from '../../app/store';
-import { setPacksTC } from './packs-reducer';
+import { createPackTC, setPacksTC } from './packs-reducer';
 import { FilterPanel } from './FilterPanel';
 import useDebounce from '../../common/hooks/useDebounce';
+import { Button } from '@mui/material';
 
 export const Packs = () => {
 
@@ -34,6 +35,13 @@ export const Packs = () => {
 
   const [packName, setPackName] = useState('');
 
+  const addNewPackHandler = () => {
+    const name = prompt();
+    if (name) {
+      dispatch(createPackTC(name));
+    }
+  };
+
   useEffect(() => {
     dispatch(setPacksTC(
       {
@@ -50,7 +58,9 @@ export const Packs = () => {
     rowsPerPage,
     useDebounce(filterByCardsCount),
     isShowMyPacks,
-    useDebounce(packName)]);
+    useDebounce(packName),
+    packs.length
+  ]);
 
   if (!isLoggedIn) {
     return <Navigate to={'/login'} />;
@@ -58,6 +68,11 @@ export const Packs = () => {
 
   return (
     <div>
+      <h3>Packs list</h3>
+      <Button
+        onClick={addNewPackHandler}
+        variant="contained"
+      >Add new pack</Button>
       <FilterPanel
         filterByCardsCount={filterByCardsCount}
         setFilterByCardsCount={setFilterByCardsCount}

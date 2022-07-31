@@ -9,13 +9,13 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import BorderColorIcon from '@mui/icons-material/BorderColor';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import styles from './PacksTable.module.css';
-import { setCurrentPageAC, setCurrentPageCountAC } from './packs-reducer';
+import { deletePackTC, setCurrentPageAC, setCurrentPageCountAC, updatePackTC } from './packs-reducer';
 import { useAppDispatch } from '../../app/store';
 import TablePagination from '@mui/material/TablePagination';
 import { PackType } from './packsApi';
+import { EditInput } from '../../common/editInput/EditInput';
 
 export const formatDate = (date: Date | string | number) => {
   return new Date(date).toLocaleDateString('ru-RU') + ' ' + new Date(date).toLocaleTimeString();
@@ -27,7 +27,7 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({ packs, userId, pageC
   const dispatch = useAppDispatch();
   const [page, setPage] = React.useState(0);
 
-  const handleChangePage = (
+  const changePageHandler = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number,
   ) => {
@@ -35,10 +35,18 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({ packs, userId, pageC
     dispatch(setCurrentPageAC(newPage + 1));
   };
 
-  const handleChangeRowsPerPage = (
+  const changeRowsPerPageHandler = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     dispatch(setCurrentPageCountAC(+event.target.value));
+  };
+
+  const deletePackHandler = (packId: string) => {
+    dispatch(deletePackTC(packId));
+  };
+
+  const changePackNameHandler = (packId: string, newPackName: string) => {
+    dispatch(updatePackTC(packId, newPackName));
   };
 
   return (
@@ -68,19 +76,19 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({ packs, userId, pageC
                 <TableCell align="right">{formatDate(pack.updated)}</TableCell>
                 <TableCell className={styles.buttonBlock}>
                   <Button
+                    onClick={() => deletePackHandler(pack._id)}
                     disabled={userId !== pack.user_id}
                     color="error"
                     size="small"
                     startIcon={<DeleteIcon />}>
                     Delete
                   </Button>
-                  <Button
-                    disabled={userId !== pack.user_id}
-                    color="secondary"
-                    size="small"
-                    startIcon={<BorderColorIcon />}>
-                    Edit
-                  </Button>
+                  <EditInput
+                    value={pack.name}
+                    callBack={(newPackName) => changePackNameHandler(pack._id, newPackName)}
+                    myId={pack.user_id}
+                    userId={userId}
+                  />
                   <Button
                     disabled={pack.cardsCount === 0}
                     onClick={() => {
@@ -99,9 +107,9 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({ packs, userId, pageC
         component="div"
         count={pageCount}
         page={page}
-        onPageChange={handleChangePage}
+        onPageChange={changePageHandler}
         rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+        onRowsPerPageChange={changeRowsPerPageHandler}
       />
     </div>
   );
