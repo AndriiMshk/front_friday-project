@@ -57,7 +57,7 @@ export const signupTC = (data: SignupDataType): ThunkType => async dispatch => {
     }
 }
 
-export const sendEmail = (email: string): ThunkType => async dispatch => {
+export const sendEmailTC = (email: string): ThunkType => async dispatch => {
     dispatch(setAppStatusAC('loading'))
     try {
         const res = await authAPI.forgot({
@@ -71,13 +71,13 @@ export const sendEmail = (email: string): ThunkType => async dispatch => {
     }
 }
 
-export const setNewPassword = (data: NewPasswordDataType): ThunkType => async dispatch => {
+export const setNewPasswordTC = (data: NewPasswordDataType): ThunkType => async dispatch => {
     dispatch(setAppStatusAC('loading'))
     try {
-        const res = await authAPI.newPassword(data);
+        const res = await authAPI.newPassword(data)
         dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
-        commonError(e, dispatch);
+        commonError(e, dispatch)
     }
 }
 
