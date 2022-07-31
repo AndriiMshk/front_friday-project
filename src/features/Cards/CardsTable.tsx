@@ -75,7 +75,7 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ cards, userId, pageC
                 </TableCell>
                 {/*@ts-ignore*/}
                 <TableCell align="right">{formatDate(card.updated)}</TableCell>
-                <TableCell className={styles.buttonBlock}>
+                <TableCell className={styles.buttonBlock} sx={{textAlign: 'right'}}>
                   <Button
                     onClick={() => deleteCardHandler(card._id)}
                     disabled={userId !== card.user_id}
