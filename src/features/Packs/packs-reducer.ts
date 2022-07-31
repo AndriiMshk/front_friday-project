@@ -10,7 +10,7 @@ const initialState = {
   pageCount: 10,
   cardPacksTotalCount: 0,
   minCardsCount: 0,
-  maxCardsCount: 0,
+  maxCardsCount: 110,
   token: '',
   tokenDeathTime: 0,
 

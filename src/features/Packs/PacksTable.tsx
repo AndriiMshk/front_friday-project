@@ -21,13 +21,6 @@ export const formatDate = (date: Date | string | number) => {
   return new Date(date).toLocaleDateString('ru-RU') + ' ' + new Date(date).toLocaleTimeString();
 };
 
-type PacksTablePropsType = {
-  packs: PackType[]
-  userId: string
-  rowsPerPage: number
-  pageCount: number
-}
-
 export const PacksTable: React.FC<PacksTablePropsType> = ({ packs, userId, pageCount, rowsPerPage }) => {
 
   const navigate = useNavigate();
@@ -113,4 +106,11 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({ packs, userId, pageC
     </div>
   );
 };
+
+type PacksTablePropsType = {
+  packs: PackType[]
+  userId: string
+  rowsPerPage: number
+  pageCount: number
+}
 
