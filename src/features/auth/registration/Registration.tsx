@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import {useForm, Controller, SubmitHandler} from 'react-hook-form';
 import IconButton from '@mui/material/IconButton';
-import {useAppDispatch} from '../../app/store';
-import {signupTC} from './registration-reducer';
+import {useAppDispatch} from '../../../app/store';
 import {Link, Navigate} from 'react-router-dom';
 import FormGroup from '@mui/material/FormGroup';
 import Button from '@mui/material/Button';
@@ -11,6 +10,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import classes from './Registration.module.css';
+import {signupTC} from '../auth-reducer';
 
 export const Registration = () => {
     const dispatch = useAppDispatch()
