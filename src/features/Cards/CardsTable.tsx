@@ -12,7 +12,7 @@ import BorderColorIcon from '@mui/icons-material/BorderColor';
 import TableContainer from '@mui/material/TableContainer';
 import { useAppDispatch } from '../../app/store';
 import { CardType } from './cardsApi';
-import { setCurrentPageAC, setCurrentPageCountAC } from './cards-reducer';
+import { deleteCardTC, setCurrentPageAC, setCurrentPageCountAC, updateCardTC } from './cards-reducer';
 import TablePagination from '@mui/material/TablePagination';
 
 export const CardsTable: React.FC<CardsTablePropsType> = ({ cards, userId, pageCount, rowsPerPage }) => {
@@ -20,7 +20,7 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ cards, userId, pageC
   const dispatch = useAppDispatch();
   const [page, setPage] = React.useState(0);
 
-  const handleChangePage = (
+  const changePageHandler = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number,
   ) => {
@@ -28,10 +28,24 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ cards, userId, pageC
     dispatch(setCurrentPageAC(newPage + 1));
   };
 
-  const handleChangeRowsPerPage = (
+  const changeRowsPerPageHandler = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     dispatch(setCurrentPageCountAC(+event.target.value));
+  };
+
+  const deleteCardHandler = (cardId: string | undefined) => {
+    if (cardId) {
+      dispatch(deleteCardTC(cardId));
+    }
+  };
+
+//временная заглушка на редактирования карточки
+  const updateCardHandler = (cardId: string | undefined) => {
+    const question = prompt('new question');
+    if (cardId && question) {
+      dispatch(updateCardTC(cardId, question));
+    }
   };
 
   return (
@@ -59,9 +73,11 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ cards, userId, pageC
                 <TableCell align="right">{card.answer}</TableCell>
                 <TableCell align="right"><Rating name="read-only" value={card.grade} readOnly />
                 </TableCell>
+                {/*@ts-ignore*/}
                 <TableCell align="right">{formatDate(card.updated)}</TableCell>
                 <TableCell className={styles.buttonBlock}>
                   <Button
+                    onClick={() => deleteCardHandler(card._id)}
                     disabled={userId !== card.user_id}
                     color="error"
                     size="small"
@@ -69,6 +85,7 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ cards, userId, pageC
                     Delete
                   </Button>
                   <Button
+                    onClick={() => updateCardHandler(card._id)}
                     disabled={userId !== card.user_id}
                     color="secondary" size="small"
                     startIcon={<BorderColorIcon />}>
@@ -84,9 +101,9 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ cards, userId, pageC
         component="div"
         count={pageCount}
         page={page}
-        onPageChange={handleChangePage}
+        onPageChange={changePageHandler}
         rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+        onRowsPerPageChange={changeRowsPerPageHandler}
       />
     </>
   );

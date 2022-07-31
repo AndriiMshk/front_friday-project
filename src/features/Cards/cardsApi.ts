@@ -13,7 +13,7 @@ export const cardsApi = {
   },
   updateCard(cardId: string, question?: string, comments?: string) {
     return instance.put<{ cardId: number, question?: string, comments?: string }, AxiosResponse<any>>
-    (`cards/card`, { card: { cardId, question, comments } });
+    (`cards/card`, { card: { _id: cardId, question, comments } });
   },
 };
 
@@ -26,8 +26,8 @@ export type CardType = {
   shots?: number
   type?: string
   user_id?: string
-  created: Date
-  updated: Date
+  created?: Date
+  updated?: Date
   __v?: number
   _id?: string
   answerImg?: string

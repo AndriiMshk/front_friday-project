@@ -19,7 +19,12 @@ const initialState = {
 export const cardsReducer = (state: InitialStateType = initialState, action: CardsActionType): InitialStateType => {
   switch (action.type) {
     case 'CARDS/SET-CARDS':
-      return { ...state, cards: [...action.cards], cardsTotalCount: action.cardsTotalCount };
+      return {
+        ...state,
+        cards: [...action.cards],
+        cardsTotalCount: action.cardsTotalCount,
+        packUserId: action.packUserId,
+      };
     case 'CARDS/CREATE-CARD':
       return { ...state, cards: [...state.cards, action.card] };
     case 'CARDS/DELETE-CARD':
@@ -39,8 +44,8 @@ export const cardsReducer = (state: InitialStateType = initialState, action: Car
   }
 };
 
-const setCardsAC = (cards: CardType[], cardsTotalCount: number) =>
-  ({ type: 'CARDS/SET-CARDS', cards, cardsTotalCount } as const);
+const setCardsAC = (cards: CardType[], cardsTotalCount: number, packUserId: string) =>
+  ({ type: 'CARDS/SET-CARDS', cards, cardsTotalCount, packUserId } as const);
 const createCardAC = (card: CardType) => ({ type: 'CARDS/CREATE-CARD', card } as const);
 const deleteCardAC = (cardId: string) => ({ type: 'CARDS/DELETE-CARD', cardId } as const);
 const updateCardAC = (cardId: string, question?: string, comments?: string) =>
@@ -56,7 +61,7 @@ export const setCardsTC = ({ ...params }: ParamsGetRequestType): ThunkType => as
     const res = await cardsApi.setCards({ ...params });
     dispatch(setCurrentPageAC(params.page ? params.page : 1));
     dispatch(setCurrentPageCountAC(params.pageCount ? params.pageCount : 10));
-    dispatch(setCardsAC(res.data.cards, res.data.cardsTotalCount));
+    dispatch(setCardsAC(res.data.cards, res.data.cardsTotalCount, res.data.packUserId));
   } catch (error) {
     if (axios.isAxiosError(error)) {
       commonError(error, dispatch);

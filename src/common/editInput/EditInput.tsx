@@ -24,7 +24,7 @@ export const EditInput: React.FC<PackEditInputPropsType> = ({ value, callBack, m
     if (newValue !== value && newValue !== '' && newValue.length <= 30) {
       callBack(newValue);
     } else {
-      setNewValue(value)
+      setNewValue(value);
     }
     setOpen(false);
   };
@@ -44,7 +44,7 @@ export const EditInput: React.FC<PackEditInputPropsType> = ({ value, callBack, m
         Edit
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Enter new pack name</DialogTitle>
+        <DialogTitle>Enter new name</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus

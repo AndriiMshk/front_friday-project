@@ -27,7 +27,7 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({ packs, userId, pageC
   const dispatch = useAppDispatch();
   const [page, setPage] = React.useState(0);
 
-  const handleChangePage = (
+  const changePageHandler = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number,
   ) => {
@@ -35,7 +35,7 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({ packs, userId, pageC
     dispatch(setCurrentPageAC(newPage + 1));
   };
 
-  const handleChangeRowsPerPage = (
+  const changeRowsPerPageHandler = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     dispatch(setCurrentPageCountAC(+event.target.value));
@@ -46,8 +46,8 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({ packs, userId, pageC
   };
 
   const changePackNameHandler = (packId: string, newPackName: string) => {
-    dispatch(updatePackTC(packId, newPackName))
-  }
+    dispatch(updatePackTC(packId, newPackName));
+  };
 
   return (
     <div>
@@ -85,7 +85,7 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({ packs, userId, pageC
                   </Button>
                   <EditInput
                     value={pack.name}
-                    callBack={(newPackName)=>changePackNameHandler(pack._id, newPackName)}
+                    callBack={(newPackName) => changePackNameHandler(pack._id, newPackName)}
                     myId={pack.user_id}
                     userId={userId}
                   />
@@ -107,9 +107,9 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({ packs, userId, pageC
         component="div"
         count={pageCount}
         page={page}
-        onPageChange={handleChangePage}
+        onPageChange={changePageHandler}
         rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+        onRowsPerPageChange={changeRowsPerPageHandler}
       />
     </div>
   );
