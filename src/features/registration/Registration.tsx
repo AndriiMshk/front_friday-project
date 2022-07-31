@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import React, {useState} from 'react';
+import {useForm, Controller, SubmitHandler} from 'react-hook-form';
 import IconButton from '@mui/material/IconButton';
-import { useAppDispatch, useAppSelector } from '../../app/store';
-import { signupTC } from './registration-reducer';
-import { Link, Navigate } from 'react-router-dom';
+import {useAppDispatch} from '../../app/store';
+import {signupTC} from './registration-reducer';
+import {Link, Navigate} from 'react-router-dom';
 import FormGroup from '@mui/material/FormGroup';
 import Button from '@mui/material/Button';
 import Visibility from '@mui/icons-material/Visibility';
@@ -13,122 +13,122 @@ import Paper from '@mui/material/Paper';
 import classes from './Registration.module.css';
 
 export const Registration = () => {
-  const dispatch = useAppDispatch();
-  const isRegistered = useAppSelector(state => state.registration.isRegistered);
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+    const dispatch = useAppDispatch()
 
-  const { control, handleSubmit, reset, formState: { errors }, getValues } = useForm<FormData>({
-    mode: 'onBlur',
-    defaultValues: {
-      login: '',
-      password: '',
-      confirmPassword: '',
-    },
-  });
+    const [isRegistered, setIsRegistered] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
-  const onClickShowPassword = () => setShowPassword(!showPassword);
-  const onClickShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
+    const {control, handleSubmit, reset, formState: {errors}, getValues} = useForm<FormData>({
+        mode: 'onBlur',
+        defaultValues: {
+            login: '',
+            password: '',
+            confirmPassword: '',
+        },
+    })
 
-  const onSubmit: SubmitHandler<FormData> = data => {
-    dispatch(signupTC(data.login, data.password));
-    reset();
-  };
+    const onClickShowPassword = () => setShowPassword(!showPassword)
+    const onClickShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword)
 
-  if (isRegistered) {
-    return <Navigate to={'/login'} />;
-  }
+    const onSubmit: SubmitHandler<FormData> = async data => {
+        const res = await dispatch(signupTC(data.login, data.password))
+        if (res) setIsRegistered(true)
+        reset()
+    }
 
-  return <Paper className={classes.paper} elevation={4}>
+    if (isRegistered) return <Navigate to={'/login'}/>
 
-    <div className={classes.title}>Sign Up</div>
+    return <Paper className={classes.paper} elevation={4}>
 
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <FormGroup>
-        <Controller
-          name="login"
-          control={control}
-          rules={{
-            required: 'Required field',
-            pattern: {
-              value: /^[\w][\w-.]*@[\w-]+\.[a-z]{2,7}$/i,
-              message: 'Please, enter correct email address',
-            },
-          }}
-          render={({ field }) => (
-            <TextField sx={{ height: '71px', mt: '41px' }}
-                       label="Email"
-                       variant="standard"
-                       helperText={errors?.login && errors?.login?.message}
-                       error={!!errors?.login}
-                       {...field}
-            />
-          )}
-        />
+        <div className={classes.title}>Sign Up</div>
 
-        <Controller
-          name="password"
-          control={control}
-          rules={{
-            required: 'Required field',
-            minLength: {
-              value: 8,
-              message: 'Password less than 8 symbols',
-            },
-          }}
-          render={({ field }) => (<div className={classes.wrapper}>
-            <TextField sx={{ width: '347px', height: '71px' }}
-                       label="Password"
-                       variant="standard"
-                       type={showPassword ? 'text' : 'password'}
-                       helperText={errors?.password && errors?.password?.message}
-                       error={!!errors?.password}
-                       {...field}
-            />
-            <IconButton className={classes.eye} onClick={onClickShowPassword}>
-              {showPassword ? <VisibilityOff /> : <Visibility />}
-            </IconButton>
-          </div>)}
-        />
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <FormGroup>
+                <Controller
+                    name="login"
+                    control={control}
+                    rules={{
+                        required: 'Required field',
+                        pattern: {
+                            value: /^[\w][\w-.]*@[\w-]+\.[a-z]{2,7}$/i,
+                            message: 'Please, enter correct email address',
+                        },
+                    }}
+                    render={({field}) => (
+                        <TextField sx={{height: '71px', mt: '41px'}}
+                                   label="Email"
+                                   variant="standard"
+                                   helperText={errors?.login && errors?.login?.message}
+                                   error={!!errors?.login}
+                                   {...field}
+                        />
+                    )}
+                />
 
-        <Controller
-          name="confirmPassword"
-          control={control}
-          rules={{
-            required: 'Required field',
-            validate: {
-              equal: v => v === getValues().password ? true : 'Passwords don\'t match',
-            },
-          }}
-          render={({ field }) => (<div className={classes.wrapper}>
-            <TextField sx={{ width: '347px', height: '71px' }}
-                       label="Confirm password"
-                       variant="standard"
-                       type={showConfirmPassword ? 'text' : 'password'}
-                       helperText={errors?.confirmPassword && errors?.confirmPassword?.message}
-                       error={!!errors?.confirmPassword}
-                       {...field}
-            />
-            <IconButton className={classes.eye} onClick={onClickShowConfirmPassword}>
-              {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-            </IconButton>
-          </div>)}
-        />
+                <Controller
+                    name="password"
+                    control={control}
+                    rules={{
+                        required: 'Required field',
+                        minLength: {
+                            value: 8,
+                            message: 'Password less than 8 symbols',
+                        },
+                    }}
+                    render={({field}) => (<div className={classes.wrapper}>
+                        <TextField sx={{width: '347px', height: '71px'}}
+                                   label="Password"
+                                   variant="standard"
+                                   type={showPassword ? 'text' : 'password'}
+                                   helperText={errors?.password && errors?.password?.message}
+                                   error={!!errors?.password}
+                                   {...field}
+                        />
+                        <IconButton className={classes.eye} onClick={onClickShowPassword}>
+                            {showPassword ? <VisibilityOff/> : <Visibility/>}
+                        </IconButton>
+                    </div>)}
+                />
 
-        <Button type={'submit'} variant={'contained'} className={classes.submit}>
-          Sign Up
-        </Button>
-      </FormGroup>
-    </form>
+                <Controller
+                    name="confirmPassword"
+                    control={control}
+                    rules={{
+                        required: 'Required field',
+                        validate: {
+                            equal: v => v === getValues().password ? true : 'Passwords don\'t match',
+                        },
+                    }}
+                    render={({field}) => (<div className={classes.wrapper}>
+                        <TextField sx={{width: '347px', height: '71px'}}
+                                   label="Confirm password"
+                                   variant="standard"
+                                   type={showConfirmPassword ? 'text' : 'password'}
+                                   helperText={errors?.confirmPassword && errors?.confirmPassword?.message}
+                                   error={!!errors?.confirmPassword}
+                                   {...field}
+                        />
+                        <IconButton className={classes.eye} onClick={onClickShowConfirmPassword}>
+                            {showConfirmPassword ? <VisibilityOff/> : <Visibility/>}
+                        </IconButton>
+                    </div>)}
+                />
 
-    <div className={classes.question}>Already have an account?</div>
+                <Button type={'submit'} variant={'contained'} className={classes.submit}>
+                    Sign Up
+                </Button>
+            </FormGroup>
+        </form>
 
-    <Link to="/login" className={classes.signIn}> Sign In </Link>
-  </Paper>;
+        <div className={classes.question}>Already have an account?</div>
+
+        <Link to="/login" className={classes.signIn}> Sign In </Link>
+    </Paper>
 };
 
 type FormData = {
-  login: string
-  password: string
-  confirmPassword: string
+    login: string
+    password: string
+    confirmPassword: string
 }
