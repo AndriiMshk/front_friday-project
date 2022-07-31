@@ -1,7 +1,6 @@
 import {authAPI, LoginDataType} from './auth-api';
 import {ThunkType} from '../../app/store';
 import {setAppStatusAC} from '../../app/app-reducer';
-import {AxiosError} from 'axios';
 import {commonError} from '../../utils/common-error';
 import {setProfileAC} from '../profile/profile-reducer';
 
@@ -23,34 +22,28 @@ export const authReducer = (
 export const setIsLoggedInAC = (value: boolean) => ({type: 'LOGIN/SET-IS-LOGGED-IN', value} as const)
 
 //thunks
-export const loginTC = (data: LoginDataType): ThunkType => (dispatch) => {
+export const loginTC = (data: LoginDataType): ThunkType => async dispatch => {
     dispatch(setAppStatusAC('loading'))
-    authAPI.login(data)
-        .then((res) => {
-            dispatch(setIsLoggedInAC(true))
-            dispatch(setProfileAC(res.data))
-        })
-        .catch((error: AxiosError<{ error: string }>) => {
-            commonError(error, dispatch)
-        })
-        .finally(() => {
-            dispatch(setAppStatusAC('succeeded'))
-        })
+    try {
+        const res = await authAPI.login(data)
+        dispatch(setIsLoggedInAC(true))
+        dispatch(setProfileAC(res.data))
+        dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+        commonError(e, dispatch)
+    }
 }
 
-export const logoutTC = (): ThunkType => (dispatch) => {
+export const logoutTC = (): ThunkType => async dispatch => {
     dispatch(setAppStatusAC('loading'))
-    authAPI.logout()
-        .then((res) => {
-            dispatch(setIsLoggedInAC(false))
-            dispatch(setProfileAC(null))
-        })
-        .catch((error: AxiosError<{ error: string }>) => {
-            commonError(error, dispatch)
-        })
-        .finally(() => {
-            dispatch(setAppStatusAC('succeeded'))
-        })
+    try {
+        await authAPI.logout()
+        dispatch(setIsLoggedInAC(false))
+        dispatch(setProfileAC(null))
+        dispatch(setAppStatusAC('succeeded'))
+    } catch(e) {
+        commonError(e, dispatch)
+    }
 }
 
 export const signupTC = (email: string, password: string): ThunkType => async dispatch => {
