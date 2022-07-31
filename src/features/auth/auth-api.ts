@@ -5,23 +5,22 @@ import {UserType} from '../profile/profile-reducer';
 //api
 export const authAPI = {
     me() {
-        return instance.post<{}, AxiosResponse<UserType>>('auth/me');
+        return instance.post<{}, AxiosResponse<UserType>>('auth/me')
     },
     login(data: LoginDataType) {
-        return instance.post<LoginDataType, AxiosResponse<LoginResponseType>>('auth/login', data);
+        return instance.post<LoginDataType, AxiosResponse<LoginResponseType>>('auth/login', data)
     },
     logout() {
-        return instance.delete<LoginResponseType>('auth/me');
+        return instance.delete<LoginResponseType>('auth/me')
     },
-    signup(email: string, password: string) {
-        return instance.post<ResponseType>('/auth/register', {email, password})
-            .then(res => res.data)
+    signup(data: SignupDataType) {
+        return instance.post<ResponseType>('/auth/register', data)
     },
     forgot(data: ForgotDataType) {
-        return instance.post<PasswordResponseType>('/auth/forgot', data);
+        return instance.post<PasswordResponseType>('/auth/forgot', data)
     },
     newPassword(data: NewPasswordDataType) {
-        return instance.post<PasswordResponseType>('/auth/set-new-password', data);
+        return instance.post<PasswordResponseType>('/auth/set-new-password', data)
     },
 }
 
@@ -44,6 +43,11 @@ export type LoginResponseType = {
     verified: boolean,
     rememberMe: boolean,
     error?: string,
+}
+
+export type SignupDataType = {
+    email: string
+    password: string
 }
 
 export type ResponseType = {

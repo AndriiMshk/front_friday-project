@@ -1,4 +1,4 @@
-import {authAPI, LoginDataType} from './auth-api';
+import {authAPI, LoginDataType, NewPasswordDataType, SignupDataType} from './auth-api';
 import {ThunkType} from '../../app/store';
 import {setAppStatusAC} from '../../app/app-reducer';
 import {commonError} from '../../utils/common-error';
@@ -12,7 +12,7 @@ export const authReducer = (
     state: InitialStateType = initialState, action: LoginActionType): InitialStateType => {
     switch (action.type) {
         case 'LOGIN/SET-IS-LOGGED-IN':
-            return {...state, isLoggedIn: action.value};
+            return {...state, isLoggedIn: action.value}
         default:
             return state
     }
@@ -46,12 +46,12 @@ export const logoutTC = (): ThunkType => async dispatch => {
     }
 }
 
-export const signupTC = (email: string, password: string): ThunkType => async dispatch => {
+export const signupTC = (data: SignupDataType): ThunkType => async dispatch => {
     dispatch(setAppStatusAC('loading'))
     try {
-        const data = await authAPI.signup(email, password)
+        const res = await authAPI.signup(data)
         dispatch(setAppStatusAC('succeeded'))
-        return data
+        return res.data
     } catch (e) {
         commonError(e, dispatch)
     }
@@ -71,10 +71,10 @@ export const sendEmail = (email: string): ThunkType => async dispatch => {
     }
 }
 
-export const setNewPassword = (password: string, resetPasswordToken: string): ThunkType => async dispatch => {
+export const setNewPassword = (data: NewPasswordDataType): ThunkType => async dispatch => {
     dispatch(setAppStatusAC('loading'))
     try {
-        const res = await authAPI.newPassword({password, resetPasswordToken});
+        const res = await authAPI.newPassword(data);
         dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
         commonError(e, dispatch);

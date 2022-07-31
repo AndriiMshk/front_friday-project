@@ -32,7 +32,8 @@ export const Registration = () => {
     const onClickShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword)
 
     const onSubmit: SubmitHandler<FormData> = async data => {
-        const res = await dispatch(signupTC(data.login, data.password))
+        const {login: email, password} = data
+        const res = await dispatch(signupTC({email, password}))
         if (res) setIsRegistered(true)
         reset()
     }
@@ -125,7 +126,7 @@ export const Registration = () => {
 
         <Link to="/login" className={classes.signIn}> Sign In </Link>
     </Paper>
-};
+}
 
 type FormData = {
     login: string
