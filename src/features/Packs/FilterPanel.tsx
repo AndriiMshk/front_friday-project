@@ -17,6 +17,7 @@ export const FilterPanel: React.FC<FilterPanelPropsType> = (
 
   return (
     <div>
+
       <Box
         component="form"
         sx={{
@@ -33,6 +34,7 @@ export const FilterPanel: React.FC<FilterPanelPropsType> = (
           onChange={(e) => setPackName(e.target.value)}
         />
       </Box>
+      
       <ButtonGroup disableElevation>
         <Button
           onClick={() => setIsShowMyPacks(false)}
@@ -43,6 +45,7 @@ export const FilterPanel: React.FC<FilterPanelPropsType> = (
           variant={isShowMyPacks ? 'contained' : 'text'}
         >My</Button>
       </ButtonGroup>
+
       <SliderFilter
         filterByCardsCount={filterByCardsCount}
         setFilterByCardsCount={setFilterByCardsCount}
