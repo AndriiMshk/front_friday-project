@@ -1,0 +1,24 @@
+.nav {
+    width: 340px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    flex-wrap: nowrap;
+    padding: 5px;
+}
+
+.active {
+    margin: 20px;
+}
+
+a:visited {
+    color: #4d329b;
+}
+
+a:active {
+    color: crimson;
+}
+
+
+

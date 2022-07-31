@@ -51,7 +51,7 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({ packs, userId, pageC
 
   return (
     <div>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} >
         <Table sx={{ minWidth: 400 }} aria-label="simple table">
           <TableHead>
             <TableRow>

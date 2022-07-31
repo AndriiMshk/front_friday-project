@@ -1,4 +1,14 @@
-.pack{
+
+.table {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    margin-left: 10px;
+}
+
+
+.pack {
     text-decoration: none;
     color: #7b1fa2;
 }
@@ -7,6 +17,6 @@
     font-weight: bold;
 }
 
-.buttonBlock{
+.buttonBlock {
     display: flex;
 }
