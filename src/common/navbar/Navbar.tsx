@@ -1,12 +1,12 @@
 import React from 'react';
-import style from '../../features/header/style.module.css';
 import { Link } from 'react-router-dom';
 
 export const Navbar = () => {
 
   return (
     <>
-      <div className={style.dropdownContent}>
+      {/*<div className={style.dropdownContent}>*/}
+      <div>
         <Link to="/"> Главная </Link>
         <Link to="/login"> Вход </Link>
         <Link to="/registration"> Регистрация </Link>
