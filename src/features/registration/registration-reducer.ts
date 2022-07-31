@@ -1,38 +1,30 @@
 import {ThunkType} from '../../app/store';
 import {setAppStatusAC} from '../../app/app-reducer';
-import {AxiosError} from 'axios';
 import {commonError} from '../../utils/common-error';
 import {signupAPI} from './api';
 
-const initState = {
-    isRegistered: false
-}
+const initState = null
+
 export const registrationReducer = (
-    state: InitStateType = initState, action: ActionType
+    state: InitStateType = initState, action: any
 ): InitStateType => {
     switch (action.type) {
-        case 'SET_REG':
-            return {...state, isRegistered: true}
         default:
             return state
     }
 }
-const setRegistered = () => ({type: 'SET_REG'} as const)
 
 export const signupTC = (email: string, password: string): ThunkType => {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch(setAppStatusAC('loading'))
-        signupAPI.signup(email, password)
-            .then(() => {
-                dispatch(setRegistered())
-                dispatch(setAppStatusAC('succeeded'))
-            })
-            .catch((error: AxiosError<{ error: string }>) => {
-                commonError(error, dispatch)
-            })
+        try {
+            const data = await signupAPI.signup(email, password)
+            dispatch(setAppStatusAC('succeeded'))
+            return data
+        } catch (e) {
+            commonError(e, dispatch)
+        }
     }
 }
 
 export type InitStateType = typeof initState
-type SetRegType = ReturnType<typeof setRegistered>
-type ActionType = SetRegType
