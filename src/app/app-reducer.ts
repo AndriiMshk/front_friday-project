@@ -1,7 +1,7 @@
 import { ThunkType } from './store';
 
-import { setIsLoggedInAC } from '../features/login/login-reducer';
-import { authApi } from '../features/login/login-api';
+import { setIsLoggedInAC } from '../features/auth/auth-reducer';
+import { authAPI } from '../features/auth/auth-api';
 import { setProfileAC } from '../features/profile/profile-reducer';
 
 const initialState = {
@@ -35,7 +35,7 @@ export const setAppIsInitializedAC = (isInitialized: boolean) => ({
 //thunks
 export const authMeTC = (): ThunkType => (dispatch) => {
   dispatch(setAppStatusAC('loading'));
-  authApi.me()
+  authAPI.me()
     .then((res) => {
       dispatch(setIsLoggedInAC(true));
       dispatch(setAppStatusAC('succeeded'));
