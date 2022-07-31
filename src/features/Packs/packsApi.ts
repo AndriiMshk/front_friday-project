@@ -1,6 +1,5 @@
 import { instance } from '../../app/appApi';
 import { AxiosResponse } from 'axios';
-import { PackType } from './packs-reducer';
 
 export const packsApi = {
   setPacks(params: ParamsGetRequestType) {
@@ -19,6 +18,25 @@ export const packsApi = {
     return instance.put<{ cardsPack: { _id: string, name: string } }, AxiosResponse<any>>
     (`/cards/pack`, { cardsPack: { _id: packId, name: newPackName } });
   },
+};
+
+export type PackType = {
+  _id: string
+  user_id: string
+  user_name: string
+  private: boolean
+  name: string
+  path: string
+  grade: number
+  shots: number
+  cardsCount: number
+  type: string
+  rating: number
+  created: Date
+  updated: Date
+  more_id?: string
+  __v: number
+  deckCover?: any   //??????????????
 };
 
 export type ParamsGetRequestType = {

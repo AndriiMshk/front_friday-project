@@ -2,7 +2,7 @@ import { ThunkType } from '../../app/store';
 import { setAppStatusAC } from '../../app/app-reducer';
 import axios from 'axios';
 import { commonError } from '../../utils/common-error';
-import { packsApi, ParamsGetRequestType } from './packsApi';
+import { packsApi, PackType, ParamsGetRequestType } from './packsApi';
 
 const initialState = {
   cardPacks: [],
@@ -108,25 +108,6 @@ export const updatePackTC = (packId: string, newPackName: string): ThunkType =>
     }
     dispatch(setAppStatusAC('succeeded'));
   };
-
-export type PackType = {
-  _id: string
-  user_id: string
-  user_name: string
-  private: boolean
-  name: string
-  path: string
-  grade: number
-  shots: number
-  cardsCount: number
-  type: string
-  rating: number
-  created: Date
-  updated: Date
-  more_id?: string
-  __v: number
-  deckCover?: any   //??????????????
-};
 
 type InitialStateType = {
   cardPacks: PackType[]

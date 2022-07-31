@@ -5,8 +5,8 @@ export const cardsApi = {
   setCards(params: ParamsGetRequestType) {
     return instance.get<ParamsGetRequestType, AxiosResponse<any>>(`cards/card`, { params: { ...params } });
   },
-  createCard(newCard: CardsType) {
-    return instance.post<CardsType, AxiosResponse<any>>(`cards/card`, { card: { ...newCard } });
+  createCard(newCard: CardType) {
+    return instance.post<CardType, AxiosResponse<any>>(`cards/card`, { card: { ...newCard } });
   },
   deleteCard(cardId: string) {
     return instance.delete<{ cardId: number }, AxiosResponse<any>>(`cards/card/?id=${cardId}`);
@@ -16,6 +16,25 @@ export const cardsApi = {
     (`cards/card`, { card: { cardId, question, comments } });
   },
 };
+
+export type CardType = {
+  cardsPack_id: string
+  answer?: string
+  question?: string
+  grade?: number
+  rating?: number
+  shots?: number
+  type?: string
+  user_id?: string
+  created: Date
+  updated: Date
+  __v?: number
+  _id?: string
+  answerImg?: string
+  questionImg?: string
+  questionVideo?: string
+  answerVideo?: string
+}
 
 export type ParamsGetRequestType = {
   cardAnswer?: string
@@ -28,21 +47,3 @@ export type ParamsGetRequestType = {
   pageCount?: number
 }
 
-export type CardsType = {
-  cardsPack_id: string
-  answer?: string
-  question?: string
-  grade?: number
-  rating?: number
-  shots?: number
-  type?: string
-  user_id?: string
-  created?: string
-  updated?: string
-  __v?: number
-  _id?: string
-  answerImg?: string
-  questionImg?: string
-  questionVideo?: string
-  answerVideo?: string
-}

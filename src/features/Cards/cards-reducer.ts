@@ -1,15 +1,25 @@
 import axios from 'axios';
-import { cardsApi, CardsType, ParamsGetRequestType } from './cardsApi';
+import { cardsApi, CardType, ParamsGetRequestType } from './cardsApi';
 import { ThunkType } from '../../app/store';
 import { setAppStatusAC } from '../../app/app-reducer';
 import { commonError } from '../../utils/common-error';
 
-const initialState = {} as InitialStateType;
+const initialState = {
+  cards: [],
+  packUserId: '',
+  page: 1,
+  pageCount: 10,
+  cardsTotalCount: 0,
+  minGrade: 0,
+  maxGrade: 0,
+  token: '',
+  tokenDeathTime: 0,
+} as InitialStateType;
 
 export const cardsReducer = (state: InitialStateType = initialState, action: CardsActionType): InitialStateType => {
   switch (action.type) {
     case 'CARDS/SET-CARDS':
-      return { ...state, cards: [...action.cards] };
+      return { ...state, cards: [...action.cards], cardsTotalCount: action.cardsTotalCount };
     case 'CARDS/CREATE-CARD':
       return { ...state, cards: [...state.cards, action.card] };
     case 'CARDS/DELETE-CARD':
@@ -29,23 +39,24 @@ export const cardsReducer = (state: InitialStateType = initialState, action: Car
   }
 };
 
-const setCardsAC = (cards: CardType[]) => ({ type: 'CARDS/SET-CARDS', cards } as const);
+const setCardsAC = (cards: CardType[], cardsTotalCount: number) =>
+  ({ type: 'CARDS/SET-CARDS', cards, cardsTotalCount } as const);
 const createCardAC = (card: CardType) => ({ type: 'CARDS/CREATE-CARD', card } as const);
 const deleteCardAC = (cardId: string) => ({ type: 'CARDS/DELETE-CARD', cardId } as const);
 const updateCardAC = (cardId: string, question?: string, comments?: string) =>
   ({ type: 'CARDS/UPDATE-CARD', cardId, comments, question } as const);
-export const setCurrentPageAC = (page: number | undefined) =>
+export const setCurrentPageAC = (page: number) =>
   ({ type: 'CARDS/SET-CURRENT-PAGE', page } as const);
-export const setCurrentPageCountAC = (pageCount: number | undefined) =>
+export const setCurrentPageCountAC = (pageCount: number) =>
   ({ type: 'CARDS/SET-CURRENT-PAGE-COUNT', pageCount } as const);
 
 export const setCardsTC = ({ ...params }: ParamsGetRequestType): ThunkType => async(dispatch) => {
   dispatch(setAppStatusAC('loading'));
   try {
     const res = await cardsApi.setCards({ ...params });
-    dispatch(setCurrentPageAC(params.page));
-    dispatch(setCurrentPageCountAC(params.pageCount));
-    dispatch(setCardsAC(res.data));
+    dispatch(setCurrentPageAC(params.page ? params.page : 1));
+    dispatch(setCurrentPageCountAC(params.pageCount ? params.pageCount : 10));
+    dispatch(setCardsAC(res.data.cards, res.data.cardsTotalCount));
   } catch (error) {
     if (axios.isAxiosError(error)) {
       commonError(error, dispatch);
@@ -54,7 +65,7 @@ export const setCardsTC = ({ ...params }: ParamsGetRequestType): ThunkType => as
   dispatch(setAppStatusAC('succeeded'));
 };
 
-export const createCardTC = ({ ...newCard }: CardsType): ThunkType =>
+export const createCardTC = ({ ...newCard }: CardType): ThunkType =>
   async(dispatch) => {
     dispatch(setAppStatusAC('loading'));
     try {
@@ -94,31 +105,11 @@ export const updateCardTC = (cardId: string, question?: string, comments?: strin
     dispatch(setAppStatusAC('succeeded'));
   };
 
-export type CardType = {
-  _id: string
-  cardsPack_id: string
-  user_id: string
-  answer: string
-  question: string | undefined
-  grade: number
-  shots: number
-  comments: string | undefined
-  type: string
-  rating: number
-  more_id: Date
-  updated: Date
-  __v: number
-  answerImg: string
-  answerVideo: string
-  questionImg: string
-  questionVideo: string
-};
-
 type InitialStateType = {
   cards: CardType[]
   packUserId: string
-  page: number | undefined
-  pageCount: number | undefined
+  page: number
+  pageCount: number
   cardsTotalCount: number
   minGrade: number
   maxGrade: number

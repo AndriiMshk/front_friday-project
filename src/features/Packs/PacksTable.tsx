@@ -12,8 +12,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import styles from './PacksTable.module.css';
-import { PackType } from './packs-reducer';
-import TablePaginationDemo from './pagination/Pagination';
+import { setCurrentPageAC, setCurrentPageCountAC } from './packs-reducer';
+import { useAppDispatch } from '../../app/store';
+import TablePagination from '@mui/material/TablePagination';
+import { PackType } from './packsApi';
 
 export const formatDate = (date: Date | string | number) => {
   return new Date(date).toLocaleDateString('ru-RU') + ' ' + new Date(date).toLocaleTimeString();
@@ -22,11 +24,29 @@ export const formatDate = (date: Date | string | number) => {
 type PacksTablePropsType = {
   packs: PackType[]
   userId: string
+  rowsPerPage: number
+  pageCount: number
 }
 
-export const PacksTable: React.FC<PacksTablePropsType> = ({ packs, userId }) => {
+export const PacksTable: React.FC<PacksTablePropsType> = ({ packs, userId, pageCount, rowsPerPage }) => {
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [page, setPage] = React.useState(0);
+
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number,
+  ) => {
+    setPage(newPage);
+    dispatch(setCurrentPageAC(newPage + 1));
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    dispatch(setCurrentPageCountAC(+event.target.value));
+  };
 
   return (
     <div>
@@ -82,7 +102,14 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({ packs, userId }) => 
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePaginationDemo />
+      <TablePagination
+        component="div"
+        count={pageCount}
+        page={page}
+        onPageChange={handleChangePage}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </div>
   );
 };

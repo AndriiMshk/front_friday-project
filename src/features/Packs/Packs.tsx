@@ -12,12 +12,14 @@ export const Packs = () => {
   const userId = useAppSelector(state => state.profile._id);
 
   const page = useAppSelector(state => state.packs.page);
-  const pageCount = useAppSelector(state => state.packs.pageCount);
   const isLoggedIn = useAppSelector(state => state.login.isLoggedIn);
 
+  const rowsPerPage = useAppSelector(state => state.packs.pageCount);
+  const pageCount = useAppSelector(state => state.packs.cardPacksTotalCount);
+
   useEffect(() => {
-    dispatch(setPacksTC({ page, pageCount }));
-  }, [page, pageCount]);
+    dispatch(setPacksTC({ page, pageCount: rowsPerPage}));
+  }, [page, pageCount, rowsPerPage]);
 
   if (!isLoggedIn) {
     return <Navigate to={'/login'} />;
@@ -25,7 +27,7 @@ export const Packs = () => {
 
   return (
     <div>
-      <PacksTable packs={packs} userId={userId} />
+      <PacksTable packs={packs} userId={userId} rowsPerPage={rowsPerPage} pageCount={pageCount}/>
     </div>
   );
 };
