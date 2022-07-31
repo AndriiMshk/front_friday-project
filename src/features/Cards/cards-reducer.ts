@@ -122,6 +122,7 @@ type InitialStateType = {
   tokenDeathTime: number
 }
 
+
 type CardsActionType =
   | ReturnType<typeof setCardsAC>
   | ReturnType<typeof createCardAC>
