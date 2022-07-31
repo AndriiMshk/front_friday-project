@@ -32,17 +32,17 @@ export type LoginDataType = {
 }
 
 export type LoginResponseType = {
-    _id: string,
-    email: string,
-    name: string,
-    avatar?: string,
-    publicCardPacksCount: number,
-    created: Date,
-    updated: Date,
-    isAdmin: boolean,
-    verified: boolean,
-    rememberMe: boolean,
-    error?: string,
+    _id: string
+    email: string
+    name: string
+    avatar?: string
+    publicCardPacksCount: number
+    created: Date
+    updated: Date
+    isAdmin: boolean
+    verified: boolean
+    rememberMe: boolean
+    error?: string
 }
 
 export type SignupDataType = {
@@ -66,17 +66,17 @@ export type ResponseType = {
 }
 
 export type PasswordResponseType = {
-    info: string;
-    error: string;
+    info: string
+    error: string
 }
 
 export type ForgotDataType = {
-    email: string;
-    from: string;
-    message: string;
+    email: string
+    from: string
+    message: string
 }
 
 export type NewPasswordDataType = {
-    password: string;
-    resetPasswordToken: string;
+    password: string
+    resetPasswordToken: string
 }
