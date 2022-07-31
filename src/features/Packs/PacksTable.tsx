@@ -12,8 +12,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import styles from './PacksTable.module.css';
-import { useAppSelector } from '../../app/store';
 import { PackType } from './packs-reducer';
+import TablePaginationDemo from './pagination/Pagination';
 
 export const formatDate = (date: Date | string | number) => {
   return new Date(date).toLocaleDateString('ru-RU') + ' ' + new Date(date).toLocaleTimeString();
@@ -25,10 +25,8 @@ type PacksTablePropsType = {
 }
 
 export const PacksTable: React.FC<PacksTablePropsType> = ({ packs, userId }) => {
-  const navigate = useNavigate();
 
-  // const packs = useAppSelector(state => state.packs.cardPacks)
-  // const userId = useAppSelector(state => state.profile._id)
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -84,6 +82,7 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({ packs, userId }) => 
           </TableBody>
         </Table>
       </TableContainer>
+      <TablePaginationDemo />
     </div>
   );
 };
