@@ -21,7 +21,7 @@ export const PasswordRecovery = () => {
         reset()
     }
 
-    if (sent) return <Navigate to={'/login'}/>
+    if (sent) return <Navigate to={'/login'}/> // TODO исправить на письмо
 
     return <Paper className={classes.paper} elevation={4}>
 
