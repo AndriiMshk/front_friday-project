@@ -1,17 +1,20 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Paper from '@mui/material/Paper/Paper';
-import {Link, Navigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import classes from './PasswordRecovery.module.css'
 import Button from '@mui/material/Button';
 
 export const CheckMail = () => {
+
+    const {email} = useParams()
+    const navigate = useNavigate()
 
     return <Paper className={classes.paper} elevation={4}>
 
         <div className={classes.title}>Check Email</div>
 
         <svg width="108" height="108" viewBox="0 0 108 108" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M107.5 54C107.5 83.5472 83.5472 107.5 54 107.5C24.4528 107.5 0.5 83.5472 0.5 54C0.5 24.4528 24.4528 0.5 54 0.5C83.5472 0.5 107.5 24.4528 107.5 54Z" fill="#366EFF" fill-opacity="0.05" stroke="#366EFF"/>
+            <path d="M107.5 54C107.5 83.5472 83.5472 107.5 54 107.5C24.4528 107.5 0.5 83.5472 0.5 54C0.5 24.4528 24.4528 0.5 54 0.5C83.5472 0.5 107.5 24.4528 107.5 54Z" fill="#366EFF" fillOpacity="0.05" stroke="#366EFF"/>
             <path d="M87.6248 61.2611C87.4337 61.2586 87.2512 61.1816 87.1161 61.0465C86.981 60.9114 86.904 60.7289 86.9016 60.5379V50.1429C86.9016 49.951 86.9777 49.7671 87.1134 49.6315C87.249 49.4958 87.433 49.4196 87.6248 49.4196C87.8166 49.4196 88.0005 49.4958 88.1362 49.6315C88.2718 49.7671 88.348 49.951 88.348 50.1429V60.5475C88.3454 60.7376 88.2682 60.9191 88.1328 61.0527C87.9974 61.1862 87.8149 61.2611 87.6248 61.2611Z" fill="#366EFF"/>
             <path d="M87.6248 46.9993C87.433 46.9993 87.249 46.9231 87.1134 46.7875C86.9777 46.6519 86.9016 46.4679 86.9016 46.2761V44.145C86.9016 43.9532 86.9777 43.7693 87.1134 43.6336C87.249 43.498 87.433 43.4218 87.6248 43.4218C87.8166 43.4218 88.0005 43.498 88.1362 43.6336C88.2718 43.7693 88.348 43.9532 88.348 44.145V46.2857C88.348 46.3803 88.3292 46.4738 88.2928 46.5611C88.2563 46.6483 88.2029 46.7274 88.1356 46.7938C88.0683 46.8601 87.9885 46.9125 87.9008 46.9478C87.8131 46.9831 87.7193 47.0006 87.6248 46.9993Z" fill="#366EFF"/>
             <path d="M29.0095 36.5656H25.0057C24.5913 36.5656 24.255 36.2293 24.255 35.8149C24.255 35.4005 24.5913 35.0642 25.0057 35.0642H29.0095C29.4239 35.0642 29.7602 35.4005 29.7602 35.8149C29.7602 36.2293 29.4239 36.5656 29.0095 36.5656Z" fill="#366EFF"/>
@@ -51,13 +54,12 @@ export const CheckMail = () => {
         </svg>
 
         <div className={classes.text}>
-            We've sent an Email with instructions to example@mail.com
+            We've sent an Email with instructions to {email}
         </div>
-        {/*TODO заменить на реальный email адрес*/}
 
         <Button variant={'contained'}
                 className={classes.submit}
-                onClick={()=>{}}
+                onClick={() => navigate('/login')}
         >
             Back to login
         </Button>

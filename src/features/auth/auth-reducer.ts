@@ -77,6 +77,7 @@ export const setNewPasswordTC = (data: NewPasswordDataType): ThunkType => async 
     try {
         const res = await authAPI.newPassword(data)
         dispatch(setAppStatusAC('succeeded'))
+        return res.data
     } catch (e) {
         commonError(e, dispatch)
     }

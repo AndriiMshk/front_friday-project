@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Paper from '@mui/material/Paper/Paper';
 import FormGroup from '@mui/material/FormGroup/FormGroup';
-import {Navigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import classes from './NewPassword.module.css'
 import {useAppDispatch} from '../../../app/store';
 import {Controller, SubmitHandler, useForm} from 'react-hook-form';
@@ -16,17 +16,17 @@ export const NewPassword = () => {
     const dispatch = useAppDispatch()
 
     const [showPassword, setShowPassword] = useState(false)
+    const {token} = useParams()
+    const navigate = useNavigate()
     const {control, handleSubmit, reset, formState: {errors}} = useForm<FormData>({mode: 'onBlur'})
 
     const onClickShowPassword = () => setShowPassword(!showPassword)
 
     const onSubmit: SubmitHandler<FormData> = async data => {
-        // const res = await dispatch(setNewPasswordTC({data.password, resetPasswordToken}))
-        // console.log(res)
+        const res = await dispatch(setNewPasswordTC({password: data.password, resetPasswordToken: token}))
+        if (res) navigate('/login')
         reset()
     }
-
-    // if () return <Navigate to={'/login'}/>
 
     return <Paper className={classes.paper} elevation={4}>
 

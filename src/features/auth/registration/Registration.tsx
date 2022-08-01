@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useForm, Controller, SubmitHandler} from 'react-hook-form';
 import IconButton from '@mui/material/IconButton';
 import {useAppDispatch} from '../../../app/store';
-import {Link, Navigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import FormGroup from '@mui/material/FormGroup';
 import Button from '@mui/material/Button';
 import Visibility from '@mui/icons-material/Visibility';
@@ -15,7 +15,7 @@ import {signupTC} from '../auth-reducer';
 export const Registration = () => {
     const dispatch = useAppDispatch()
 
-    const [isRegistered, setIsRegistered] = useState(false)
+    const navigate = useNavigate()
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
@@ -34,11 +34,9 @@ export const Registration = () => {
     const onSubmit: SubmitHandler<FormData> = async data => {
         const {login: email, password} = data
         const res = await dispatch(signupTC({email, password}))
-        if (res) setIsRegistered(true)
+        if (res) navigate('/login')
         reset()
     }
-
-    if (isRegistered) return <Navigate to={'/login'}/>
 
     return <Paper className={classes.paper} elevation={4}>
 

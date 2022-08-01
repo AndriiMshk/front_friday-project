@@ -15,9 +15,9 @@ export const ProjectRoutes = () => {
     <Routes>
       <Route path={'/'} element={<Navigate to={'/profile'} />} />
       <Route path={'/login'} element={<Login />} />
-      <Route path={'/set-new-password'} element={<NewPassword />} />
+      <Route path={'/set-new-password/:token'} element={<NewPassword />} />
       <Route path={'/password-recovery'} element={<PasswordRecovery />} />
-      <Route path={'/password-recovery/mail'} element={<CheckMail />} />
+      <Route path={'/password-recovery/:email'} element={<CheckMail />} />
       <Route path={'/profile'} element={<Profile />} />
       <Route path={'/registration'} element={<Registration />} />
       <Route path={'/packs'} element={<Packs />} />

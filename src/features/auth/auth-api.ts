@@ -81,5 +81,5 @@ export type ForgotDataType = {
 
 export type NewPasswordDataType = {
     password: string
-    resetPasswordToken: string
+    resetPasswordToken: string | undefined
 }
