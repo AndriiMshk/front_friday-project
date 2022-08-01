@@ -9,7 +9,7 @@ import { Navigate } from 'react-router-dom';
 import { setNewUserNameTC } from './profile-reducer';
 import { useAppDispatch, useAppSelector } from '../../app/store';
 import { useFormik } from 'formik';
-import { logoutTC } from '../login/login-reducer';
+import { logoutTC } from '../auth/auth-reducer';
 import { EditNameForm } from './components/EditNameForm';
 import { AvatarComponent } from './components/AvatarComponent';
 
