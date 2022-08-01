@@ -6,7 +6,6 @@ import { profileReducer } from '../features/profile/profile-reducer';
 import { appReducer } from './app-reducer';
 import { cardsReducer } from '../features/Cards/cards-reducer';
 import { packsReducer } from '../features/Packs/packs-reducer';
-import {ResponseType} from '../features/auth/auth-api';
 
 let rootReducer = combineReducers({
   login: authReducer,
@@ -21,5 +20,5 @@ export type RootStateType = ReturnType<typeof rootReducer>
 
 export type DispatchType = ThunkDispatch<RootStateType, unknown, AnyAction>
 export const useAppDispatch = () => useDispatch<DispatchType>();
-export type ThunkType<ReturnType = Promise<ResponseType | undefined | void> | void> = ThunkAction<ReturnType, RootStateType, unknown, AnyAction>
+export type ThunkType<ReturnType = Promise<any> | void> = ThunkAction<ReturnType, RootStateType, unknown, AnyAction>
 export const useAppSelector: TypedUseSelectorHook<RootStateType> = useSelector;

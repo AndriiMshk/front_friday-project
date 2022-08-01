@@ -66,6 +66,7 @@ export const sendEmailTC = (email: string): ThunkType => async dispatch => {
             message: 'Test mail for password recovery'
         })
         dispatch(setAppStatusAC('succeeded'))
+        return res.data
     } catch (e) {
         commonError(e, dispatch)
     }
