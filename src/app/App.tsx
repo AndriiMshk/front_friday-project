@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import './App.css';
 import { ProjectRoutes } from '../common/routes/Routes';
 import { useAppDispatch, useAppSelector } from './store';
 import { authMeTC } from './app-reducer';
@@ -23,16 +22,11 @@ export const App = () => {
     return <Preloader />;
   }
 
-  return (
-    <>
-      <Header />
-      <Navbar />
-      {status === 'loading' && <Preloader />}
-      <ProjectRoutes />
-      <ErrorSnackbar />
-    </>
-  );
+  return <>
+    <Header />
+    <Navbar />
+    {status === 'loading' && <Preloader />}
+    <ProjectRoutes />
+    <ErrorSnackbar />
+  </>
 };
-
-
-
