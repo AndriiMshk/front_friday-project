@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Paper from '@mui/material/Paper/Paper';
 import FormGroup from '@mui/material/FormGroup/FormGroup';
-import {Link, Navigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import classes from './PasswordRecovery.module.css'
 import { useAppDispatch } from '../../../app/store';
 import {Controller, SubmitHandler, useForm} from 'react-hook-form';
@@ -12,16 +12,14 @@ import {sendEmailTC} from '../auth-reducer';
 export const PasswordRecovery = () => {
     const dispatch = useAppDispatch()
 
-    const [sent, setSent] = useState(false)
+    const navigate = useNavigate()
     const {control, handleSubmit, reset, formState: {errors}} = useForm<FormData>({mode: 'onBlur'})
 
     const onSubmit: SubmitHandler<FormData> = async data => {
         const res = await dispatch(sendEmailTC(data.email))
-        if (res.success) setSent(true)
+        if (res) navigate(`/password-recovery/${data.email}`)
         reset()
     }
-
-    if (sent) return <Navigate to={'/login'}/> // TODO исправить на письмо
 
     return <Paper className={classes.paper} elevation={4}>
 
