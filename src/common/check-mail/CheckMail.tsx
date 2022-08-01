@@ -1,8 +1,8 @@
 import React from 'react';
 import Paper from '@mui/material/Paper/Paper';
 import {useNavigate, useParams} from 'react-router-dom';
-import classes from './PasswordRecovery.module.css'
 import Button from '@mui/material/Button';
+import classes from './CheckMail.module.css';
 
 export const CheckMail = () => {
 

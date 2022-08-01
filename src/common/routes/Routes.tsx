@@ -8,7 +8,7 @@ import { ErrorPage } from '../404-page/ErrorPage';
 import { NewPassword } from '../../features/auth/new-password/NewPassword';
 import { Packs } from '../../features/Packs/Packs';
 import { Cards } from '../../features/Cards/Cards';
-import {CheckMail} from '../../features/auth/password-recovery/CheckMail';
+import {CheckMail} from '../check-mail/CheckMail';
 
 export const ProjectRoutes = () => {
   return <div>
