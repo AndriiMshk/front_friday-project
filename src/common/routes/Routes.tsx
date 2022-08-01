@@ -8,6 +8,7 @@ import { ErrorPage } from '../404-page/ErrorPage';
 import { NewPassword } from '../../features/auth/new-password/NewPassword';
 import { Packs } from '../../features/Packs/Packs';
 import { Cards } from '../../features/Cards/Cards';
+import {CheckMail} from '../../features/auth/password-recovery/CheckMail';
 
 export const ProjectRoutes = () => {
   return <div>
@@ -16,6 +17,7 @@ export const ProjectRoutes = () => {
       <Route path={'/login'} element={<Login />} />
       <Route path={'/set-new-password'} element={<NewPassword />} />
       <Route path={'/password-recovery'} element={<PasswordRecovery />} />
+      <Route path={'/password-recovery/mail'} element={<CheckMail />} />
       <Route path={'/profile'} element={<Profile />} />
       <Route path={'/registration'} element={<Registration />} />
       <Route path={'/packs'} element={<Packs />} />

@@ -14,6 +14,7 @@ export const Navbar = () => {
         <Link className={style.active} to="/profile"> Профиль </Link>
         <Link className={style.active} to="/404"> 404 </Link>
         <Link className={style.active} to="/password-recovery"> Восстановление пароля </Link>
+        <Link className={style.active} to="/password-recovery/mail"> Письмо </Link>
         <Link className={style.active} to="/set-new-password"> Смена пароля </Link>
         <Link className={style.active} to="/packs"> Колоды </Link>
         <Link className={style.active} to="/cards/:packId"> Карточки </Link>
