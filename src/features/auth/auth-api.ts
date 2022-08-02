@@ -14,13 +14,13 @@ export const authAPI = {
         return instance.delete<LoginResponseType>('auth/me')
     },
     signup(data: SignupDataType) {
-        return instance.post<ResponseType>('/auth/register', data)
+        return instance.post<ResponseType>('auth/register', data)
     },
     forgot(data: ForgotDataType) {
-        return instance.post<PasswordResponseType>('/auth/forgot', data)
+        return instance.post<PasswordResponseType>('auth/forgot', data)
     },
     newPassword(data: NewPasswordDataType) {
-        return instance.post<PasswordResponseType>('/auth/set-new-password', data)
+        return instance.post<PasswordResponseType>('auth/set-new-password', data)
     },
 }
 
