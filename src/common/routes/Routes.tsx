@@ -9,9 +9,10 @@ import { NewPassword } from '../../features/auth/new-password/NewPassword';
 import { Packs } from '../../features/Packs/Packs';
 import { Cards } from '../../features/Cards/Cards';
 import {CheckMail} from '../check-mail/CheckMail';
+import classes from './style.module.css';
 
 export const ProjectRoutes = () => {
-  return <div>
+  return <div className={classes.container}>
     <Routes>
       <Route path={'/'} element={<Navigate to={'/profile'} />} />
       <Route path={'/login'} element={<Login />} />

@@ -1,8 +1,6 @@
 .wrapper {
-    position: fixed;
-    top: 15%;
+    margin-top: 60px;
     text-align: center;
-    width: 100%;
 }
 
 .form {
@@ -27,6 +25,7 @@
     justify-content: right;
     margin-bottom: 20px;
 }
+
 .input{
     margin-bottom: 15px;
     background-color: rgb(232, 240, 254)
