@@ -13,10 +13,9 @@ export const Packs = () => {
 
   const packs = useAppSelector(state => state.packs.cardPacks);
   const userId = useAppSelector(state => state.profile._id);
-
-  const page = useAppSelector(state => state.packs.page);
   const isLoggedIn = useAppSelector(state => state.login.isLoggedIn);
 
+  const page = useAppSelector(state => state.packs.page);
   const rowsPerPage = useAppSelector(state => state.packs.pageCount);
   const pageCount = useAppSelector(state => state.packs.cardPacksTotalCount);
 
@@ -24,7 +23,6 @@ export const Packs = () => {
   const [filterByCardsCount, setFilterByCardsCount] = useState<number[]>([0, maxCardsCount]);
 
   const [isShowMyPacks, setIsShowMyPacks0] = useState(false);
-
   const [packName, setPackName] = useState<string>('');
 
   const addNewPackHandler = () => {
@@ -46,12 +44,10 @@ export const Packs = () => {
       }));
   }, [
     page,
-    pageCount,
     rowsPerPage,
-    useDebounce(filterByCardsCount),
     isShowMyPacks,
     useDebounce(packName),
-    packs.length,
+    useDebounce(filterByCardsCount),
   ]);
 
   if (!isLoggedIn) {

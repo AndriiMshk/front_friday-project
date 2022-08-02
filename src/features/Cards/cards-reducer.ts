@@ -55,10 +55,10 @@ export const setCurrentPageAC = (page: number) =>
 export const setCurrentPageCountAC = (pageCount: number) =>
   ({ type: 'CARDS/SET-CURRENT-PAGE-COUNT', pageCount } as const);
 
-export const setCardsTC = ({ ...params }: ParamsGetRequestType): ThunkType => async(dispatch) => {
+export const setCardsTC = (params: ParamsGetRequestType): ThunkType => async(dispatch) => {
   dispatch(setAppStatusAC('loading'));
   try {
-    const res = await cardsApi.setCards({ ...params });
+    const res = await cardsApi.setCards(params);
     dispatch(setCurrentPageAC(params.page ? params.page : 1));
     dispatch(setCurrentPageCountAC(params.pageCount ? params.pageCount : 10));
     dispatch(setCardsAC(res.data.cards, res.data.cardsTotalCount, res.data.packUserId));
@@ -70,12 +70,12 @@ export const setCardsTC = ({ ...params }: ParamsGetRequestType): ThunkType => as
   dispatch(setAppStatusAC('succeeded'));
 };
 
-export const createCardTC = ({ ...newCard }: CardType): ThunkType =>
+export const createCardTC = (newCard: CardType): ThunkType =>
   async(dispatch) => {
     dispatch(setAppStatusAC('loading'));
     try {
-      const res = await cardsApi.createCard({ ...newCard });
-      dispatch(createCardAC(res.data));
+      const res = await cardsApi.createCard(newCard);
+      dispatch(createCardAC(res.data.newCard));
     } catch (error) {
       if (axios.isAxiosError(error)) {
         commonError(error, dispatch);
@@ -121,7 +121,6 @@ type InitialStateType = {
   token: string
   tokenDeathTime: number
 }
-
 
 type CardsActionType =
   | ReturnType<typeof setCardsAC>
