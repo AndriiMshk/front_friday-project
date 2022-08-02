@@ -13,7 +13,6 @@ const initialState = {
   maxCardsCount: 110,
   token: '',
   tokenDeathTime: 0,
-
 } as InitialStateType;
 
 export const packsReducer = (state: InitialStateType = initialState, action: PacksActionType): InitialStateType => {
@@ -21,7 +20,7 @@ export const packsReducer = (state: InitialStateType = initialState, action: Pac
     case 'PACKS/SET-PACKS':
       return { ...state, cardPacks: [...action.packs], cardPacksTotalCount: action.packsTotalCount };
     case 'PACKS/CREATE-PACK':
-      return { ...state, cardPacks: [...state.cardPacks, action.pack] };
+      return { ...state, cardPacks: [action.pack, ...state.cardPacks] };
     case 'PACKS/DELETE-PACK':
       return { ...state, cardPacks: state.cardPacks.filter(el => el._id !== action.packId) };
     case 'PACKS/UPDATE-PACK':
@@ -57,10 +56,10 @@ export const setCurrentPageCountAC = (pageCount: number) => ({
   pageCount,
 } as const);
 
-export const setPacksTC = ({ ...params }: ParamsGetRequestType): ThunkType => async(dispatch) => {
+export const setPacksTC = (params: ParamsGetRequestType): ThunkType => async(dispatch) => {
   dispatch(setAppStatusAC('loading'));
   try {
-    const res = await packsApi.setPacks({ ...params });
+    const res = await packsApi.setPacks(params);
     dispatch(setCurrentPageAC(params.page ? params.page : 1));
     dispatch(setCurrentPageCountAC(params.pageCount ? params.pageCount : 10));
     dispatch(setPacksAC(res.data.cardPacks, res.data.cardPacksTotalCount));
@@ -75,7 +74,7 @@ export const createPackTC = (newPackName: string): ThunkType => async(dispatch) 
   dispatch(setAppStatusAC('loading'));
   try {
     const res = await packsApi.createPack(newPackName);
-    dispatch(createPackAC(res.data));
+    dispatch(createPackAC(res.data.newCardsPack));
   } catch (error) {
     if (axios.isAxiosError(error)) {
       commonError(error, dispatch);

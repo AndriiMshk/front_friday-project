@@ -51,7 +51,7 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({ packs, userId, pageC
 
   return (
     <div>
-      <TableContainer component={Paper} >
+      <TableContainer component={Paper}>
         <Table sx={{ minWidth: 400 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -67,14 +67,14 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({ packs, userId, pageC
               <TableRow
                 key={pack._id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell component="th" scope="row" sx={{textAlign: 'right'}}>
+                <TableCell component="th" scope="row" sx={{ textAlign: 'right' }}>
                   <NavLink className={styles.pack}
                            to={`/cards/${pack._id}`}>{pack.name}</NavLink>
                 </TableCell>
                 <TableCell align="right">{pack.cardsCount}</TableCell>
                 <TableCell align="right">{pack.user_name}</TableCell>
                 <TableCell align="right">{formatDate(pack.updated)}</TableCell>
-                <TableCell className={styles.buttonBlock} sx={{textAlign: 'right'}}>
+                <TableCell className={styles.buttonBlock} sx={{ textAlign: 'right' }}>
                   <Button
                     onClick={() => deletePackHandler(pack._id)}
                     disabled={userId !== pack.user_id}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/store';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { CardsTable } from './CardsTable';
 import { createCardTC, setCardsTC } from './cards-reducer';
@@ -11,18 +11,18 @@ import useDebounce from '../../common/hooks/useDebounce';
 
 export const Cards = () => {
 
-  const [question, setQuestion] = useState('');
-
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
   const userId = useAppSelector(state => state.profile._id);
   const packUserId = useAppSelector(state => state.cards.packUserId);
   const cards = useAppSelector(state => state.cards.cards);
+
   const page = useAppSelector(state => state.cards.page);
   const rowsPerPage = useAppSelector(state => state.cards.pageCount);
   const pageCount = useAppSelector(state => state.cards.cardsTotalCount);
 
   const { packId } = useParams<'packId'>();
+  const [question, setQuestion] = useState('');
 
   const packName = useAppSelector(state =>
     state.packs.cardPacks.find(el => el._id === packId)?.name);
@@ -46,7 +46,12 @@ export const Cards = () => {
           cardQuestion: !!question ? question : undefined,
         }));
     }
-  }, [packId, page, rowsPerPage, pageCount, cards.length, useDebounce(question)]);
+  }, [
+    packId,
+    page,
+    rowsPerPage,
+    useDebounce(question),
+  ]);
 
   return (
     <div>
