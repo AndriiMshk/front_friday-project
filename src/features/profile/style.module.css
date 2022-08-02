@@ -1,17 +1,33 @@
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 1400px;
+  margin: 24px auto 0;
+  /*display: flex;*/
+  /*justify-content: center;*/
+  /*align-items: center;*/
+}
+
+.wrapper {
+  width: 160px;
+  cursor: pointer;
+}
+
+.wrapper:hover {
+  transform: scale(1.03);
+}
+
+.back {
+  margin-left: 12px;
+  font-weight: 500;
+  font-size: 15px;
 }
 
 .content {
-  height: 360px;
+  margin: 12px auto 0;
   width: 413px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  /*justify-content: space-between;*/
   align-items: center;
-  position: fixed;
   top: 15%;
   text-align: center;
 }

@@ -5,7 +5,7 @@ import style from './style.module.css';
 import { Button, Paper } from '@mui/material';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
-import { Navigate } from 'react-router-dom';
+import {Navigate, useNavigate} from 'react-router-dom';
 import { setNewUserNameTC } from './profile-reducer';
 import { useAppDispatch, useAppSelector } from '../../app/store';
 import { useFormik } from 'formik';
@@ -58,9 +58,10 @@ export const Profile = () => {
 
   return (
     <div className={style.container}>
-      <Paper className={style.content}>
+      <Menu />
+      <Paper className={style.content} elevation={4}>
         <Typography
-          style={{ marginTop: '27px', fontWeight: '600' }}
+          style={{ marginTop: '27px', marginBottom: '30px', fontWeight: '600' }}
           variant="h5" component="div">
           Personal Information
         </Typography>
@@ -74,10 +75,10 @@ export const Profile = () => {
             setEditMode={setEditMode}
             error={formik.errors.name}
           />
-          : <Typography variant="h6" component="div">
+          : <Typography variant="h6" component="div" style={{marginTop: '17px', marginBottom: '14px'}}>
             {name}
             <BorderColorOutlinedIcon
-              style={{ cursor: 'pointer', height: '15px', width: '15px', paddingLeft: '5px' }}
+              style={{ cursor: 'pointer', height: '16px', width: '16px', marginLeft: '9px', marginBottom: '-1px' }}
               onClick={() => setEditMode(true)}
             />
           </Typography>}
@@ -95,6 +96,8 @@ export const Profile = () => {
             boxShadow: '0px 2px 10px rgba(109, 109, 109, 0.25), inset 0px 1px 0px rgba(255, 255, 255, 0.3)',
             marginBottom: '36px',
             color: '#000000',
+            textTransform: 'none',
+            fontSize: '16px',
           }}
           variant="outlined"
           startIcon={<ExitToAppIcon />}>
@@ -102,5 +105,18 @@ export const Profile = () => {
         </Button>
       </Paper>
     </div>
-  );
+  )
+};
+
+const Menu = () => {
+  const navigate = useNavigate()
+
+  return <div className={style.wrapper} onClick={() => navigate('/packs')}>
+
+    <svg width="16" height="11" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M16 5.5H2M2 5.5L6.66667 1M2 5.5L6.66667 10" stroke="black" strokeWidth="2"/>
+    </svg>
+
+    <span className={style.back}>Back To Packs List</span>
+  </div>
 };
