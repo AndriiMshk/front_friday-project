@@ -1,5 +1,5 @@
 import {useNavigate} from 'react-router-dom';
-import * as React from 'react';
+import React from 'react';
 import classes from './BackToPacksList.module.css';
 
 export const BackToPacksList = () => {
