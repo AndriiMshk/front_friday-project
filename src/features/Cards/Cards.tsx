@@ -24,7 +24,8 @@ export const Cards = () => {
 
   const { packId } = useParams<'packId'>();
 
-  const packName = useAppSelector(state => state.packs.cardPacks.find(el => el._id === packId)?.name);
+  const packName = useAppSelector(state =>
+    state.packs.cardPacks.find(el => el._id === packId)?.name);
 
 //временная заглушка на добавление карточки
   const addNewCardHandler = () => {
@@ -37,7 +38,13 @@ export const Cards = () => {
 
   useEffect(() => {
     if (packId) {
-      dispatch(setCardsTC({ cardsPack_id: packId, page, pageCount: rowsPerPage, cardQuestion: question }));
+      dispatch(setCardsTC(
+        {
+          cardsPack_id: packId,
+          page,
+          pageCount: rowsPerPage,
+          cardQuestion: !!question ? question : undefined,
+        }));
     }
   }, [packId, page, rowsPerPage, pageCount, cards.length, useDebounce(question)]);
 
