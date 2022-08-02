@@ -79,9 +79,7 @@ export const Cards = () => {
                                     variant="contained"
                                 >Add new card</Button>
                             </div>
-
                         </div>}
-
                     <div className={style.table}>
                         <CardsTable cards={cards} userId={userId} pageCount={pageCount} rowsPerPage={rowsPerPage}/>
                     </div>

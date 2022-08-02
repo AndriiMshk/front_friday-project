@@ -121,21 +121,5 @@ export const Packs = () => {
         </div>
     )
 }
-/*
-
-                   {/!* <FilterPanel
-                        filterByCardsCount={filterByCardsCount}
-                        setFilterByCardsCount={setFilterByCardsCount}
-                        isShowMyPacks={isShowMyPacks}
-                        setIsShowMyPacks={setIsShowMyPacks0}
-                        packName={packName}
-                        setPackName={setPackName}
-                    />*!/}
-
-
-                );
-                };
-
-*/
 
 
