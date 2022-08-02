@@ -32,6 +32,8 @@ header {
 
 .dropdown {
     position: relative;
+    height: 49px;
+    cursor: default;
 }
 
 .dropdownContent {
@@ -73,7 +75,7 @@ header {
 }
 
 .dropdownContent div:hover {
-    transform: scale(1.03);
+    transform: scale(1.05);
 }
 
 .dropdownContent::before, .dropdownContent::after {
