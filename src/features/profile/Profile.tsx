@@ -1,17 +1,18 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import Typography from '@mui/material/Typography';
 import style from './style.module.css';
-import { Button, Paper } from '@mui/material';
+import {Button, Paper} from '@mui/material';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
-import {Navigate, useNavigate} from 'react-router-dom';
-import { setNewUserNameTC } from './profile-reducer';
-import { useAppDispatch, useAppSelector } from '../../app/store';
-import { useFormik } from 'formik';
-import { logoutTC } from '../auth/auth-reducer';
-import { EditNameForm } from './components/EditNameForm';
-import { AvatarComponent } from './components/AvatarComponent';
+import {Navigate} from 'react-router-dom';
+import {setNewUserNameTC} from './profile-reducer';
+import {useAppDispatch, useAppSelector} from '../../app/store';
+import {useFormik} from 'formik';
+import {logoutTC} from '../auth/auth-reducer';
+import {EditNameForm} from './components/EditNameForm';
+import {AvatarComponent} from './components/AvatarComponent';
+import {BackToPacksList} from '../../common/back-to-packs/BackToPacksList';
 
 export const Profile = () => {
 
@@ -58,7 +59,7 @@ export const Profile = () => {
 
   return (
     <div className={style.container}>
-      <Menu />
+      <BackToPacksList />
       <Paper className={style.content} elevation={4}>
         <Typography
           style={{ marginTop: '27px', marginBottom: '30px', fontWeight: '600' }}
@@ -106,17 +107,4 @@ export const Profile = () => {
       </Paper>
     </div>
   )
-};
-
-const Menu = () => {
-  const navigate = useNavigate()
-
-  return <div className={style.wrapper} onClick={() => navigate('/packs')}>
-
-    <svg width="16" height="11" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M16 5.5H2M2 5.5L6.66667 1M2 5.5L6.66667 10" stroke="black" strokeWidth="2"/>
-    </svg>
-
-    <span className={style.back}>Back To Packs List</span>
-  </div>
 };

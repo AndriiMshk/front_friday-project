@@ -3,21 +3,6 @@
   margin: 24px auto 0;
 }
 
-.wrapper {
-  width: 160px;
-  cursor: pointer;
-}
-
-.wrapper:hover {
-  transform: scale(1.03);
-}
-
-.back {
-  margin-left: 12px;
-  font-weight: 500;
-  font-size: 15px;
-}
-
 .content {
   margin: 12px auto 0;
   width: 413px;
