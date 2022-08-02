@@ -17,7 +17,6 @@ header {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    width: 300px;
 }
 
 .signIn {
@@ -33,26 +32,60 @@ header {
 
 .dropdown {
     position: relative;
-    display: inline-block;
 }
 
 .dropdownContent {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    background-color: #f1f1f1;
-    min-width: 160px;
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    width: 122px;
+    height: 100px;
+    top: 53px;
+    right: 6px;
+    padding: 5px 19px;
+    background-color: #fff;
+    border: 1px solid #CFCFCF;
+    border-radius: 4px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
     z-index: 1;
+    transform-origin: 0 0;
+    transform: scaleY(0);
+    transition: 0.15s linear;
 }
 
-.dropdownContent a {
-    color: black;
-    padding: 5px 10px;
-    text-decoration: none;
-    display: block;
+.dropdownContent div {
+    margin-top: 16px;
+    cursor: pointer;
+}
+
+.dropdownContent svg {
+    margin-top: 2px;
+}
+
+.dropdownContent span {
+    margin-left: 12px;
+    color: #0D0C0B;
+    font-weight: 400;
+    font-size: 15px;
+    vertical-align: top;
 }
 
 .dropdown:hover .dropdownContent {
-    display: block;
+    transform: scaleY(1);
+}
+
+.dropdownContent div:hover {
+    transform: scale(1.03);
+}
+
+.dropdownContent::before, .dropdownContent::after {
+    content: '';
+    position: absolute;
+    right: 7px;
+    top: -12px;
+    border: 5px solid transparent;
+    border-bottom: 7px solid #CFCFCF;
+}
+
+.dropdownContent::after {
+    top: -10px;
+    border-bottom: 8px solid #fff;
 }
