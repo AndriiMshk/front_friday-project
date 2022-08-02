@@ -25,15 +25,7 @@ export const Packs = () => {
 
   const [isShowMyPacks, setIsShowMyPacks0] = useState(false);
 
-  const checkUserId = () => {
-    if (isShowMyPacks) {
-      return userId;
-    } else {
-      return undefined;
-    }
-  };
-
-  const [packName, setPackName] = useState('');
+  const [packName, setPackName] = useState<string>('');
 
   const addNewPackHandler = () => {
     const name = prompt();
@@ -49,8 +41,8 @@ export const Packs = () => {
         pageCount: rowsPerPage,
         min: filterByCardsCount[0],
         max: filterByCardsCount[1],
-        user_id: checkUserId(),
-        packName: packName,
+        user_id: isShowMyPacks ? userId : undefined,
+        packName: !!packName ? packName : undefined,
       }));
   }, [
     page,
@@ -59,7 +51,7 @@ export const Packs = () => {
     useDebounce(filterByCardsCount),
     isShowMyPacks,
     useDebounce(packName),
-    packs.length
+    packs.length,
   ]);
 
   if (!isLoggedIn) {
