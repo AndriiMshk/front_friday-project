@@ -1,17 +1,15 @@
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 1400px;
+  margin: 24px auto 0;
 }
 
 .content {
-  height: 360px;
+  margin: 12px auto 0;
   width: 413px;
+  height: 372px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
-  position: fixed;
   top: 15%;
   text-align: center;
 }
