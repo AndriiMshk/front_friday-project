@@ -90,7 +90,7 @@ export const Profile = () => {
         </Typography>
         <Button
           onClick={() => {dispatch(logoutTC());}}
-          style={{
+          sx={{
             background: '#fcfcfc',
             border: 'none',
             borderRadius: '30px',
