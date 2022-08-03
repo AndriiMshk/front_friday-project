@@ -1,9 +1,9 @@
 import React from 'react';
-import img404 from '../../assets/404.gif';
-import classes from './ErrorPage.module.css';
+import what from '../../assets/what.gif';
 import Button from '@mui/material/Button';
+import classes from './Page404.module.css';
 
-export const ErrorPage = () => {
+export const Page404 = () => {
     return <div className={classes.container}>
         <div className={classes.wrapper}>
             <span className={classes.oops}> Ooops! </span>
@@ -18,6 +18,6 @@ export const ErrorPage = () => {
             </Button>
         </div>
 
-        <img src={img404} alt=''/>
+        <img src={what} alt=''/>
     </div>
 };
