@@ -11,12 +11,14 @@ import { useAppDispatch } from '../../app/store';
 import TablePagination from '@mui/material/TablePagination';
 import { PackType } from './packsApi';
 import { PackItem } from './PackItem';
+import TableSortLabel from '@mui/material/TableSortLabel';
 
 export const formatDate = (date: Date | string | number) => {
   return new Date(date).toLocaleDateString('ru-RU') + ' ' + new Date(date).toLocaleTimeString();
 };
 
-export const PacksTable: React.FC<PacksTablePropsType> = ({ packs, userId, pageCount, rowsPerPage }) => {
+export const PacksTable: React.FC<PacksTablePropsType> = (
+  { packs, userId, pageCount, rowsPerPage, order, orderBy, handleRequestSort }) => {
 
   const dispatch = useAppDispatch();
   const [page, setPage] = useState<number>(0);
@@ -43,16 +45,44 @@ export const PacksTable: React.FC<PacksTablePropsType> = ({ packs, userId, pageC
     dispatch(updatePackTC(packId, newPackName));
   };
 
+  const headers = [
+    {
+      id: 'name',
+      label: 'Name',
+    },
+    {
+      id: 'cardsCount',
+      label: 'Cards Count',
+    },
+    {
+      id: 'created',
+      label: 'Created By',
+    },
+    {
+      id: 'updated',
+      label: 'Last Updated',
+    },
+  ];
+
   return (
     <div>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 400 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell align="right">Name</TableCell>
-              <TableCell align="right">Cards Count</TableCell>
-              <TableCell align="right">Created By</TableCell>
-              <TableCell align="right">Last Updated</TableCell>
+              {headers.map(el =>
+                <TableCell
+                  key={el.id}
+                  sortDirection={orderBy === el.id ? order : false}
+                >
+                  <TableSortLabel
+                    active={orderBy === el.id}
+                    direction={orderBy === el.id ? order : 'asc'}
+                    onClick={(event) => handleRequestSort(event, el.id)}
+                  >
+                    {el.label}
+                  </TableSortLabel>
+                </TableCell>)}
               <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -86,5 +116,8 @@ type PacksTablePropsType = {
   userId: string
   rowsPerPage: number
   pageCount: number
+  order: any
+  orderBy: any
+  handleRequestSort: any
 }
 

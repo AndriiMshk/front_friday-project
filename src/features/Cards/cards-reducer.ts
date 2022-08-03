@@ -59,8 +59,8 @@ export const setCardsTC = (params: ParamsGetRequestType): ThunkType => async(dis
   dispatch(setAppStatusAC('loading'));
   try {
     const res = await cardsApi.setCards(params);
-    dispatch(setCurrentPageAC(params.page ? params.page : 1));
-    dispatch(setCurrentPageCountAC(params.pageCount ? params.pageCount : 10));
+    dispatch(setCurrentPageAC(params.page || 1));
+    dispatch(setCurrentPageCountAC(params.pageCount || 10));
     dispatch(setCardsAC(res.data.cards, res.data.cardsTotalCount, res.data.packUserId));
   } catch (error) {
     if (axios.isAxiosError(error)) {

@@ -13,6 +13,7 @@ const initialState = {
   maxCardsCount: 110,
   token: '',
   tokenDeathTime: 0,
+  sortOrder: ''
 } as InitialStateType;
 
 export const packsReducer = (state: InitialStateType = initialState, action: PacksActionType): InitialStateType => {
@@ -33,6 +34,8 @@ export const packsReducer = (state: InitialStateType = initialState, action: Pac
       return { ...state, page: action?.page };
     case 'PACKS/SET-CURRENT-PAGE-COUNT':
       return { ...state, pageCount: action?.pageCount };
+    case 'PACKS/SET-SORT-ORDER':
+      return {...state, sortOrder: action.sortOrder}
     default:
       return state;
   }
@@ -54,6 +57,10 @@ export const setCurrentPageAC = (page: number) => ({ type: 'PACKS/SET-CURRENT-PA
 export const setCurrentPageCountAC = (pageCount: number) => ({
   type: 'PACKS/SET-CURRENT-PAGE-COUNT',
   pageCount,
+} as const);
+export const setSortOrderAC = (sortOrder: string) => ({
+  type: 'PACKS/SET-SORT-ORDER',
+  sortOrder,
 } as const);
 
 export const setPacksTC = (params: ParamsGetRequestType): ThunkType => async(dispatch) => {
@@ -117,6 +124,7 @@ type InitialStateType = {
   maxCardsCount: number
   token: string
   tokenDeathTime: number
+  sortOrder: string
 }
 
 type PacksActionType =
@@ -126,6 +134,7 @@ type PacksActionType =
   | ReturnType<typeof updatePackAC>
   | ReturnType<typeof setCurrentPageAC>
   | ReturnType<typeof setCurrentPageCountAC>
+  | ReturnType<typeof setSortOrderAC>
 
 
 

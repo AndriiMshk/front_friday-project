@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { PacksTable } from './PacksTable';
 import { useAppDispatch, useAppSelector } from '../../app/store';
-import { createPackTC, setPacksTC } from './packs-reducer';
+import { createPackTC, setPacksTC, setSortOrderAC } from './packs-reducer';
 import useDebounce from '../../common/hooks/useDebounce';
 import { Button } from '@mui/material';
 import style from './Packs.module.css';
@@ -15,7 +15,7 @@ export const Packs = () => {
 
   const dispatch = useAppDispatch();
 
-  const { cardPacks, page, cardPacksTotalCount, pageCount } = useAppSelector(state => state.packs);
+  const { cardPacks, page, cardPacksTotalCount, pageCount, sortOrder } = useAppSelector(state => state.packs);
   const maxCardsCount = useAppSelector(state => state.packs.maxCardsCount);
   const userId = useAppSelector(state => state.profile._id);
   const isLoggedIn = useAppSelector(state => state.login.isLoggedIn);
@@ -34,6 +34,24 @@ export const Packs = () => {
     }
   };
 
+  type OrderType = 'asc' | 'desc';
+  const [orderBy, setOrderBy] = useState<string>('id');
+  const [order, setOrder] = useState<OrderType>('asc');
+
+  const handleRequestSort = (event: React.MouseEvent<unknown>, property: string) => {
+    const isAsc = orderBy === property && order === 'asc';
+    const sortRequestCreator = () => {
+      if (isAsc) {
+        return `1${property}`;
+      } else {
+        return `0${property}`;
+      }
+    };
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+    dispatch(setSortOrderAC(sortRequestCreator()));
+  };
+
   useEffect(() => {
     dispatch(setPacksTC(
       {
@@ -43,8 +61,9 @@ export const Packs = () => {
         max: filterByCardsCount[1],
         user_id: isShowMyPacks ? userId : undefined,
         packName: !!packName ? packName : undefined,
+        sortPacks: sortOrder || undefined,
       }));
-  }, [page, pageCount, isShowMyPacks, filterByCardsCountDebounce, packNameDebounce]);
+  }, [page, pageCount, isShowMyPacks, filterByCardsCountDebounce, packNameDebounce, sortOrder]);
 
   if (!isLoggedIn) {
     return <Navigate to={'/login'} />;
@@ -101,12 +120,18 @@ export const Packs = () => {
               packs={cardPacks}
               userId={userId}
               rowsPerPage={pageCount}
-              pageCount={cardPacksTotalCount} />
+              pageCount={cardPacksTotalCount}
+              order={order}
+              orderBy={orderBy}
+              handleRequestSort={handleRequestSort}
+            />
           </div>
         </div>
       </div>
     </div>
   );
 };
+
+
 
 
