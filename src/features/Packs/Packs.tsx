@@ -15,16 +15,18 @@ export const Packs = () => {
 
   const dispatch = useAppDispatch();
 
-  const { cardPacks: packs, page, cardPacksTotalCount: pageCount, pageCount: rowsPerPage } =
-    useAppSelector(state => state.packs);
+  const { cardPacks, page, cardPacksTotalCount, pageCount } = useAppSelector(state => state.packs);
   const maxCardsCount = useAppSelector(state => state.packs.maxCardsCount);
   const userId = useAppSelector(state => state.profile._id);
   const isLoggedIn = useAppSelector(state => state.login.isLoggedIn);
 
   const [filterByCardsCount, setFilterByCardsCount] = useState<number[]>([0, maxCardsCount]);
-  const [isShowMyPacks, setIsShowMyPacks0] = useState(false);
+  const [isShowMyPacks, setIsShowMyPacks0] = useState<boolean>(false);
   const [packName, setPackName] = useState<string>('');
+  const packNameDebounce = useDebounce(packName, 1000);
+  const filterByCardsCountDebounce = useDebounce(filterByCardsCount, 1000);
 
+  //временная заглушка на добавление колоды
   const addNewPackHandler = () => {
     const name = prompt();
     if (name) {
@@ -36,19 +38,13 @@ export const Packs = () => {
     dispatch(setPacksTC(
       {
         page,
-        pageCount: rowsPerPage,
+        pageCount,
         min: filterByCardsCount[0],
         max: filterByCardsCount[1],
         user_id: isShowMyPacks ? userId : undefined,
         packName: !!packName ? packName : undefined,
       }));
-  }, [
-    page,
-    rowsPerPage,
-    useDebounce(filterByCardsCount),
-    isShowMyPacks,
-    useDebounce(packName),
-  ]);
+  }, [page, pageCount, isShowMyPacks, filterByCardsCountDebounce, packNameDebounce]);
 
   if (!isLoggedIn) {
     return <Navigate to={'/login'} />;
@@ -74,7 +70,6 @@ export const Packs = () => {
               filterByCardsCount={filterByCardsCount}
               setFilterByCardsCount={setFilterByCardsCount}
             />
-
           </div>
         </div>
         <div className={style.mainBlock}>
@@ -103,10 +98,10 @@ export const Packs = () => {
           </div>
           <div className={style.table}>
             <PacksTable
-              packs={packs}
+              packs={cardPacks}
               userId={userId}
-              rowsPerPage={rowsPerPage}
-              pageCount={pageCount} />
+              rowsPerPage={pageCount}
+              pageCount={cardPacksTotalCount} />
           </div>
         </div>
       </div>

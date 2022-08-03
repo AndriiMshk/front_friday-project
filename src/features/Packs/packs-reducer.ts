@@ -60,8 +60,8 @@ export const setPacksTC = (params: ParamsGetRequestType): ThunkType => async(dis
   dispatch(setAppStatusAC('loading'));
   try {
     const res = await packsApi.setPacks(params);
-    dispatch(setCurrentPageAC(params.page ? params.page : 1));
-    dispatch(setCurrentPageCountAC(params.pageCount ? params.pageCount : 10));
+    dispatch(setCurrentPageAC(params.page || 1));
+    dispatch(setCurrentPageCountAC(params.pageCount || 10));
     dispatch(setPacksAC(res.data.cardPacks, res.data.cardPacksTotalCount));
   } catch (error) {
     if (axios.isAxiosError(error)) {
