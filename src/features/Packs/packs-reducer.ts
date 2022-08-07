@@ -5,7 +5,7 @@ import { commonError } from '../../utils/common-error';
 import { packsApi, PackType, ParamsGetRequestType } from './packsApi';
 
 const initialState = {
-  cardPacks: [],
+  cardPacks: [] as PackType[],
   page: 1,
   pageCount: 10,
   cardPacksTotalCount: 0,
@@ -13,8 +13,16 @@ const initialState = {
   maxCardsCount: 110,
   token: '',
   tokenDeathTime: 0,
-  sortOrder: ''
-} as InitialStateType;
+  filterValues: {
+    sortOrder: '' as string | undefined,
+    filterByCardsCount: {
+      min: 0,
+      max: 110,
+    },
+    packName: '' as string | undefined,
+    isOwn: false,
+  },
+};
 
 export const packsReducer = (state: InitialStateType = initialState, action: PacksActionType): InitialStateType => {
   switch (action.type) {
@@ -35,7 +43,29 @@ export const packsReducer = (state: InitialStateType = initialState, action: Pac
     case 'PACKS/SET-CURRENT-PAGE-COUNT':
       return { ...state, pageCount: action?.pageCount };
     case 'PACKS/SET-SORT-ORDER':
-      return {...state, sortOrder: action.sortOrder}
+      return { ...state, filterValues: { ...state.filterValues, sortOrder: action.sortOrder } };
+    case 'PACKS/SORT-PACK-BY-CARDS-COUNT':
+      return {
+        ...state,
+        filterValues: {
+          ...state.filterValues,
+          filterByCardsCount: { ...state.filterValues.filterByCardsCount, ...action.count },
+        },
+      };
+    case 'PACKS/SORT-PACK-BY-NAME':
+      return { ...state, filterValues: { ...state.filterValues, packName: action.name } };
+    case 'PACKS/RESET-ALL-FILTERS':
+      return {
+        ...state,
+        filterValues: {
+          packName: '',
+          filterByCardsCount: { min: state.minCardsCount, max: state.maxCardsCount },
+          isOwn: false,
+          sortOrder: state.filterValues.sortOrder,
+        },
+      };
+    case 'PACKS/SHOW-MY-PACKS':
+      return { ...state, filterValues: { ...state.filterValues, isOwn: action.isOwn } };
     default:
       return state;
   }
@@ -58,10 +88,17 @@ export const setCurrentPageCountAC = (pageCount: number) => ({
   type: 'PACKS/SET-CURRENT-PAGE-COUNT',
   pageCount,
 } as const);
-export const setSortOrderAC = (sortOrder: string) => ({
+
+export const setSortOrderAC = (sortOrder: string | undefined) => ({
   type: 'PACKS/SET-SORT-ORDER',
   sortOrder,
 } as const);
+export const sortPacksByCardsCountAC = (count: { min: number, max: number }) =>
+  ({ type: 'PACKS/SORT-PACK-BY-CARDS-COUNT', count } as const);
+export const sortPacksByNameAC = (name: string | undefined) =>
+  ({ type: 'PACKS/SORT-PACK-BY-NAME', name } as const);
+export const resetAllSortFiltersAC = () => ({ type: 'PACKS/RESET-ALL-FILTERS' } as const);
+export const showMyPacksAC = (isOwn: boolean) => ({ type: 'PACKS/SHOW-MY-PACKS', isOwn } as const);
 
 export const setPacksTC = (params: ParamsGetRequestType): ThunkType => async(dispatch) => {
   dispatch(setAppStatusAC('loading'));
@@ -115,17 +152,7 @@ export const updatePackTC = (packId: string, newPackName: string): ThunkType =>
     dispatch(setAppStatusAC('succeeded'));
   };
 
-type InitialStateType = {
-  cardPacks: PackType[]
-  page: number
-  pageCount: number
-  cardPacksTotalCount: number
-  minCardsCount: number,
-  maxCardsCount: number
-  token: string
-  tokenDeathTime: number
-  sortOrder: string
-}
+type InitialStateType = typeof initialState
 
 type PacksActionType =
   | ReturnType<typeof setPacksAC>
@@ -135,6 +162,10 @@ type PacksActionType =
   | ReturnType<typeof setCurrentPageAC>
   | ReturnType<typeof setCurrentPageCountAC>
   | ReturnType<typeof setSortOrderAC>
+  | ReturnType<typeof sortPacksByCardsCountAC>
+  | ReturnType<typeof sortPacksByNameAC>
+  | ReturnType<typeof resetAllSortFiltersAC>
+  | ReturnType<typeof showMyPacksAC>
 
 
 

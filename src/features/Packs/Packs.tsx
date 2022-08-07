@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { PacksTable } from './PacksTable';
 import { useAppDispatch, useAppSelector } from '../../app/store';
-import { createPackTC, setPacksTC, setSortOrderAC } from './packs-reducer';
+import { createPackTC, resetAllSortFiltersAC, setPacksTC, showMyPacksAC, sortPacksByNameAC } from './packs-reducer';
 import useDebounce from '../../common/hooks/useDebounce';
 import { Button } from '@mui/material';
 import style from './Packs.module.css';
@@ -15,14 +15,11 @@ export const Packs = () => {
 
   const dispatch = useAppDispatch();
 
-  const { cardPacks, page, cardPacksTotalCount, pageCount, sortOrder } = useAppSelector(state => state.packs);
-  const maxCardsCount = useAppSelector(state => state.packs.maxCardsCount);
+  const { cardPacks, page, cardPacksTotalCount, pageCount } = useAppSelector(state => state.packs);
+  const { sortOrder, filterByCardsCount, packName, isOwn } = useAppSelector(state => state.packs.filterValues);
   const userId = useAppSelector(state => state.profile._id);
   const isLoggedIn = useAppSelector(state => state.login.isLoggedIn);
 
-  const [filterByCardsCount, setFilterByCardsCount] = useState<number[]>([0, maxCardsCount]);
-  const [isShowMyPacks, setIsShowMyPacks0] = useState<boolean>(false);
-  const [packName, setPackName] = useState<string>('');
   const packNameDebounce = useDebounce(packName, 1000);
   const filterByCardsCountDebounce = useDebounce(filterByCardsCount, 1000);
 
@@ -34,36 +31,26 @@ export const Packs = () => {
     }
   };
 
-  type OrderType = 'asc' | 'desc';
-  const [orderBy, setOrderBy] = useState<string>('id');
-  const [order, setOrder] = useState<OrderType>('asc');
-
-  const handleRequestSort = (event: React.MouseEvent<unknown>, property: string) => {
-    const isAsc = orderBy === property && order === 'asc';
-    const sortRequestCreator = () => {
-      if (isAsc) {
-        return `1${property}`;
-      } else {
-        return `0${property}`;
-      }
-    };
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-    dispatch(setSortOrderAC(sortRequestCreator()));
+  const resetAllFilters = () => {
+    dispatch(resetAllSortFiltersAC());
   };
+
+  const toggleOwnAllPackHandler = (isOwn: boolean) => {
+    dispatch(showMyPacksAC(isOwn))
+  }
 
   useEffect(() => {
     dispatch(setPacksTC(
       {
         page,
         pageCount,
-        min: filterByCardsCount[0],
-        max: filterByCardsCount[1],
-        user_id: isShowMyPacks ? userId : undefined,
+        min: filterByCardsCount.min,
+        max: filterByCardsCount.max,
+        user_id: isOwn ? userId : undefined,
         packName: !!packName ? packName : undefined,
         sortPacks: sortOrder || undefined,
       }));
-  }, [page, pageCount, isShowMyPacks, filterByCardsCountDebounce, packNameDebounce, sortOrder]);
+  }, [page, pageCount, isOwn, filterByCardsCountDebounce, packNameDebounce, sortOrder]);
 
   if (!isLoggedIn) {
     return <Navigate to={'/login'} />;
@@ -77,18 +64,19 @@ export const Packs = () => {
             <h2>Show packs</h2>
             <ButtonGroup disableElevation>
               <Button
-                onClick={() => setIsShowMyPacks0(false)}
-                variant={!isShowMyPacks ? 'contained' : 'text'}
+                onClick={() => toggleOwnAllPackHandler(false)}
+                variant={!isOwn ? 'contained' : 'text'}
               >All</Button>
               <Button
-                onClick={() => setIsShowMyPacks0(true)}
-                variant={isShowMyPacks ? 'contained' : 'text'}
+                onClick={() => toggleOwnAllPackHandler(true)}
+                variant={isOwn ? 'contained' : 'text'}
               >My</Button>
             </ButtonGroup>
-            <SliderFilter
-              filterByCardsCount={filterByCardsCount}
-              setFilterByCardsCount={setFilterByCardsCount}
-            />
+            <SliderFilter />
+            <Button
+              onClick={resetAllFilters}
+              variant="contained"
+            >Reset</Button>
           </div>
         </div>
         <div className={style.mainBlock}>
@@ -107,7 +95,7 @@ export const Packs = () => {
                 label="search"
                 variant="outlined"
                 value={packName}
-                onChange={(e) => setPackName(e.target.value)}
+                onChange={(e) => dispatch(sortPacksByNameAC(e.target.value))}
               />
             </Box>
             <Button
@@ -121,9 +109,6 @@ export const Packs = () => {
               userId={userId}
               rowsPerPage={pageCount}
               pageCount={cardPacksTotalCount}
-              order={order}
-              orderBy={orderBy}
-              handleRequestSort={handleRequestSort}
             />
           </div>
         </div>
