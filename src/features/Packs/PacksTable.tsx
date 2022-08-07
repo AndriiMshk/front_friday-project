@@ -6,7 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { deletePackTC, setCurrentPageAC, setCurrentPageCountAC, updatePackTC } from './packs-reducer';
+import { deletePackTC, setCurrentPageAC, setCurrentPageCountAC, setSortOrderAC, updatePackTC } from './packs-reducer';
 import { useAppDispatch } from '../../app/store';
 import TablePagination from '@mui/material/TablePagination';
 import { PackType } from './packsApi';
@@ -18,7 +18,25 @@ export const formatDate = (date: Date | string | number) => {
 };
 
 export const PacksTable: React.FC<PacksTablePropsType> = (
-  { packs, userId, pageCount, rowsPerPage, order, orderBy, handleRequestSort }) => {
+  { packs, userId, pageCount, rowsPerPage }) => {
+
+  type OrderType = 'asc' | 'desc';
+  const [orderBy, setOrderBy] = useState<string | undefined>(undefined);
+  const [order, setOrder] = useState<OrderType>('asc');
+
+  const handleRequestSort = (event: React.MouseEvent<unknown>, property: string) => {
+    const isAsc = orderBy === property && order === 'asc';
+    const sortRequestCreator = () => {
+      if (isAsc) {
+        return `1${property}`;
+      } else {
+        return `0${property}`;
+      }
+    };
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+    dispatch(setSortOrderAC(sortRequestCreator()));
+  };
 
   const dispatch = useAppDispatch();
   const [page, setPage] = useState<number>(0);
@@ -67,37 +85,40 @@ export const PacksTable: React.FC<PacksTablePropsType> = (
   return (
     <div>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 400 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              {headers.map(el =>
-                <TableCell
-                  key={el.id}
-                  sortDirection={orderBy === el.id ? order : false}
-                >
-                  <TableSortLabel
-                    active={orderBy === el.id}
-                    direction={orderBy === el.id ? order : 'asc'}
-                    onClick={(event) => handleRequestSort(event, el.id)}
+        {packs.length
+          ? <Table sx={{ minWidth: 400 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                {headers.map(el =>
+                  <TableCell
+                    key={el.id}
+                    sortDirection={orderBy === el.id ? order : false}
                   >
-                    {el.label}
-                  </TableSortLabel>
-                </TableCell>)}
-              <TableCell align="right">Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {packs?.map((pack) => (
-              <PackItem
-                key={pack._id}
-                pack={pack}
-                userId={userId}
-                deletePackHandler={deletePackHandler}
-                changePackNameHandler={changePackNameHandler}
-              />
-            ))}
-          </TableBody>
-        </Table>
+                    <TableSortLabel
+                      active={orderBy === el.id}
+                      direction={orderBy === el.id ? order : 'asc'}
+                      onClick={(event) => handleRequestSort(event, el.id)}
+                    >
+                      {el.label}
+                    </TableSortLabel>
+                  </TableCell>)}
+                <TableCell align="right">Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {packs.map((pack) => (
+                <PackItem
+                  key={pack._id}
+                  pack={pack}
+                  userId={userId}
+                  deletePackHandler={deletePackHandler}
+                  changePackNameHandler={changePackNameHandler}
+                />
+              ))}
+            </TableBody>
+          </Table>
+          : <div>Pack not found</div>
+        }
       </TableContainer>
       <TablePagination
         component="div"
@@ -116,8 +137,5 @@ type PacksTablePropsType = {
   userId: string
   rowsPerPage: number
   pageCount: number
-  order: any
-  orderBy: any
-  handleRequestSort: any
 }
 
