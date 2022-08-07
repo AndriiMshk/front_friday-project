@@ -1,14 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { PacksTable } from './PacksTable';
 import { useAppDispatch, useAppSelector } from '../../app/store';
-import {
-  createPackTC,
-  resetAllSortFiltersAC,
-  setPacksTC,
-  showMyPacksAC,
-  sortPacksByNameAC,
-} from './packs-reducer';
+import { createPackTC, resetAllSortFiltersAC, setPacksTC, showMyPacksAC, sortPacksByNameAC } from './packs-reducer';
 import useDebounce from '../../common/hooks/useDebounce';
 import { Button } from '@mui/material';
 import style from './Packs.module.css';
@@ -46,7 +40,6 @@ export const Packs = () => {
   }
 
   useEffect(() => {
-    debugger
     dispatch(setPacksTC(
       {
         page,
