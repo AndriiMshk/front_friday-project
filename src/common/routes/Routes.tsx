@@ -10,6 +10,7 @@ import { Packs } from '../../features/Packs/Packs';
 import { Cards } from '../../features/Cards/Cards';
 import {CheckMail} from '../check-mail/CheckMail';
 import classes from './style.module.css';
+import { LearnPage } from '../../features/learn/Learn';
 
 export const ProjectRoutes = () => {
   return <div className={classes.container}>
@@ -25,6 +26,7 @@ export const ProjectRoutes = () => {
       <Route path={'/cards/:packId'} element={<Cards />} />
       <Route path={'/404'} element={<Page404 />} />
       <Route path={'*'} element={<Navigate to={'/404'} />} />
+      <Route path={'/learn/:packId'} element={<LearnPage />} />
     </Routes>
   </div>;
 };

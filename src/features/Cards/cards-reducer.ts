@@ -45,7 +45,9 @@ export const cardsReducer = (state: InitialStateType = initialState, action: Car
             return {...state, cardQuestion: action.cardQuestion};
         case 'CARDS/SEARCH-ANSWER':
             return {...state, cardAnswer: action.cardAnswer};
-        default:
+      case 'CARDS/UPDATE-CARD-GRADE':
+        return { ...state, cards: state.cards.map(el => el._id === action.card._id ? { ...action.card } : el) };
+      default:
             return state;
     }
 };
@@ -62,47 +64,49 @@ export const setCurrentPageCountAC = (pageCount: number) =>
     ({type: 'CARDS/SET-CURRENT-PAGE-COUNT', pageCount} as const);
 export const searchQuestionAC = (cardQuestion: string) => ({type: 'CARDS/SEARCH-QUESTION', cardQuestion} as const)
 export const searchAnswerAC = (cardAnswer: string) => ({type: 'CARDS/SEARCH-ANSWER', cardAnswer} as const)
+export const updateCardGradeAC = (card: CardType) =>
+  ({ type: 'CARDS/UPDATE-CARD-GRADE', card } as const);
 
-export const setCardsTC = (params: ParamsGetRequestType): ThunkType => async (dispatch) => {
-    dispatch(setAppStatusAC('loading'));
-    try {
-        const res = await cardsApi.setCards(params);
-        dispatch(setCurrentPageAC(params.page || 1));
-        dispatch(setCurrentPageCountAC(params.pageCount || 10));
-        dispatch(setCardsAC(res.data.cards, res.data.cardsTotalCount, res.data.packUserId));
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-            commonError(error, dispatch);
-        }
-    }
+export const setCardsTC = (params: ParamsGetRequestType): ThunkType => async(dispatch) => {
+  dispatch(setAppStatusAC('loading'));
+  try {
+    const res = await cardsApi.setCards(params);
+    dispatch(setCurrentPageAC(params.page || 1));
+    dispatch(setCurrentPageCountAC(params.pageCount || 10));
+    dispatch(setCardsAC(res.data.cards, res.data.cardsTotalCount, res.data.packUserId));
     dispatch(setAppStatusAC('succeeded'));
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      commonError(error, dispatch);
+    }
+  }
 };
 
 export const createCardTC = (newCard: CardType): ThunkType =>
-    async (dispatch) => {
-        dispatch(setAppStatusAC('loading'));
-        try {
-            const res = await cardsApi.createCard(newCard);
-            dispatch(createCardAC(res.data.newCard));
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                commonError(error, dispatch);
-            }
-        }
-        dispatch(setAppStatusAC('succeeded'));
-    };
+  async(dispatch) => {
+    dispatch(setAppStatusAC('loading'));
+    try {
+      const res = await cardsApi.createCard(newCard);
+      dispatch(createCardAC(res.data.newCard));
+      dispatch(setAppStatusAC('succeeded'));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        commonError(error, dispatch);
+      }
+    }
+  };
 export const deleteCardTC = (cardId: string): ThunkType =>
     async (dispatch) => {
         dispatch(setAppStatusAC('loading'));
         try {
             await cardsApi.deleteCard(cardId);
             dispatch(deleteCardAC(cardId));
+          dispatch(setAppStatusAC('succeeded'));
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 commonError(error, dispatch);
             }
         }
-        dispatch(setAppStatusAC('succeeded'));
     };
 export const updateCardTC = (cardId: string, question?: string, answer?: string): ThunkType =>
     async (dispatch) => {
@@ -110,13 +114,26 @@ export const updateCardTC = (cardId: string, question?: string, answer?: string)
         try {
             await cardsApi.updateCard(cardId, question, answer);
             dispatch(updateCardAC(cardId, question, answer));
+          dispatch(setAppStatusAC('succeeded'));
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 commonError(error, dispatch);
             }
         }
-        dispatch(setAppStatusAC('succeeded'));
     };
+export const updateCardGradeTC = (cardId: string, grade: number): ThunkType =>
+  async(dispatch) => {
+    dispatch(setAppStatusAC('loading'));
+    try {
+      const res = await cardsApi.updateGrade(cardId, grade);
+      dispatch(updateCardGradeAC(res.data.updatedGrade));
+      dispatch(setAppStatusAC('succeeded'));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        commonError(error, dispatch);
+      }
+    }
+  };
 
 type InitialStateType = {
     cards: CardType[]
@@ -141,3 +158,5 @@ type CardsActionType =
     | ReturnType<typeof setCurrentPageCountAC>
     | ReturnType<typeof searchQuestionAC>
     | ReturnType<typeof searchAnswerAC>
+  | ReturnType<typeof updateCardGradeAC>
+
