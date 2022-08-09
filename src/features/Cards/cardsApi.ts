@@ -11,9 +11,9 @@ export const cardsApi = {
   deleteCard(cardId: string) {
     return instance.delete<{ cardId: number }, AxiosResponse<any>>(`cards/card/?id=${cardId}`);
   },
-  updateCard(cardId: string, question?: string, comments?: string) {
-    return instance.put<{ cardId: number, question?: string, comments?: string }, AxiosResponse<any>>
-    (`cards/card`, { card: { _id: cardId, question, comments } });
+  updateCard(cardId: string, question?: string, answer?: string) {
+    return instance.put<{ cardId: number, question?: string, answer?: string }, AxiosResponse<any>>
+    (`cards/card`, { card: { _id: cardId, question, answer } });
   },
 };
 

@@ -34,7 +34,7 @@ export const cardsReducer = (state: InitialStateType = initialState, action: Car
         case 'CARDS/UPDATE-CARD':
             return {
                 ...state, cards: state.cards.map(el => el._id === action.cardId
-                    ? {...el, question: action?.question, comments: action?.question}
+                    ? {...el, question: action?.question, answer: action?.answer}
                     : el),
             };
         case 'CARDS/SET-CURRENT-PAGE':
@@ -54,8 +54,8 @@ const setCardsAC = (cards: CardType[], cardsTotalCount: number, packUserId: stri
     ({type: 'CARDS/SET-CARDS', cards, cardsTotalCount, packUserId} as const);
 const createCardAC = (card: CardType) => ({type: 'CARDS/CREATE-CARD', card} as const);
 const deleteCardAC = (cardId: string) => ({type: 'CARDS/DELETE-CARD', cardId} as const);
-const updateCardAC = (cardId: string, question?: string, comments?: string) =>
-    ({type: 'CARDS/UPDATE-CARD', cardId, comments, question} as const);
+const updateCardAC = (cardId: string, question?: string, answer?: string) =>
+    ({type: 'CARDS/UPDATE-CARD', cardId, answer, question} as const);
 export const setCurrentPageAC = (page: number) =>
     ({type: 'CARDS/SET-CURRENT-PAGE', page} as const);
 export const setCurrentPageCountAC = (pageCount: number) =>
@@ -104,12 +104,12 @@ export const deleteCardTC = (cardId: string): ThunkType =>
         }
         dispatch(setAppStatusAC('succeeded'));
     };
-export const updateCardTC = (cardId: string, question?: string, comments?: string): ThunkType =>
+export const updateCardTC = (cardId: string, question?: string, answer?: string): ThunkType =>
     async (dispatch) => {
         dispatch(setAppStatusAC('loading'));
         try {
-            await cardsApi.updateCard(cardId, question, comments);
-            dispatch(updateCardAC(cardId, question, comments));
+            await cardsApi.updateCard(cardId, question, answer);
+            dispatch(updateCardAC(cardId, question, answer));
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 commonError(error, dispatch);
