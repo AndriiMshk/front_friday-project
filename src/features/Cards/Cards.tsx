@@ -26,7 +26,7 @@ export const Cards = () => {
     const question = prompt('question');
     const answer = prompt('answer');
     if (packId && question && answer) {
-      dispatch(createCardTC({ cardsPack_id: packId, question, answer }));
+      dispatch(createCardTC({ cardsPack_id: packId, question, answer, grade: 0 }));
     }
   };
 

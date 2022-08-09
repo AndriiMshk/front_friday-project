@@ -39,6 +39,8 @@ export const cardsReducer = (state: InitialStateType = initialState, action: Car
       return { ...state, page: action.page };
     case 'CARDS/SET-CURRENT-PAGE-COUNT':
       return { ...state, pageCount: action.pageCount };
+    case 'CARDS/UPDATE-CARD-GRADE':
+      return { ...state, cards: state.cards.map(el => el._id === action.card._id ? { ...action.card } : el) };
     default:
       return state;
   }
@@ -54,6 +56,8 @@ export const setCurrentPageAC = (page: number) =>
   ({ type: 'CARDS/SET-CURRENT-PAGE', page } as const);
 export const setCurrentPageCountAC = (pageCount: number) =>
   ({ type: 'CARDS/SET-CURRENT-PAGE-COUNT', pageCount } as const);
+export const updateCardGradeAC = (card: CardType) =>
+  ({ type: 'CARDS/UPDATE-CARD-GRADE', card } as const);
 
 export const setCardsTC = (params: ParamsGetRequestType): ThunkType => async(dispatch) => {
   dispatch(setAppStatusAC('loading'));
@@ -62,12 +66,12 @@ export const setCardsTC = (params: ParamsGetRequestType): ThunkType => async(dis
     dispatch(setCurrentPageAC(params.page || 1));
     dispatch(setCurrentPageCountAC(params.pageCount || 10));
     dispatch(setCardsAC(res.data.cards, res.data.cardsTotalCount, res.data.packUserId));
+    dispatch(setAppStatusAC('succeeded'));
   } catch (error) {
     if (axios.isAxiosError(error)) {
       commonError(error, dispatch);
     }
   }
-  dispatch(setAppStatusAC('succeeded'));
 };
 
 export const createCardTC = (newCard: CardType): ThunkType =>
@@ -76,12 +80,12 @@ export const createCardTC = (newCard: CardType): ThunkType =>
     try {
       const res = await cardsApi.createCard(newCard);
       dispatch(createCardAC(res.data.newCard));
+      dispatch(setAppStatusAC('succeeded'));
     } catch (error) {
       if (axios.isAxiosError(error)) {
         commonError(error, dispatch);
       }
     }
-    dispatch(setAppStatusAC('succeeded'));
   };
 export const deleteCardTC = (cardId: string): ThunkType =>
   async(dispatch) => {
@@ -89,12 +93,12 @@ export const deleteCardTC = (cardId: string): ThunkType =>
     try {
       await cardsApi.deleteCard(cardId);
       dispatch(deleteCardAC(cardId));
+      dispatch(setAppStatusAC('succeeded'));
     } catch (error) {
       if (axios.isAxiosError(error)) {
         commonError(error, dispatch);
       }
     }
-    dispatch(setAppStatusAC('succeeded'));
   };
 export const updateCardTC = (cardId: string, question?: string, comments?: string): ThunkType =>
   async(dispatch) => {
@@ -102,12 +106,25 @@ export const updateCardTC = (cardId: string, question?: string, comments?: strin
     try {
       await cardsApi.updateCard(cardId, question, comments);
       dispatch(updateCardAC(cardId, question, comments));
+      dispatch(setAppStatusAC('succeeded'));
     } catch (error) {
       if (axios.isAxiosError(error)) {
         commonError(error, dispatch);
       }
     }
-    dispatch(setAppStatusAC('succeeded'));
+  };
+export const updateCardGradeTC = (cardId: string, grade: number): ThunkType =>
+  async(dispatch) => {
+    dispatch(setAppStatusAC('loading'));
+    try {
+      const res = await cardsApi.updateGrade(cardId, grade);
+      dispatch(updateCardGradeAC(res.data.updatedGrade));
+      dispatch(setAppStatusAC('succeeded'));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        commonError(error, dispatch);
+      }
+    }
   };
 
 type InitialStateType = {
@@ -129,3 +146,4 @@ type CardsActionType =
   | ReturnType<typeof updateCardAC>
   | ReturnType<typeof setCurrentPageAC>
   | ReturnType<typeof setCurrentPageCountAC>
+  | ReturnType<typeof updateCardGradeAC>
