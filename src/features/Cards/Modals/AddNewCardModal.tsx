@@ -19,7 +19,7 @@ export const AddNewCardModal: React.FC<AddNewCardType> = React.memo(({isOpenModa
 
     const addNewCard = () => {
         if (packId) {
-            dispatch(createCardTC({cardsPack_id: packId, question: newCardQuestion, answer: newCardAnswer}))
+            dispatch(createCardTC({cardsPack_id: packId, question: newCardQuestion, answer: newCardAnswer, grade: 0}))
             setNewCardQuestion('')
             setNewCardAnswer('')
         }
