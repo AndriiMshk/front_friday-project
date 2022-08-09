@@ -28,7 +28,7 @@ export const cardsReducer = (state: InitialStateType = initialState, action: Car
                 packUserId: action.packUserId,
             };
         case 'CARDS/CREATE-CARD':
-            return {...state, cards: [ action.card,...state.cards]};
+            return {...state, cards: [action.card, ...state.cards]};
         case 'CARDS/DELETE-CARD':
             return {...state, cards: state.cards.filter(el => el._id !== action.cardId)};
         case 'CARDS/UPDATE-CARD':
@@ -124,8 +124,8 @@ type InitialStateType = {
     page: number
     pageCount: number
     cardsTotalCount: number
-    cardQuestion:string
-    cardAnswer:string
+    cardQuestion: string
+    cardAnswer: string
     minGrade: number
     maxGrade: number
     token: string

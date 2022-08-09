@@ -7,6 +7,14 @@ import BorderColorIcon from '@mui/icons-material/BorderColor';
 import React, {useState} from 'react';
 import {CardType} from './cardsApi';
 import {DeleteCardModal} from "./Modals/DeleteCardModal";
+import {UpdateCardModal} from "./Modals/UpdateCardModal";
+
+type CardItemPropsType = {
+    card: CardType
+    userId: string
+    deleteCardHandler: (cardId: string | undefined) => void
+    updateCardHandler: (cardId: string | undefined, cardAnswer: string, cardQuestion: string) => void
+}
 
 export const CardItem: React.FC<CardItemPropsType> = ({card, userId}) => {
 
@@ -15,12 +23,13 @@ export const CardItem: React.FC<CardItemPropsType> = ({card, userId}) => {
     const [isOpenDeleteCardModal, setIsOpenDeleteCardModal] = useState(false)
     const [isOpenUpdateCardModal, setIsOpenUpdateCardModal] = useState(false)
 
-    const openModalDeleteCard = (cardId: string|undefined) => {
+
+    const openModalDeleteCard = (cardId: string | undefined) => {
         setIsOpenDeleteCardModal(true)
         setDeleteCardData(card)
     }
 
-    const openModalUpdateCard = (cardId: string|undefined) => {
+    const openModalUpdateCard = (cardId: string | undefined) => {
         setIsOpenUpdateCardModal(true)
         setUpdateCardData(card)
     }
@@ -47,7 +56,12 @@ export const CardItem: React.FC<CardItemPropsType> = ({card, userId}) => {
                     startIcon={<DeleteIcon/>}>
                     Delete
                 </Button>
-                <DeleteCardModal cardId={card._id}  cardQuestion={card.question} isOpenModal={isOpenDeleteCardModal} setIsOpenModal={setIsOpenDeleteCardModal}/>
+                {deleteCardData && <DeleteCardModal
+                    cardId={deleteCardData._id}
+                    cardQuestion={deleteCardData.question}
+                    isOpenModal={isOpenDeleteCardModal}
+                    setIsOpenModal={setIsOpenDeleteCardModal}/>
+                }
                 <Button
                     onClick={() => openModalUpdateCard(card._id)}
                     disabled={userId !== card.user_id}
@@ -55,14 +69,14 @@ export const CardItem: React.FC<CardItemPropsType> = ({card, userId}) => {
                     startIcon={<BorderColorIcon/>}>
                     Edit
                 </Button>
+                {updateCardData && <UpdateCardModal
+                    cardId={updateCardData._id}
+                    cardQuestion={updateCardData.question}
+                    cardAnswer={updateCardData.answer}
+                    isOpenModal={isOpenUpdateCardModal}
+                    setIsOpenModal={setIsOpenUpdateCardModal}/>}
             </TableCell>
         </TableRow>
     );
 };
 
-type CardItemPropsType = {
-    card: CardType
-    userId: string
-    deleteCardHandler: (cardId: string | undefined) => void
-    updateCardHandler: (cardId: string | undefined) => void
-}
