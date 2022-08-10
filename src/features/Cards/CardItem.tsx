@@ -23,12 +23,12 @@ export const CardItem: React.FC<CardItemPropsType> = ({ card, userId }) => {
   const [isOpenDeleteCardModal, setIsOpenDeleteCardModal] = useState(false);
   const [isOpenUpdateCardModal, setIsOpenUpdateCardModal] = useState(false);
 
-  const openModalDeleteCard = () => {
+  const openModalDeleteCard = (cardId: string | undefined) => {
     setIsOpenDeleteCardModal(true);
     setDeleteCardData(card);
   };
 
-  const openModalUpdateCard = () => {
+  const openModalUpdateCard = (cardId: string | undefined) => {
     setIsOpenUpdateCardModal(true);
     setUpdateCardData(card);
   };
