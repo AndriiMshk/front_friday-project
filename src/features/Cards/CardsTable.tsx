@@ -57,15 +57,17 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ cards, userId, pageC
             </TableRow>
           </TableHead>
           <TableBody>
-            {cards?.map((card) => (
-              <CardItem
-                key={card._id}
-                card={card}
-                userId={userId}
-                deleteCardHandler={deleteCardHandler}
-                updateCardHandler={updateCardHandler}
-              />
-            ))}
+            {cards.length
+              ? cards.map((card) => (
+                <CardItem
+                  key={card._id}
+                  card={card}
+                  userId={userId}
+                  deleteCardHandler={deleteCardHandler}
+                  updateCardHandler={updateCardHandler}
+                />
+              ))
+              : <div>Cards not found</div>}
           </TableBody>
         </Table>
       </TableContainer>

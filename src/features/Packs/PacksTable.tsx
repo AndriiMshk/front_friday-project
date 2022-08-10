@@ -100,8 +100,7 @@ export const PacksTable: React.FC<PacksTablePropsType> = (
               ))}
             </TableBody>
           </Table>
-          : <div>Pack not found</div>
-        }
+          : <div>Packs not found</div>}
       </TableContainer>
       <TablePagination
         component="div"
