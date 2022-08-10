@@ -46,19 +46,19 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ cards, userId, pageC
   return (
     <>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 400 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Question</TableCell>
-              <TableCell align="right">Answer</TableCell>
-              <TableCell align="right">Grade</TableCell>
-              <TableCell align="right">Updated</TableCell>
-              <TableCell align="right">Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {cards.length
-              ? cards.map((card) => (
+        {cards.length
+          ? <Table sx={{ minWidth: 400 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Question</TableCell>
+                <TableCell align="right">Answer</TableCell>
+                <TableCell align="right">Grade</TableCell>
+                <TableCell align="right">Updated</TableCell>
+                <TableCell align="right">Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {cards.map((card) => (
                 <CardItem
                   key={card._id}
                   card={card}
@@ -67,9 +67,10 @@ export const CardsTable: React.FC<CardsTablePropsType> = ({ cards, userId, pageC
                   updateCardHandler={updateCardHandler}
                 />
               ))
-              : <div>Cards not found</div>}
-          </TableBody>
-        </Table>
+              }
+            </TableBody>
+          </Table>
+          : <div>Cards not found</div>}
       </TableContainer>
       <TablePagination
         component="div"
