@@ -48,6 +48,7 @@ export const CardItem: React.FC<CardItemPropsType> = ({card, userId}) => {
             {/*@ts-ignore*/}
             <TableCell align="right">{formatDate(card.updated)}</TableCell>
             <TableCell className={styles.buttonBlock} sx={{textAlign: 'right'}}>
+
                 <Button
                     onClick={() => openModalDeleteCard(card._id)}
                     disabled={userId !== card.user_id}
@@ -62,6 +63,7 @@ export const CardItem: React.FC<CardItemPropsType> = ({card, userId}) => {
                     isOpenModal={isOpenDeleteCardModal}
                     setIsOpenModal={setIsOpenDeleteCardModal}/>
                 }
+
                 <Button
                     onClick={() => openModalUpdateCard(card._id)}
                     disabled={userId !== card.user_id}
@@ -75,6 +77,7 @@ export const CardItem: React.FC<CardItemPropsType> = ({card, userId}) => {
                     cardAnswer={updateCardData.answer}
                     isOpenModal={isOpenUpdateCardModal}
                     setIsOpenModal={setIsOpenUpdateCardModal}/>}
+
             </TableCell>
         </TableRow>
     );

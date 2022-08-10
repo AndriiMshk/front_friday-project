@@ -4,14 +4,13 @@ import {NavLink, useNavigate} from 'react-router-dom';
 import styles from './PacksTable.module.css';
 import {Button} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {EditInput} from '../../common/editInput/EditInput';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import React, {useState} from 'react';
 import {formatDate} from './PacksTable';
 import {PackType} from './packsApi';
-import {DeleteCardModal} from "../Cards/Modals/DeleteCardModal";
 import {DeletePackModal} from "./Modals/DeletePackModal";
-import {CardType} from "../Cards/cardsApi";
+import {UpdatePackModal} from "./Modals/UpdatePackModal";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
 
 export const PackItem: React.FC<PackItemPropsType> = ({pack, userId, deletePackHandler, changePackNameHandler}) => {
     const [deletePackData, setDeletePackData] = useState<PackType | null>(null);
@@ -23,6 +22,12 @@ export const PackItem: React.FC<PackItemPropsType> = ({pack, userId, deletePackH
         setIsOpenDeletePackModal(true)
         setDeletePackData(pack)
     }
+
+    const openModalUpdatePack = (packId: string | undefined) => {
+        setIsOpenUpdatePackModal(true)
+        setUpdatePackData(pack)
+    }
+
 
     const navigate = useNavigate();
 
@@ -38,6 +43,7 @@ export const PackItem: React.FC<PackItemPropsType> = ({pack, userId, deletePackH
             <TableCell align="right">{pack.user_name}</TableCell>
             <TableCell align="right">{formatDate(pack.updated)}</TableCell>
             <TableCell className={styles.buttonBlock} sx={{textAlign: 'right'}}>
+
                 <Button
                     onClick={() => openModalDeletePack(pack._id)}
                     disabled={userId !== pack.user_id}
@@ -52,12 +58,20 @@ export const PackItem: React.FC<PackItemPropsType> = ({pack, userId, deletePackH
                     isOpenModal={isOpenDeletePackModal}
                     setIsOpenModal={setIsOpenDeletePackModal}/>
                 }
-                <EditInput
-                    value={pack.name}
-                    callBack={(newPackName) => changePackNameHandler(pack._id, newPackName)}
-                    myId={pack.user_id}
-                    userId={userId}
-                />
+
+                <Button
+                    onClick={() => openModalUpdatePack(pack._id)}
+                    disabled={userId !== pack.user_id}
+                    color="secondary" size="small"
+                    startIcon={<BorderColorIcon/>}>
+                    Edit
+                </Button>
+                {updatePackData && <UpdatePackModal
+                    packId={updatePackData._id}
+                    packName={updatePackData.name}
+                    isOpenModal={isOpenUpdatePackModal}
+                    setIsOpenModal={setIsOpenUpdatePackModal}/>}
+
                 <Button
                     disabled={pack.cardsCount === 0}
                     onClick={() => {

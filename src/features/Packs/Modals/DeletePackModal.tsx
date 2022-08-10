@@ -4,8 +4,8 @@ import {BasicModal} from '../../../common/Modal/BasicModal';
 import {deletePackTC} from "../packs-reducer";
 
 type DeletePackType = {
-    packId: string|undefined
-    packName: string
+    packId: string | undefined
+    packName: string | undefined
     isOpenModal: boolean
     setIsOpenModal: (value: boolean) => void
 }
