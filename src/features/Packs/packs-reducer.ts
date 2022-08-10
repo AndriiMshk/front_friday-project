@@ -78,7 +78,7 @@ const setPacksAC = (packs: PackType[], packsTotalCount: number) => ({
 } as const);
 const createPackAC = (pack: PackType) => ({ type: 'PACKS/CREATE-PACK', pack } as const);
 const deletePackAC = (packId: string) => ({ type: 'PACKS/DELETE-PACK', packId } as const);
-const updatePackAC = (packId: string, newPackName: string) => ({
+const updatePackAC = (packId: string, newPackName: string|undefined) => ({
   type: 'PACKS/UPDATE-PACK',
   packId,
   newPackName,
@@ -138,7 +138,7 @@ export const deletePackTC = (packId: string): ThunkType => async(dispatch) => {
     }
   }
 };
-export const updatePackTC = (packId: string, newPackName: string): ThunkType =>
+export const updatePackTC = (packId: string, newPackName: string|undefined): ThunkType =>
   async(dispatch) => {
     dispatch(setAppStatusAC('loading'));
     try {
