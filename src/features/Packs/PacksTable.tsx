@@ -100,8 +100,7 @@ export const PacksTable: React.FC<PacksTablePropsType> = (
               ))}
             </TableBody>
           </Table>
-          : <div>Pack not found</div>
-        }
+          : <div>Packs not found</div>}
       </TableContainer>
       <TablePagination
         component="div"
@@ -110,6 +109,7 @@ export const PacksTable: React.FC<PacksTablePropsType> = (
         onPageChange={changePageHandler}
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={changeRowsPerPageHandler}
+        rowsPerPageOptions={[5, 10, 15, 20]}
       />
     </div>
   );

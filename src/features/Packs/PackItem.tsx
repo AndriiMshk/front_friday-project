@@ -1,8 +1,8 @@
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
-import {NavLink, useNavigate} from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import styles from './PacksTable.module.css';
-import {Button} from '@mui/material';
+import { Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import React, {useState} from 'react';
@@ -37,7 +37,8 @@ export const PackItem: React.FC<PackItemPropsType> = ({pack, userId, deletePackH
             sx={{'&:last-child td, &:last-child th': {border: 0}}}>
             <TableCell component="th" scope="row" sx={{textAlign: 'right'}}>
                 <NavLink className={styles.pack}
-                         to={`/cards/${pack._id}`}>{pack.name}</NavLink>
+                         to={`/cards/${pack._id}/${pack.name}`}
+                >{pack.name}</NavLink>
             </TableCell>
             <TableCell align="right">{pack.cardsCount}</TableCell>
             <TableCell align="right">{pack.user_name}</TableCell>
@@ -86,8 +87,8 @@ export const PackItem: React.FC<PackItemPropsType> = ({pack, userId, deletePackH
 };
 
 type PackItemPropsType = {
-    pack: PackType
-    userId: string
-    deletePackHandler: (packId: string) => void
-    changePackNameHandler: (packId: string, newPackName: string) => void
+  pack: PackType
+  userId: string
+  deletePackHandler: (packId: string) => void
+  changePackNameHandler: (packId: string, newPackName: string) => void
 }

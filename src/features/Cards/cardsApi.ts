@@ -16,8 +16,9 @@ export const cardsApi = {
     (`cards/card`, { card: { _id: cardId, question, answer } });
   },
   updateGrade(cardId: string, grade: number) {
-    return instance.put('/cards/grade', {grade, card_id: cardId})
-  }
+    return instance.put<{ cardId: string, grade: number }, AxiosResponse<UpdatedGradeResponseType>>('/cards/grade',
+      { grade, card_id: cardId });
+  },
 };
 
 export type CardType = {
@@ -50,4 +51,25 @@ export type ParamsGetRequestType = {
   page?: number
   pageCount?: number
 }
+
+type UpdatedGradeResponseType = {
+  token: string
+  tokenDeathTime: number
+  updatedGrade: UpdatedGradeCardResponseType
+}
+
+export type UpdatedGradeCardResponseType = {
+  card_id: string
+  cardsPack_id: string
+  created: Date
+  grade: number
+  more_id: Date
+  shots: number
+  updated: Date
+  user_id: string
+  __v: number
+  _id: string
+}
+
+
 

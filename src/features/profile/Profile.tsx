@@ -1,18 +1,17 @@
-import * as React from 'react';
-import {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import style from './style.module.css';
-import {Button, Paper} from '@mui/material';
+import { Button, Paper } from '@mui/material';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
-import {Navigate} from 'react-router-dom';
-import {setNewUserNameTC} from './profile-reducer';
-import {useAppDispatch, useAppSelector} from '../../app/store';
-import {useFormik} from 'formik';
-import {logoutTC} from '../auth/auth-reducer';
-import {EditNameForm} from './components/EditNameForm';
-import {AvatarComponent} from './components/AvatarComponent';
-import {BackToPacksList} from '../../common/back-to-packs/BackToPacksList';
+import { Navigate } from 'react-router-dom';
+import { setNewUserNameTC } from './profile-reducer';
+import { useAppDispatch, useAppSelector } from '../../app/store';
+import { useFormik } from 'formik';
+import { logoutTC } from '../auth/auth-reducer';
+import { EditNameForm } from './components/EditNameForm';
+import { AvatarComponent } from './components/AvatarComponent';
+import { BackButtonComponent } from '../../common/back-to-packs/BackButtonComponent';
 
 export const Profile = () => {
 
@@ -59,7 +58,7 @@ export const Profile = () => {
 
   return (
     <div className={style.container}>
-      <BackToPacksList />
+      <BackButtonComponent title={'Back To Packs List'} path={'/packs'} />
       <Paper className={style.content} elevation={4}>
         <Typography
           style={{ marginTop: '27px', marginBottom: '30px', fontWeight: '600' }}
@@ -76,7 +75,7 @@ export const Profile = () => {
             setEditMode={setEditMode}
             error={formik.errors.name}
           />
-          : <Typography variant="h6" component="div" style={{marginTop: '17px', marginBottom: '14px'}}>
+          : <Typography variant="h6" component="div" style={{ marginTop: '17px', marginBottom: '14px' }}>
             {name}
             <BorderColorOutlinedIcon
               style={{ cursor: 'pointer', height: '16px', width: '16px', marginLeft: '9px', marginBottom: '-1px' }}
@@ -106,5 +105,5 @@ export const Profile = () => {
         </Button>
       </Paper>
     </div>
-  )
+  );
 };
