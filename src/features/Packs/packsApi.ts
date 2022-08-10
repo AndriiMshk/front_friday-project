@@ -7,7 +7,7 @@ export const packsApi = {
       params: { ...params },
     });
   },
-  createPack(newPackName: string) {
+  createPack(newPackName: string|undefined) {
     return instance.post<{ cardsPack: { name?: string, deckCover?: string, private?: boolean } }, AxiosResponse<any>>
     ('cards/pack', { cardsPack: { name: newPackName } });
   },
@@ -36,7 +36,7 @@ export type PackType = {
   updated: Date
   more_id?: string
   __v: number
-  deckCover?: any   //??????????????
+  deckCover?: any
 };
 
 export type ParamsGetRequestType = {

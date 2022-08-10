@@ -114,7 +114,7 @@ export const setPacksTC = (params: ParamsGetRequestType): ThunkType => async(dis
   }
   dispatch(setAppStatusAC('succeeded'));
 };
-export const createPackTC = (newPackName: string): ThunkType => async(dispatch) => {
+export const createPackTC = (newPackName: string|undefined): ThunkType => async(dispatch) => {
   dispatch(setAppStatusAC('loading'));
   try {
     const res = await packsApi.createPack(newPackName);
