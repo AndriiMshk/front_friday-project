@@ -7,17 +7,17 @@ import { packsApi, PackType, ParamsGetRequestType } from './packsApi';
 const initialState = {
   cardPacks: [] as PackType[],
   page: 1,
-  pageCount: 10,
+  pageCount: 5,
   cardPacksTotalCount: 0,
   minCardsCount: 0,
   maxCardsCount: 110,
   token: '',
   tokenDeathTime: 0,
   filterValues: {
-    sortOrder: '' as string | undefined,
+    sortOrder: undefined as string | undefined,
     filterByCardsCount: {
-      min: 0,
-      max: 110,
+      min: undefined as number | undefined,
+      max: undefined as number | undefined,
     },
     packName: '' as string | undefined,
     isOwn: false,
@@ -59,7 +59,7 @@ export const packsReducer = (state: InitialStateType = initialState, action: Pac
         ...state,
         filterValues: {
           packName: '',
-          filterByCardsCount: { min: state.minCardsCount, max: state.maxCardsCount },
+          filterByCardsCount: { min: undefined, max: undefined },
           isOwn: false,
           sortOrder: state.filterValues.sortOrder,
         },
@@ -88,12 +88,11 @@ export const setCurrentPageCountAC = (pageCount: number) => ({
   type: 'PACKS/SET-CURRENT-PAGE-COUNT',
   pageCount,
 } as const);
-
 export const setSortOrderAC = (sortOrder: string | undefined) => ({
   type: 'PACKS/SET-SORT-ORDER',
   sortOrder,
 } as const);
-export const sortPacksByCardsCountAC = (count: { min: number, max: number }) =>
+export const sortPacksByCardsCountAC = (count: { min: number | undefined, max: number | undefined }) =>
   ({ type: 'PACKS/SORT-PACK-BY-CARDS-COUNT', count } as const);
 export const sortPacksByNameAC = (name: string | undefined) =>
   ({ type: 'PACKS/SORT-PACK-BY-NAME', name } as const);
@@ -104,39 +103,40 @@ export const setPacksTC = (params: ParamsGetRequestType): ThunkType => async(dis
   dispatch(setAppStatusAC('loading'));
   try {
     const res = await packsApi.setPacks(params);
-    dispatch(setCurrentPageAC(params.page || 1));
-    dispatch(setCurrentPageCountAC(params.pageCount || 10));
+    dispatch(setCurrentPageAC(params.page || 1));  ///
+    dispatch(setCurrentPageCountAC(params.pageCount || 10)); ///+
     dispatch(setPacksAC(res.data.cardPacks, res.data.cardPacksTotalCount));
+    dispatch(setAppStatusAC('succeeded'));
   } catch (error) {
     if (axios.isAxiosError(error)) {
       commonError(error, dispatch);
     }
   }
-  dispatch(setAppStatusAC('succeeded'));
 };
 export const createPackTC = (newPackName: string): ThunkType => async(dispatch) => {
   dispatch(setAppStatusAC('loading'));
   try {
     const res = await packsApi.createPack(newPackName);
     dispatch(createPackAC(res.data.newCardsPack));
+    dispatch(setAppStatusAC('succeeded'));
   } catch (error) {
     if (axios.isAxiosError(error)) {
       commonError(error, dispatch);
     }
   }
-  dispatch(setAppStatusAC('succeeded'));
+
 };
 export const deletePackTC = (packId: string): ThunkType => async(dispatch) => {
   dispatch(setAppStatusAC('loading'));
   try {
     await packsApi.deletePack(packId);
     dispatch(deletePackAC(packId));
+    dispatch(setAppStatusAC('succeeded'));
   } catch (error) {
     if (axios.isAxiosError(error)) {
       commonError(error, dispatch);
     }
   }
-  dispatch(setAppStatusAC('succeeded'));
 };
 export const updatePackTC = (packId: string, newPackName: string): ThunkType =>
   async(dispatch) => {
@@ -144,12 +144,12 @@ export const updatePackTC = (packId: string, newPackName: string): ThunkType =>
     try {
       await packsApi.updatePack(packId, newPackName);
       dispatch(updatePackAC(packId, newPackName));
+      dispatch(setAppStatusAC('succeeded'));
     } catch (error) {
       if (axios.isAxiosError(error)) {
         commonError(error, dispatch);
       }
     }
-    dispatch(setAppStatusAC('succeeded'));
   };
 
 type InitialStateType = typeof initialState
@@ -166,6 +166,7 @@ type PacksActionType =
   | ReturnType<typeof sortPacksByNameAC>
   | ReturnType<typeof resetAllSortFiltersAC>
   | ReturnType<typeof showMyPacksAC>
+
 
 
 

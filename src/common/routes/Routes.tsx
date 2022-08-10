@@ -8,7 +8,7 @@ import { Page404 } from '../page404/Page404';
 import { NewPassword } from '../../features/auth/new-password/NewPassword';
 import { Packs } from '../../features/Packs/Packs';
 import { Cards } from '../../features/Cards/Cards';
-import {CheckMail} from '../check-mail/CheckMail';
+import { CheckMail } from '../check-mail/CheckMail';
 import classes from './style.module.css';
 import { LearnPage } from '../../features/learn/Learn';
 
@@ -23,10 +23,10 @@ export const ProjectRoutes = () => {
       <Route path={'/profile'} element={<Profile />} />
       <Route path={'/registration'} element={<Registration />} />
       <Route path={'/packs'} element={<Packs />} />
-      <Route path={'/cards/:packId'} element={<Cards />} />
+      <Route path={'/cards/:packId/:packName'} element={<Cards />} />
+      <Route path={'/learn/:packId/:packName'} element={<LearnPage />} />
       <Route path={'/404'} element={<Page404 />} />
       <Route path={'*'} element={<Navigate to={'/404'} />} />
-      <Route path={'/learn/:packId'} element={<LearnPage />} />
     </Routes>
   </div>;
 };

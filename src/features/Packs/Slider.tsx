@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import { useAppDispatch, useAppSelector } from '../../app/store';
 import { sortPacksByCardsCountAC } from './packs-reducer';
-import useDebounce from '../../common/hooks/useDebounce';
 
 function valuetext(value: number) {
   return `${value}`;
@@ -16,6 +15,8 @@ export const SliderFilter: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const filterByCardsCount = useAppSelector(state => state.packs.filterValues.filterByCardsCount);
+  const minCardsCount = useAppSelector(state => state.packs.minCardsCount);
+  const maxCardsCount = useAppSelector(state => state.packs.maxCardsCount);
 
   const handleChange = (event: Event, newValue: number | number[], activeThumb: number) => {
     if (!Array.isArray(newValue)) {
@@ -24,20 +25,26 @@ export const SliderFilter: React.FC = () => {
 
     if (activeThumb === 0) {
       dispatch(sortPacksByCardsCountAC(
-        { min: Math.min(newValue[0], filterByCardsCount.max - minDistance), max: filterByCardsCount.max }));
+        {
+          min: Math.min(newValue[0], filterByCardsCount.max || maxCardsCount - minDistance),
+          max: filterByCardsCount.max,
+        }));
     } else {
       dispatch(sortPacksByCardsCountAC(
-        { min: filterByCardsCount.min, max: Math.max(newValue[1], filterByCardsCount.min + minDistance) }));
+        {
+          min: filterByCardsCount.min,
+          max: Math.max(newValue[1], filterByCardsCount.min || minCardsCount + minDistance),
+        }));
     }
   };
 
   return (
     <Box sx={{ width: 300, display: 'flex', justifyContent: 'space-around' }}>
-      <div style={{ width: '30px', textAlign: 'center' }}>{filterByCardsCount.min}</div>
+      <div style={{ width: '30px', textAlign: 'center' }}>{filterByCardsCount.min || 0}</div>
       <Slider
         style={{ width: '60%' }}
         getAriaLabel={() => 'Minimum distance'}
-        value={[filterByCardsCount.min, filterByCardsCount.max]}
+        value={[filterByCardsCount.min || minCardsCount, filterByCardsCount.max || maxCardsCount]}
         onChange={handleChange}
         valueLabelDisplay="auto"
         getAriaValueText={valuetext}
@@ -45,7 +52,7 @@ export const SliderFilter: React.FC = () => {
         max={110}
         min={0}
       />
-      <div style={{ width: '30px', textAlign: 'center' }}>{filterByCardsCount.max}</div>
+      <div style={{ width: '30px', textAlign: 'center' }}>{filterByCardsCount.max || 110}</div>
     </Box>
   );
 };

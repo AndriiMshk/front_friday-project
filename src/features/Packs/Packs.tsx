@@ -10,9 +10,9 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { SliderFilter } from './Slider';
+import { BackButtonComponent } from '../../common/back-to-packs/BackButtonComponent';
 
 export const Packs = () => {
-
   const dispatch = useAppDispatch();
 
   const { cardPacks, page, cardPacksTotalCount, pageCount } = useAppSelector(state => state.packs);
@@ -36,8 +36,8 @@ export const Packs = () => {
   };
 
   const toggleOwnAllPackHandler = (isOwn: boolean) => {
-    dispatch(showMyPacksAC(isOwn))
-  }
+    dispatch(showMyPacksAC(isOwn));
+  };
 
   useEffect(() => {
     dispatch(setPacksTC(
@@ -50,70 +50,80 @@ export const Packs = () => {
         packName: !!packName ? packName : undefined,
         sortPacks: sortOrder || undefined,
       }));
-  }, [page, pageCount, isOwn, filterByCardsCountDebounce, packNameDebounce, sortOrder]);
+  }, [
+    page,
+    pageCount,
+    isOwn,
+    filterByCardsCountDebounce,
+    packNameDebounce,
+    sortOrder,
+  ]);
 
   if (!isLoggedIn) {
     return <Navigate to={'/login'} />;
   }
 
   return (
-    <div className={style.wrapper}>
-      <div className={style.container}>
-        <div className={style.sidebar}>
-          <div className={style.sidebarBlock}>
-            <h2>Show packs</h2>
-            <ButtonGroup disableElevation>
+    <>
+      <BackButtonComponent />
+      <div className={style.wrapper}>
+        <div className={style.container}>
+          <div className={style.sidebar}>
+            <div className={style.sidebarBlock}>
+              <h2>Show packs</h2>
+              <ButtonGroup disableElevation>
+                <Button
+                  onClick={() => toggleOwnAllPackHandler(false)}
+                  variant={!isOwn ? 'contained' : 'text'}
+                >All</Button>
+                <Button
+                  onClick={() => toggleOwnAllPackHandler(true)}
+                  variant={isOwn ? 'contained' : 'text'}
+                >My</Button>
+              </ButtonGroup>
+              <SliderFilter />
               <Button
-                onClick={() => toggleOwnAllPackHandler(false)}
-                variant={!isOwn ? 'contained' : 'text'}
-              >All</Button>
-              <Button
-                onClick={() => toggleOwnAllPackHandler(true)}
-                variant={isOwn ? 'contained' : 'text'}
-              >My</Button>
-            </ButtonGroup>
-            <SliderFilter />
-            <Button
-              onClick={resetAllFilters}
-              variant="contained"
-            >Reset</Button>
+                onClick={resetAllFilters}
+                variant="contained"
+              >Reset</Button>
+            </div>
           </div>
-        </div>
-        <div className={style.mainBlock}>
-          <h1 className={style.title}>Packs list</h1>
-          <div className={style.searchAndAdd}>
-            <Box
-              component="form"
-              sx={{
-                '& > :not(style)': { m: 1, width: '25ch' },
-              }}
-              noValidate
-              autoComplete="off"
-            >
-              <TextField
-                id="search"
-                label="search"
-                variant="outlined"
-                value={packName}
-                onChange={(e) => dispatch(sortPacksByNameAC(e.target.value))}
+          <div className={style.mainBlock}>
+            <h1 className={style.title}>Packs list</h1>
+            <div className={style.searchAndAdd}>
+              <Box
+                component="form"
+                sx={{
+                  '& > :not(style)': { m: 1, width: '25ch' },
+                }}
+                noValidate
+                autoComplete="off"
+              >
+                <TextField
+                  id="search"
+                  label="search"
+                  variant="outlined"
+                  value={packName}
+                  onChange={(e) => dispatch(sortPacksByNameAC(e.target.value))}
+                />
+              </Box>
+              <Button
+                onClick={addNewPackHandler}
+                variant="contained"
+              >Add new pack</Button>
+            </div>
+            <div className={style.table}>
+              <PacksTable
+                packs={cardPacks}
+                userId={userId}
+                rowsPerPage={pageCount}
+                pageCount={cardPacksTotalCount}
               />
-            </Box>
-            <Button
-              onClick={addNewPackHandler}
-              variant="contained"
-            >Add new pack</Button>
-          </div>
-          <div className={style.table}>
-            <PacksTable
-              packs={cardPacks}
-              userId={userId}
-              rowsPerPage={pageCount}
-              pageCount={cardPacksTotalCount}
-            />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

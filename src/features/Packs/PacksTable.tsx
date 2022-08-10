@@ -110,6 +110,7 @@ export const PacksTable: React.FC<PacksTablePropsType> = (
         onPageChange={changePageHandler}
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={changeRowsPerPageHandler}
+        rowsPerPageOptions={[5, 10, 15, 20]}
       />
     </div>
   );

@@ -20,7 +20,8 @@ export const PackItem: React.FC<PackItemPropsType> = ({ pack, userId, deletePack
       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
       <TableCell component="th" scope="row" sx={{ textAlign: 'right' }}>
         <NavLink className={styles.pack}
-                 to={`/cards/${pack._id}`}>{pack.name}</NavLink>
+                 to={`/cards/${pack._id}/${pack.name}`}
+        >{pack.name}</NavLink>
       </TableCell>
       <TableCell align="right">{pack.cardsCount}</TableCell>
       <TableCell align="right">{pack.user_name}</TableCell>
@@ -43,7 +44,7 @@ export const PackItem: React.FC<PackItemPropsType> = ({ pack, userId, deletePack
         <Button
           disabled={pack.cardsCount === 0}
           onClick={() => {
-            navigate(`/learn/${pack._id}`);
+            navigate(`/learn/${pack._id}/${pack.name}`);
           }} color="secondary" size="small"
           startIcon={<MenuBookIcon />}>
           Learn
