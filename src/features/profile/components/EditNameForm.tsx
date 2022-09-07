@@ -1,5 +1,4 @@
-import { Button, FormControl, Input } from '@mui/material';
-import { InputAdornment } from '@material-ui/core';
+import { Button, FormControl, Input, InputAdornment } from '@mui/material';
 import * as React from 'react';
 
 export const EditNameForm: React.FC<EditNameFormPropsType> = (

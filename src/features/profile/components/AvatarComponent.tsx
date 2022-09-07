@@ -1,6 +1,5 @@
 import React from 'react';
 import { IconButton } from '@mui/material';
-import { input } from '@testing-library/user-event/dist/types/utils';
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
 import testAva from '../../../assets/avatar.png';
 import Badge from '@mui/material/Badge';
