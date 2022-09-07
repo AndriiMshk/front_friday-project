@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import { ProjectRoutes } from '../common/routes/Routes';
 import { useAppDispatch, useAppSelector } from './store';
 import { authMeTC } from './app-reducer';
-import { Preloader } from '../common/preloader/Preloader';
-import { ErrorSnackbar } from '../common/ErrorSnackbar/ErrorSnackbar';
+
 import { Header } from '../features/header/Header';
 import { Navbar } from '../common/navbar/Navbar';
+import { ErrorSnackbar } from '../common/errorSnackbar/ErrorSnackbar';
+import { Preloader } from '../common/preloader/Preloader';
 
 export const App = () => {
 
