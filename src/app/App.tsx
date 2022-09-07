@@ -1,32 +1,35 @@
 import React, { useEffect } from 'react';
-import { ProjectRoutes } from '../common/routes/Routes';
-import { useAppDispatch, useAppSelector } from './store';
-import { authMeTC } from './app-reducer';
-import { Preloader } from '../common/preloader/Preloader';
-import { ErrorSnackbar } from '../common/ErrorSnackbar/ErrorSnackbar';
-import { Header } from '../features/header/Header';
-import { Navbar } from '../common/navbar/Navbar';
+import { ProjectRoutes } from '../components/routes/Routes';
+import style from './app.module.scss';
+import { Header } from '../components/header/Header';
+import { useAppDispatch, useAppSelector } from './bll-dal/store';
+import { authMe } from './bll-dal/app-async-actions';
+import { CircularProgress } from '@mui/material';
+import { ErrorSnackbar } from '../common/errorSnackbar/ErrorSnackbar';
 
-export const App = () => {
-
-  const isInitialized = useAppSelector((state) => state.app.isInitialized);
-  const status = useAppSelector(state => state.app.status);
+function App() {
 
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(authMeTC());
-  }, []);
+  const { isInitialized } = useAppSelector(state => state.app);
+
+  useEffect(() => {dispatch(authMe());}, []);
 
   if (!isInitialized) {
-    return <Preloader />;
+    return (
+      <div className={style.circularProgress}>
+        <CircularProgress />
+      </div>
+    );
   }
 
-  return <>
-    <Header />
-    <Navbar />
-    {status === 'loading' && <Preloader />}
-    <ProjectRoutes />
-    <ErrorSnackbar />
-  </>
-};
+  return (
+    <div className={style.main}>
+      <Header />
+      <ProjectRoutes />
+      <ErrorSnackbar />
+    </div>
+  );
+}
+
+export default App;

@@ -1,0 +1,28 @@
+@import './src/common/styles/mixins';
+
+.main {
+	@include flex(center, row, center);
+	.content {
+		height: 450px;
+		width: 413px;
+		margin-top: 60px;
+		@include flex(space-between, column, center);
+	}
+	h2 {
+		margin-top: 35px;
+	}
+	.button {
+		width: 347px;
+		height: 36px;
+		border-radius: 30px;
+		text-transform: none;
+		font-weight: 500;
+		font-size: 16px;
+		margin-bottom: 50px;
+	}
+	.info {
+		text-align: center;
+		margin: 31px 10px 43px;
+	}
+}
+

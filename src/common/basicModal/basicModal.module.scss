@@ -1,0 +1,15 @@
+@import './src/common/styles/mixins';
+
+.title {
+	@include flex(space-between, row, center);
+	font-style: normal;
+	font-weight: 500;
+	font-size: 18px;
+	margin-bottom: 20px;
+}
+
+.buttonsBlock {
+	@include flex(space-between, row, center);
+	margin-top: 40px;
+}
+

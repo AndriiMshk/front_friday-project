@@ -1,0 +1,55 @@
+@import './src/common/styles/mixins';
+
+.main {
+	@include flex(center, row, center);
+	padding-bottom: 30px;
+	.content {
+		width: 439px;
+		h2 {
+			width: 100%;
+			word-wrap: break-word;
+		}
+		.learnPaper {
+			@include flex(space-between, column, center);
+			border: 2px solid #1976d2;
+			border-radius: 8px;
+			padding-bottom: 30px;
+			img {
+				max-width: 80%;
+				max-height: 80%;
+			}
+			button {
+				width: 90%;
+				height: 36px;
+				border-radius: 30px;
+				text-transform: none;
+				font-weight: 500;
+				font-size: 16px;
+				margin-top: 20px;
+			}
+			.text {
+				display: block;
+				width: 90%;
+				word-wrap: break-word;
+				text-align: center;
+			}
+			.answerBlock {
+				@include flex(center, column, center);
+				width: 100%;
+				h3 {
+					margin-top: 0;
+				}
+				div {
+					width: 100%;
+					form {
+						width: 100%;
+						@include flex(center, column, center);
+						div {
+							width: 45%;
+						}
+					}
+				}
+			}
+		}
+	}
+}
